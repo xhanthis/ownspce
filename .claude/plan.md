@@ -20,11 +20,10 @@
 | Monorepo | Turborepo |
 | DB | NeonDB (Postgres) |
 | ORM | Drizzle ORM |
-| API | Hono on Cloudflare Workers |
-| Auth | Better Auth |
+| API | Next.js API routes (hosted on Vercel) |
+| Auth | NextAuth v5 (credentials) |
 | Storage | Google Drive API + iCloud CloudKit |
 | Web | Next.js 14 |
-| Mac | Tauri (wraps web build) |
 
 ---
 
@@ -40,12 +39,10 @@ Set up this exact folder structure:
 ```
 ownspce/
 ├── apps/
-│   ├── mobile/        ← React Native CLI
-│   ├── web/           ← Next.js 14
-│   └── desktop/       ← Tauri
+│   ├── mobile/        ← React Native CLI (iOS + Android)
+│   └── web/           ← Next.js 14 (web + API)
 ├── packages/
-│   ├── core/          ← shared logic, API clients, types
-│   ├── ui/            ← shared design tokens
+│   ├── core/          ← shared types, constants
 │   └── db/            ← Drizzle schema + migrations
 ├── turbo.json
 ├── pnpm-workspace.yaml
@@ -221,58 +218,21 @@ export const useAuthStore = create<AuthState>((set) => ({
 
 ---
 
-## STEP 4 — apps/api (Hono on Cloudflare Workers)
+## STEP 4 — apps/web (Next.js 14 + API Routes)
 
-```bash
-mkdir apps/api && cd apps/api
-pnpm create cloudflare . --type hello-world
-pnpm add hono @hono/zod-validator drizzle-orm @neondatabase/serverless bcryptjs jsonwebtoken
-```
+API routes live in `apps/web/app/api/`:
+- `POST /api/auth/signup` — { username, password } → hash password, insert user, return JWT
+- NextAuth handles session-based login for web
+- `POST /api/auth/token` — generates JWT for mobile app auth
+- `GET /api/pages` — list all pages for authed user
+- `POST /api/pages` — create page with default content per type
+- `PATCH /api/pages/:id` — update title, content, isPinned
+- `DELETE /api/pages/:id` — soft delete
+- `GET/PATCH /api/user/theme` — theme preference
 
-`apps/api/src/index.ts`:
-```ts
-import { Hono } from 'hono';
-import { cors } from 'hono/cors';
-import { authRoutes } from './routes/auth';
-import { pageRoutes } from './routes/pages';
-import { driveRoutes } from './routes/drive';
-
-const app = new Hono();
-app.use('*', cors({ origin: '*', allowMethods: ['GET','POST','PUT','DELETE','PATCH'] }));
-
-app.route('/auth', authRoutes);
-app.route('/pages', pageRoutes);
-app.route('/drive', driveRoutes);
-
-export default app;
-```
-
-`apps/api/src/routes/auth.ts` — implement these endpoints:
-- `POST /auth/signup` — { username, email, password } → hash password, insert user, return JWT
-- `POST /auth/login` — { email, password } → verify, return JWT
-- `GET /auth/me` — JWT auth middleware → return user
-
-`apps/api/src/routes/pages.ts` — implement these endpoints:
-- `GET /pages` — list all pages for authed user (metadata only)
-- `POST /pages` — create page metadata, return page with id
-- `PATCH /pages/:id` — update title, isPinned, updatedAt
-- `DELETE /pages/:id` — soft delete (add deleted_at column)
-
-`apps/api/src/routes/drive.ts`:
-- `POST /drive/connect` — exchange OAuth code for access + refresh token, store encrypted in DB
-- `GET /drive/status` — check if Drive connected
-- `DELETE /drive/disconnect` — remove tokens
-
-Auth middleware (`apps/api/src/middleware/auth.ts`):
-```ts
-import { jwt } from 'hono/jwt';
-export const authMiddleware = jwt({ secret: process.env.JWT_SECRET! });
-```
-
-Deploy:
-```bash
-wrangler publish
-```
+Auth:
+- Web: NextAuth v5 with credentials provider (session-based)
+- Mobile: Bearer JWT via `getAuthUser()` helper that checks both auth methods
 
 ---
 
@@ -660,55 +620,20 @@ Keyboard shortcuts:
 
 ---
 
-## STEP 7 — apps/desktop (Tauri)
+## STEP 7 — Environment Variables
 
-```bash
-cd apps/desktop
-pnpm create tauri-app . --template vanilla
-```
-
-`src-tauri/tauri.conf.json`:
-```json
-{
-  "build": { "devPath": "http://localhost:3000", "distDir": "../web/.next" },
-  "tauri": {
-    "windows": [{ "title": "ownspce", "width": 1200, "height": 800, "minWidth": 900, "minHeight": 600 }],
-    "bundle": { "identifier": "com.ownspce.app", "icon": ["icons/icon.png"] }
-  }
-}
-```
-
-Build:
-```bash
-cd apps/web && pnpm build
-cd apps/desktop && pnpm tauri build
-```
-
----
-
-## STEP 8 — Environment Variables
-
-`.env` at root:
+`apps/web/.env`:
 ```env
-# NeonDB
 DATABASE_URL=postgresql://...
-
-# Auth
-JWT_SECRET=your-secret-here
-
-# Google OAuth
+AUTH_SECRET=your-secret-here
+NEXTAUTH_URL=http://localhost:3000
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
-GOOGLE_REDIRECT_URI=
-
-# Cloudflare
-CLOUDFLARE_ACCOUNT_ID=
-CLOUDFLARE_API_TOKEN=
 ```
 
 Mobile (`apps/mobile/.env`):
 ```env
-API_BASE_URL=https://api.ownspce.com
+API_BASE_URL=https://ownspce.vercel.app
 GOOGLE_WEB_CLIENT_ID=
 CODEPUSH_KEY_IOS_PROD=
 CODEPUSH_KEY_IOS_STAGING=
@@ -718,7 +643,7 @@ CODEPUSH_KEY_ANDROID_STAGING=
 
 ---
 
-## STEP 9 — CI/CD
+## STEP 8 — CI/CD
 
 `.github/workflows/mobile.yml`:
 ```yaml
@@ -754,55 +679,52 @@ jobs:
 
 ---
 
-## STEP 10 — Build Order Checklist for Claude Code
+## STEP 9 — Build Order Checklist for Claude Code
 
 Run these in exact order. Each block must be working before proceeding.
 
 ```
-[ ] 1.  Monorepo scaffold (Turborepo + pnpm workspaces)
-[ ] 2.  packages/db — Drizzle schema + NeonDB migration
-[ ] 3.  packages/core — types, API client, Zustand stores
-[ ] 4.  apps/api — Hono routes: auth, pages, drive
-[ ] 5.  apps/api — Deploy to Cloudflare Workers, verify endpoints with curl
-[ ] 6.  apps/mobile — RN CLI init + all deps installed + pod install
-[ ] 7.  apps/mobile — Theme (Restyle) + fonts
-[ ] 8.  apps/mobile — Navigation setup (RootNavigator, AuthStack, AppStack)
-[ ] 9.  apps/mobile — Shared components (Button, Input, Card, FAB, EmptyState)
-[ ] 10. apps/mobile — Auth screens (Signup, Login, ConnectStorage)
-[ ] 11. apps/mobile — Dashboard screen
-[ ] 12. apps/mobile — Pages list + PageTypePicker
-[ ] 13. apps/mobile — Scratch editor
-[ ] 14. apps/mobile — Todo editor
-[ ] 15. apps/mobile — Right Now editor (ATC layout + drag)
-[ ] 16. apps/mobile — Story editor + export
-[ ] 17. apps/mobile — Kanban editor + drag between columns
-[ ] 18. apps/mobile — Profile + Settings screens
-[ ] 19. apps/mobile — Google Drive OAuth + read/write integration
-[ ] 20. apps/mobile — useAutoSave hook wired to all editors
-[ ] 21. apps/mobile — CodePush init + deployment keys
-[ ] 22. apps/web — Next.js init + Tailwind + shared packages
-[ ] 23. apps/web — Landing page
-[ ] 24. apps/web — Auth pages (Signup, Login)
-[ ] 25. apps/web — App layout (sidebar)
-[ ] 26. apps/web — Dashboard, Pages list
-[ ] 27. apps/web — All 5 editors (Tiptap-based)
-[ ] 28. apps/web — Keyboard shortcuts + Command palette
-[ ] 29. apps/desktop — Tauri config pointing to web build
-[ ] 30. apps/desktop — Build macOS .dmg
-[ ] 31. CI/CD — GitHub Actions for mobile (CodePush) + web (Workers + Vercel)
-[ ] 32. Final — App Store + Play Store submission prep (icons, splash, metadata)
+[x] 1.  Monorepo scaffold (Turborepo + pnpm workspaces)
+[x] 2.  packages/db — Drizzle schema + NeonDB migration
+[x] 3.  packages/core — types, constants
+[x] 4.  apps/web — Next.js init + API routes (auth, pages)
+[x] 5.  apps/mobile — RN CLI init + all deps installed + pod install
+[x] 6.  apps/mobile — Theme (Restyle) + fonts
+[x] 7.  apps/mobile — Navigation setup (RootNavigator, AuthStack, AppStack)
+[x] 8.  apps/mobile — Shared components (Button, Input, Card, FAB, EmptyState)
+[x] 9.  apps/mobile — Auth screens (Signup, Login)
+[x] 10. apps/mobile — Dashboard screen
+[x] 11. apps/mobile — Pages list + PageTypePicker
+[x] 12. apps/mobile — Scratch editor
+[x] 13. apps/mobile — Todo editor
+[x] 14. apps/mobile — Right Now editor
+[x] 15. apps/mobile — Kanban editor
+[x] 16. apps/mobile — Profile screen
+[x] 17. apps/mobile — useAutoSave hook wired to all editors
+[x] 18. apps/web — Auth pages (Signup, Login)
+[x] 19. apps/web — App layout (sidebar)
+[x] 20. apps/web — Dashboard, Pages list
+[x] 21. apps/web — All editors (Tiptap-based: Scratch, Todo, RightNow, Kanban)
+[ ] 22. apps/mobile — Story editor + export
+[ ] 23. apps/mobile — Google Drive OAuth + read/write integration
+[ ] 24. apps/mobile — CodePush init + deployment keys
+[ ] 25. apps/web — Keyboard shortcuts + Command palette
+[ ] 26. CI/CD — GitHub Actions for mobile (CodePush) + web (Vercel)
+[ ] 27. Final — App Store + Play Store submission prep (icons, splash, metadata)
 ```
 
 ---
 
 ## NOTES FOR CLAUDE CODE
 
-- Always import shared logic from `@ownspce/core`, never duplicate API calls.
+- Always import shared types from `@ownspce/core`, never duplicate types.
 - Every editor MUST use `useAutoSave` hook. Do not implement save differently per editor.
 - Drive file content is always valid JSON. Never write raw strings.
-- MMKV is the only local storage. No AsyncStorage.
-- All API routes are protected by JWT middleware except `/auth/signup` and `/auth/login`.
+- MMKV is the only local storage on mobile. No AsyncStorage.
+- API routes live in `apps/web/app/api/` (Next.js API routes). Mobile calls them via Bearer JWT. Web uses NextAuth session.
+- All API routes are protected by auth except signup/login.
 - Theme is stored in DB and synced on login. MMKV is only cache.
 - `updated_at` on pages table must be updated on every save. This is the sync conflict resolver.
 - Do not use Expo. Do not use Expo modules. Pure bare RN CLI only.
+- No separate desktop app. The web version serves desktop users.
 - iCloud integration is Phase 2. Build Google Drive first. Abstract behind a `StorageProvider` interface so swapping is easy.

@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, boolean, timestamp, jsonb, pgEnum } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, text, boolean, timestamp, jsonb, pgEnum, integer } from 'drizzle-orm/pg-core';
 
 export const pageTypeEnum = pgEnum('page_type', [
   'scratch',
@@ -25,6 +25,7 @@ export const pages = pgTable('pages', {
   title: text('title').notNull().default('Untitled'),
   type: pageTypeEnum('type').notNull(),
   content: jsonb('content').default({}),
+  sortOrder: integer('sort_order').default(0),
   isPinned: boolean('is_pinned').default(false),
   isDeleted: boolean('is_deleted').default(false),
   createdAt: timestamp('created_at').defaultNow(),

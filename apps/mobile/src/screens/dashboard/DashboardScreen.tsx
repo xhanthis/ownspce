@@ -1,9 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, FlatList, TouchableOpacity, StyleSheet, RefreshControl, Modal, Alert,
+  View, Text, TouchableOpacity, StyleSheet, RefreshControl, Modal, Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import DraggableFlatList, { ScaleDecorator, RenderItemParams } from 'react-native-draggable-flatlist';
 import { PAGE_TYPES } from '@ownspce/core';
 import type { PageType } from '@ownspce/core';
 import { api } from '../../api/client';
@@ -87,40 +88,53 @@ export default function DashboardScreen({ navigation }: Props) {
     return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   }
 
-  const renderPage = ({ item }: { item: PageRow }) => (
-    <TouchableOpacity
-      style={styles.pageCard}
-      activeOpacity={0.7}
-      onPress={() => navigation.navigate('PageEditor', { page: item })}
-      onLongPress={() => setSelectedPage(item)}>
-      <View style={styles.pageHeader}>
-        <Text style={styles.pageTitle} numberOfLines={1}>{item.title}</Text>
-        <View style={[styles.typeBadge, { backgroundColor: TYPE_COLORS[item.type] + '20' }]}>
-          <Text style={[styles.typeBadgeText, { color: TYPE_COLORS[item.type] }]}>{item.type}</Text>
+  const handleReorder = useCallback(async ({ data }: { data: PageRow[] }) => {
+    queryClient.setQueryData(['pages'], data);
+    const order = data.map((p, i) => ({ id: p.id, sortOrder: i }));
+    try {
+      await api('/api/pages/reorder', {
+        method: 'PUT',
+        body: JSON.stringify({ order }),
+      });
+    } catch (e: any) {
+      queryClient.invalidateQueries({ queryKey: ['pages'] });
+    }
+  }, [queryClient]);
+
+  const renderPage = useCallback(({ item, drag, isActive }: RenderItemParams<PageRow>) => (
+    <ScaleDecorator>
+      <TouchableOpacity
+        style={[styles.pageCard, isActive && styles.pageCardActive]}
+        activeOpacity={0.7}
+        onPress={() => navigation.navigate('PageEditor', { page: item })}
+        onLongPress={drag}
+        delayLongPress={150}>
+        <View style={styles.pageHeader}>
+          <Text style={styles.pageTitle} numberOfLines={1}>{item.title}</Text>
+          <View style={[styles.typeBadge, { backgroundColor: TYPE_COLORS[item.type] + '20' }]}>
+            <Text style={[styles.typeBadgeText, { color: TYPE_COLORS[item.type] }]}>{item.type}</Text>
+          </View>
         </View>
-      </View>
-      <Text style={styles.pageDate}>{formatDate(item.updatedAt)}</Text>
-    </TouchableOpacity>
-  );
+        <Text style={styles.pageDate}>{formatDate(item.updatedAt)}</Text>
+      </TouchableOpacity>
+    </ScaleDecorator>
+  ), [navigation]);
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
-        <HorizontalLogo height={28} />
-        <View style={styles.headerRight}>
-          <TouchableOpacity style={styles.fab} onPress={() => setPickerVisible(true)}>
-            <Text style={styles.fabText}>+</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.profileBtn} onPress={() => navigation.navigate('Profile')}>
-            <Text style={styles.profileBtnText}>{'👤'}</Text>
-          </TouchableOpacity>
-        </View>
+        <HorizontalLogo height={35} />
+        <TouchableOpacity style={styles.profileBtn} onPress={() => navigation.navigate('Profile')}>
+          <Text style={styles.profileBtnText}>{'👤'}</Text>
+        </TouchableOpacity>
       </View>
 
-      <FlatList
+      <DraggableFlatList
         data={pages}
         keyExtractor={item => item.id}
         renderItem={renderPage}
+        onDragEnd={handleReorder}
+        containerStyle={{ flex: 1 }}
         contentContainerStyle={styles.list}
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} tintColor="#6B6B6B" />}
         ListHeaderComponent={
@@ -146,6 +160,14 @@ export default function DashboardScreen({ navigation }: Props) {
           ) : null
         }
       />
+
+      {/* Floating add button */}
+      <TouchableOpacity
+        style={[styles.floatingFab, { bottom: insets.bottom + 24 }]}
+        activeOpacity={0.8}
+        onPress={() => setPickerVisible(true)}>
+        <Text style={styles.floatingFabText}>+</Text>
+      </TouchableOpacity>
 
       {/* New page type picker */}
       <Modal visible={pickerVisible} transparent animationType="slide">
@@ -186,13 +208,13 @@ export default function DashboardScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#0A0A0A' },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 12, paddingBottom: 8 },
-  headerRight: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   profileBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: '#1E1E1E', alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#2A2A2A' },
   profileBtnText: { fontSize: 18 },
-  fab: { width: 36, height: 36, borderRadius: 18, backgroundColor: '#F5F5F5', alignItems: 'center', justifyContent: 'center' },
-  fabText: { fontSize: 20, fontWeight: '600', color: '#0A0A0A', marginTop: -2 },
+  floatingFab: { position: 'absolute', right: 20, width: 56, height: 56, borderRadius: 28, backgroundColor: '#F5F5F5', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 6, elevation: 8 },
+  floatingFabText: { fontSize: 28, fontWeight: '600', color: '#0A0A0A', marginTop: -2 },
   list: { padding: 12 },
   pageCard: { backgroundColor: '#141414', borderRadius: 10, padding: 16, borderWidth: 1, borderColor: '#2A2A2A', marginBottom: 12, gap: 8 },
+  pageCardActive: { backgroundColor: '#1E1E1E', borderColor: '#3A3A3A' },
   pageHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 },
   pageTitle: { fontSize: 14, fontWeight: '600', color: '#F5F5F5', flex: 1 },
   typeBadge: { paddingHorizontal: 6, paddingVertical: 2, borderRadius: 999 },

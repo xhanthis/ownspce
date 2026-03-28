@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../api/client';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import ScratchEditor from './ScratchEditor';
@@ -22,6 +22,12 @@ interface PageData {
 export default function PageEditorScreen({ navigation, route }: Props) {
   const { page: routePage } = route.params as { page: { id: string; type: string } };
   const insets = useSafeAreaInsets();
+  const queryClient = useQueryClient();
+
+  const handleGoBack = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: ['pages'] });
+    navigation.goBack();
+  }, [navigation, queryClient]);
 
   const { data: page, isLoading, error } = useQuery({
     queryKey: ['page', routePage.id],
@@ -34,7 +40,7 @@ export default function PageEditorScreen({ navigation, route }: Props) {
   if (error) {
     return (
       <View style={[styles.loading, { paddingTop: insets.top }]}>
-        <TouchableOpacity onPress={() => navigation.goBack()} hitSlop={12} style={{ position: 'absolute', top: insets.top + 8, left: 16 }}>
+        <TouchableOpacity onPress={handleGoBack} hitSlop={12} style={{ position: 'absolute', top: insets.top + 8, left: 16 }}>
           <Text style={styles.back}>{'←'}</Text>
         </TouchableOpacity>
         <Text style={{ color: '#EF4444', fontSize: 14 }}>{(error as Error).message}</Text>
@@ -53,7 +59,7 @@ export default function PageEditorScreen({ navigation, route }: Props) {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} hitSlop={12}>
+        <TouchableOpacity onPress={handleGoBack} hitSlop={12}>
           <Text style={styles.back}>{'←'}</Text>
         </TouchableOpacity>
       </View>
