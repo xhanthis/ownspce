@@ -1,0 +1,8 @@
+{
+  "buildCommand": "node node_modules/expo/node_modules/@expo/cli/build/bin/cli export -p web",
+  "outputDirectory": "dist",
+  "framework": null,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
