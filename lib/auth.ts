@@ -2,7 +2,7 @@ import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 import { sql } from '@/lib/db'
-import { authConfig } from '@/auth.config'
+import { authConfig } from '../auth.config'
 import type { UserRow } from '@/lib/types'
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
