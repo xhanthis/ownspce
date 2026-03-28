@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Owl body -->
+  <circle cx="256" cy="270" r="220" fill="#1A1A1A"/>
+  <!-- Ears -->
+  <ellipse cx="160" cy="80" rx="50" ry="40" fill="#1A1A1A"/>
+  <ellipse cx="352" cy="80" rx="50" ry="40" fill="#1A1A1A"/>
+  <!-- Left eye white -->
+  <ellipse cx="185" cy="280" rx="80" ry="85" fill="#F5F5F0"/>
+  <!-- Right eye white -->
+  <ellipse cx="327" cy="280" rx="80" ry="85" fill="#F5F5F0"/>
+  <!-- Left pupil -->
+  <circle cx="200" cy="290" r="22" fill="#C45A3C"/>
+  <circle cx="205" cy="285" r="8" fill="#1A1A1A"/>
+  <!-- Right pupil -->
+  <circle cx="312" cy="290" r="22" fill="#C45A3C"/>
+  <circle cx="317" cy="285" r="8" fill="#1A1A1A"/>
+</svg>

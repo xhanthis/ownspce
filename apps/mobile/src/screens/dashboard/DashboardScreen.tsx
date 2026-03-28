@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View, Text, FlatList, TouchableOpacity, StyleSheet, RefreshControl, Modal,
+  View, Text, FlatList, TouchableOpacity, StyleSheet, RefreshControl, Modal, Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -8,6 +8,7 @@ import { PAGE_TYPES } from '@ownspce/core';
 import type { PageType } from '@ownspce/core';
 import { api } from '../../api/client';
 import { useAuthStore } from '../../store/authStore';
+import { HorizontalLogo } from '../../components/OwlLogo';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type Props = NativeStackScreenProps<any, 'Dashboard'>;
@@ -32,6 +33,7 @@ export default function DashboardScreen({ navigation }: Props) {
   const queryClient = useQueryClient();
   const insets = useSafeAreaInsets();
   const [pickerVisible, setPickerVisible] = useState(false);
+  const [selectedPage, setSelectedPage] = useState<PageRow | null>(null);
 
   const { data: pages = [], isLoading, refetch } = useQuery({
     queryKey: ['pages'],
@@ -51,6 +53,25 @@ export default function DashboardScreen({ navigation }: Props) {
     navigation.navigate('PageEditor', { page: res.data });
   }, [navigation, queryClient]);
 
+  const deletePage = useCallback(async (page: PageRow) => {
+    setSelectedPage(null);
+    Alert.alert(
+      'Delete Page',
+      `Are you sure you want to delete "${page.title}"?`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            await api(`/api/pages/${page.id}`, { method: 'DELETE' });
+            queryClient.invalidateQueries({ queryKey: ['pages'] });
+          },
+        },
+      ],
+    );
+  }, [queryClient]);
+
   const pinned = pages.filter(p => p.isPinned);
 
   function formatDate(iso: string) {
@@ -62,7 +83,8 @@ export default function DashboardScreen({ navigation }: Props) {
     <TouchableOpacity
       style={styles.pageCard}
       activeOpacity={0.7}
-      onPress={() => navigation.navigate('PageEditor', { page: item })}>
+      onPress={() => navigation.navigate('PageEditor', { page: item })}
+      onLongPress={() => setSelectedPage(item)}>
       <View style={styles.pageHeader}>
         <Text style={styles.pageTitle} numberOfLines={1}>{item.title}</Text>
         <View style={[styles.typeBadge, { backgroundColor: TYPE_COLORS[item.type] + '20' }]}>
@@ -74,22 +96,23 @@ export default function DashboardScreen({ navigation }: Props) {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
-        <Text style={styles.greeting}>
-          Hi, @{user?.username ?? 'user'}
-        </Text>
-        <TouchableOpacity style={styles.fab} onPress={() => setPickerVisible(true)}>
-          <Text style={styles.fabText}>+</Text>
-        </TouchableOpacity>
+        <HorizontalLogo height={28} />
+        <View style={styles.headerRight}>
+          <TouchableOpacity style={styles.fab} onPress={() => setPickerVisible(true)}>
+            <Text style={styles.fabText}>+</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.profileBtn} onPress={() => navigation.navigate('Profile')}>
+            <Text style={styles.profileBtnText}>{'👤'}</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <FlatList
         data={pages}
         keyExtractor={item => item.id}
         renderItem={renderPage}
-        numColumns={2}
-        columnWrapperStyle={styles.row}
         contentContainerStyle={styles.list}
         refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} tintColor="#6B6B6B" />}
         ListHeaderComponent={
@@ -116,6 +139,7 @@ export default function DashboardScreen({ navigation }: Props) {
         }
       />
 
+      {/* New page type picker */}
       <Modal visible={pickerVisible} transparent animationType="slide">
         <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={() => setPickerVisible(false)}>
           <View style={styles.sheet}>
@@ -132,19 +156,35 @@ export default function DashboardScreen({ navigation }: Props) {
           </View>
         </TouchableOpacity>
       </Modal>
+
+      {/* Page actions bottom sheet */}
+      <Modal visible={!!selectedPage} transparent animationType="slide">
+        <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={() => setSelectedPage(null)}>
+          <View style={styles.sheet}>
+            <Text style={styles.sheetTitle} numberOfLines={1}>{selectedPage?.title}</Text>
+            <TouchableOpacity
+              style={styles.actionRow}
+              onPress={() => selectedPage && deletePage(selectedPage)}>
+              <Text style={styles.deleteIcon}>🗑</Text>
+              <Text style={styles.deleteText}>Delete Page</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#0A0A0A' },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 },
-  greeting: { fontSize: 20, fontWeight: '600', color: '#F5F5F5' },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 12, paddingBottom: 8 },
+  headerRight: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  profileBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: '#1E1E1E', alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#2A2A2A' },
+  profileBtnText: { fontSize: 18 },
   fab: { width: 36, height: 36, borderRadius: 18, backgroundColor: '#F5F5F5', alignItems: 'center', justifyContent: 'center' },
   fabText: { fontSize: 20, fontWeight: '600', color: '#0A0A0A', marginTop: -2 },
   list: { padding: 12 },
-  row: { gap: 12 },
-  pageCard: { flex: 1, backgroundColor: '#141414', borderRadius: 10, padding: 16, borderWidth: 1, borderColor: '#2A2A2A', marginBottom: 12, gap: 8 },
+  pageCard: { backgroundColor: '#141414', borderRadius: 10, padding: 16, borderWidth: 1, borderColor: '#2A2A2A', marginBottom: 12, gap: 8 },
   pageHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 },
   pageTitle: { fontSize: 14, fontWeight: '600', color: '#F5F5F5', flex: 1 },
   typeBadge: { paddingHorizontal: 6, paddingVertical: 2, borderRadius: 999 },
@@ -159,11 +199,14 @@ const styles = StyleSheet.create({
   emptyBtn: { backgroundColor: '#F5F5F5', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 8 },
   emptyBtnText: { fontSize: 14, fontWeight: '600', color: '#0A0A0A' },
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
-  sheet: { backgroundColor: '#141414', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 24 },
+  sheet: { backgroundColor: '#141414', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 24, paddingBottom: 40 },
   sheetTitle: { fontSize: 18, fontWeight: '600', color: '#F5F5F5', marginBottom: 20 },
   typeGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },
   typeCard: { width: '47%', padding: 16, backgroundColor: '#1E1E1E', borderRadius: 10, borderWidth: 1, borderColor: '#2A2A2A', gap: 4 },
   typeIcon: { fontSize: 24 },
   typeLabel: { fontSize: 14, fontWeight: '600', color: '#F5F5F5' },
   typeDesc: { fontSize: 12, color: '#6B6B6B' },
+  actionRow: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 14, paddingHorizontal: 4, borderRadius: 10 },
+  deleteIcon: { fontSize: 20 },
+  deleteText: { fontSize: 16, color: '#EF4444', fontWeight: '500' },
 });
