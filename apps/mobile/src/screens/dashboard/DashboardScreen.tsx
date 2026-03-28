@@ -45,12 +45,16 @@ export default function DashboardScreen({ navigation }: Props) {
 
   const createPage = useCallback(async (type: PageType) => {
     setPickerVisible(false);
-    const res = await api<{ data: PageRow }>('/api/pages', {
-      method: 'POST',
-      body: JSON.stringify({ type, title: 'Untitled' }),
-    });
-    queryClient.invalidateQueries({ queryKey: ['pages'] });
-    navigation.navigate('PageEditor', { page: res.data });
+    try {
+      const res = await api<{ data: PageRow }>('/api/pages', {
+        method: 'POST',
+        body: JSON.stringify({ type, title: 'Untitled' }),
+      });
+      queryClient.invalidateQueries({ queryKey: ['pages'] });
+      navigation.navigate('PageEditor', { page: res.data });
+    } catch (e: any) {
+      Alert.alert('Error', e.message ?? 'Failed to create page');
+    }
   }, [navigation, queryClient]);
 
   const deletePage = useCallback(async (page: PageRow) => {
@@ -64,8 +68,12 @@ export default function DashboardScreen({ navigation }: Props) {
           text: 'Delete',
           style: 'destructive',
           onPress: async () => {
-            await api(`/api/pages/${page.id}`, { method: 'DELETE' });
-            queryClient.invalidateQueries({ queryKey: ['pages'] });
+            try {
+              await api(`/api/pages/${page.id}`, { method: 'DELETE' });
+              queryClient.invalidateQueries({ queryKey: ['pages'] });
+            } catch (e: any) {
+              Alert.alert('Error', e.message ?? 'Failed to delete page');
+            }
           },
         },
       ],

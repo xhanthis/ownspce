@@ -6,6 +6,7 @@ import { ThemeProvider } from '@shopify/restyle';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import theme from './src/theme/theme';
 import RootNavigator from './src/navigation/RootNavigator';
+import ErrorBoundary from './src/components/ErrorBoundary';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,15 +16,17 @@ const queryClient = new QueryClient({
 
 export default function App() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <ThemeProvider theme={theme}>
-        <QueryClientProvider client={queryClient}>
-          <SafeAreaProvider>
-            <StatusBar barStyle="light-content" backgroundColor="#0A0A0A" />
-            <RootNavigator />
-          </SafeAreaProvider>
-        </QueryClientProvider>
-      </ThemeProvider>
-    </GestureHandlerRootView>
+    <ErrorBoundary>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <ThemeProvider theme={theme}>
+          <QueryClientProvider client={queryClient}>
+            <SafeAreaProvider>
+              <StatusBar barStyle="light-content" backgroundColor="#0A0A0A" />
+              <RootNavigator />
+            </SafeAreaProvider>
+          </QueryClientProvider>
+        </ThemeProvider>
+      </GestureHandlerRootView>
+    </ErrorBoundary>
   );
 }

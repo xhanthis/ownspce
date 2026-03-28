@@ -2,9 +2,10 @@ import { MMKV } from 'react-native-mmkv';
 
 export const storage = new MMKV();
 
+// TODO: Set your deployed web app URL here for production builds
 const API_BASE = __DEV__
   ? 'http://localhost:3000'
-  : 'https://your-production-url.com';
+  : 'https://ownspce.vercel.app';
 
 export async function api<T = unknown>(
   path: string,
@@ -19,10 +20,12 @@ export async function api<T = unknown>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const res = await fetch(`${API_BASE}${path}`, {
-    ...options,
-    headers,
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${API_BASE}${path}`, { ...options, headers });
+  } catch (e: any) {
+    throw new Error(`Network error: ${e.message}`);
+  }
 
   const text = await res.text();
   let json: any;
