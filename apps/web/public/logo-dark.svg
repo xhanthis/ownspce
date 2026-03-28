@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 100" width="480" height="100">
+  <!-- Owl icon -->
+  <g transform="translate(10, 5) scale(0.18)">
+    <circle cx="256" cy="270" r="220" fill="#F5F5F5"/>
+    <ellipse cx="160" cy="80" rx="50" ry="40" fill="#F5F5F5"/>
+    <ellipse cx="352" cy="80" rx="50" ry="40" fill="#F5F5F5"/>
+    <ellipse cx="185" cy="280" rx="80" ry="85" fill="#1A1A1A"/>
+    <ellipse cx="327" cy="280" rx="80" ry="85" fill="#1A1A1A"/>
+    <circle cx="200" cy="290" r="22" fill="#C45A3C"/>
+    <circle cx="205" cy="285" r="8" fill="#F5F5F5"/>
+    <circle cx="312" cy="290" r="22" fill="#C45A3C"/>
+    <circle cx="317" cy="285" r="8" fill="#F5F5F5"/>
+  </g>
+  <!-- Text -->
+  <text x="115" y="68" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="400" fill="#F5F5F5" letter-spacing="-1">ownspce</text>
+</svg>
