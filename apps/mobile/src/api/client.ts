@@ -24,7 +24,13 @@ export async function api<T = unknown>(
     headers,
   });
 
-  const json = await res.json();
+  const text = await res.text();
+  let json: any;
+  try {
+    json = JSON.parse(text);
+  } catch {
+    throw new Error(`Server error (${res.status})`);
+  }
   if (!res.ok) {
     throw new Error(json.error ?? 'Request failed');
   }

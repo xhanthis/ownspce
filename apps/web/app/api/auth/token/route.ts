@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { eq } from 'drizzle-orm';
 import { SignJWT, jwtVerify } from 'jose';
-import { users } from '@ownspce/db';
+import { users, eq } from '@ownspce/db';
 import { db } from '@/lib/db';
 
 const secret = new TextEncoder().encode(process.env.AUTH_SECRET!);
