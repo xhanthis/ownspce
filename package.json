@@ -22,7 +22,7 @@
     "expo-constants": "^55.0.10-canary-20260328-2049187",
     "expo-crypto": "~14.1.4",
     "expo-file-system": "~18.1.9",
-    "expo-font": "~13.3.1",
+    "expo-font": "55.0.5-canary-20260328-2049187",
     "expo-haptics": "~14.1.4",
     "expo-linking": "^55.0.10-canary-20260328-2049187",
     "expo-router": "^55.0.9-canary-20260328-2049187",
