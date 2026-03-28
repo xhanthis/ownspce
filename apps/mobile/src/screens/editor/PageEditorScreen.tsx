@@ -23,13 +23,24 @@ export default function PageEditorScreen({ navigation, route }: Props) {
   const { page: routePage } = route.params as { page: { id: string; type: string } };
   const insets = useSafeAreaInsets();
 
-  const { data: page, isLoading } = useQuery({
+  const { data: page, isLoading, error } = useQuery({
     queryKey: ['page', routePage.id],
     queryFn: async () => {
       const res = await api<{ data: PageData }>(`/api/pages/${routePage.id}`);
       return res.data;
     },
   });
+
+  if (error) {
+    return (
+      <View style={[styles.loading, { paddingTop: insets.top }]}>
+        <TouchableOpacity onPress={() => navigation.goBack()} hitSlop={12} style={{ position: 'absolute', top: insets.top + 8, left: 16 }}>
+          <Text style={styles.back}>{'←'}</Text>
+        </TouchableOpacity>
+        <Text style={{ color: '#EF4444', fontSize: 14 }}>{(error as Error).message}</Text>
+      </View>
+    );
+  }
 
   if (isLoading || !page) {
     return (
