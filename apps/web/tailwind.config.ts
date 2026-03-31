@@ -17,6 +17,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['var(--font-geist-sans)', 'sans-serif'],
+        serif: ['Georgia', 'Times New Roman', 'serif'],
       },
     },
   },

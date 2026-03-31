@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
-import { auth } from '@/lib/auth';
 import SessionProvider from '@/components/SessionProvider';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'ownspce',
+  title: 'Ownspce',
   description: 'Your personal space',
   icons: {
     icon: '/icon.svg',
@@ -18,8 +17,14 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
-  const theme = session?.user?.theme ?? 'dark';
+  let theme = 'dark';
+  try {
+    const { auth } = await import('@/lib/auth');
+    const session = await auth();
+    theme = session?.user?.theme ?? 'dark';
+  } catch {
+    // Auth unavailable — default to dark theme
+  }
 
   return (
     <html lang="en" className={`${GeistSans.variable} ${theme}`}>
