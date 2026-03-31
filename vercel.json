@@ -1,3 +1,9 @@
 {
-  "installCommand": "corepack enable && pnpm install"
+  "framework": "nextjs",
+  "buildCommand": "pnpm --filter @ownspce/web build",
+  "installCommand": "pnpm install",
+  "outputDirectory": "apps/web/.next",
+  "env": {
+    "ENABLE_EXPERIMENTAL_COREPACK": "1"
+  }
 }
