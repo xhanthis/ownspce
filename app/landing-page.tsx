@@ -109,20 +109,37 @@ function OfflineIllustration() {
   );
 }
 
-function MinimalIllustration() {
+function SyncIllustration() {
   return (
     <svg viewBox="0 0 280 160" fill="none" className="w-full h-40">
-      <rect x="50" y="20" width="180" height="120" rx="12" fill="#141414" stroke="#2A2A2A" strokeWidth="0.5" />
-      <circle cx="66" cy="34" r="3" fill="#444" />
-      <circle cx="76" cy="34" r="3" fill="#2A2A2A" />
-      <circle cx="86" cy="34" r="3" fill="#2A2A2A" />
-      <line x1="50" y1="44" x2="230" y2="44" stroke="#2A2A2A" strokeWidth="0.5" />
-      <rect x="68" y="56" width="90" height="6" rx="3" fill="#444" />
-      <rect x="68" y="72" width="144" height="3" rx="1.5" fill="#2A2A2A" />
-      <rect x="68" y="80" width="130" height="3" rx="1.5" fill="#2A2A2A" />
-      <rect x="68" y="88" width="140" height="3" rx="1.5" fill="#2A2A2A" />
-      <rect x="68" y="96" width="100" height="3" rx="1.5" fill="#2A2A2A" />
-      <rect x="68" y="112" width="2" height="14" rx="1" fill="#F5F5F5" opacity="0.6" />
+      {/* Laptop left */}
+      <rect x="18" y="45" width="72" height="50" rx="6" fill="#141414" stroke="#2A2A2A" strokeWidth="0.5" />
+      <rect x="24" y="51" width="60" height="38" rx="2" fill="#1E1E1E" />
+      <rect x="30" y="58" width="28" height="3" rx="1.5" fill="#444" />
+      <rect x="30" y="66" width="42" height="2" rx="1" fill="#2A2A2A" />
+      <rect x="30" y="72" width="36" height="2" rx="1" fill="#2A2A2A" />
+      <rect x="12" y="95" width="84" height="5" rx="2" fill="#1A1A1A" stroke="#2A2A2A" strokeWidth="0.5" />
+      {/* Phone right */}
+      <rect x="192" y="38" width="40" height="68" rx="8" fill="#141414" stroke="#2A2A2A" strokeWidth="0.5" />
+      <rect x="197" y="46" width="30" height="50" rx="2" fill="#1E1E1E" />
+      <rect x="202" y="53" width="18" height="3" rx="1.5" fill="#444" />
+      <rect x="202" y="61" width="20" height="2" rx="1" fill="#2A2A2A" />
+      <rect x="202" y="67" width="16" height="2" rx="1" fill="#2A2A2A" />
+      {/* Cloud center */}
+      <path d="M122 68 C122 60 129 54 137 54 C140 48 147 44 155 44 C167 44 176 53 176 65 C181 65 185 69 185 74 C185 79 181 83 176 83 L122 83 C117 83 113 79 113 74 C113 69 117 65 122 65 Z" fill="#1E1E1E" stroke="#2A2A2A" strokeWidth="0.5" />
+      {/* Drive-style icon inside cloud */}
+      <path d="M136 74 L144 60 L152 74 Z" fill="#444" />
+      <path d="M144 60 L152 74 L160 60 Z" fill="#333" />
+      <path d="M136 74 L152 74 L160 60 L152 74 Z" fill="#3A3A3A" />
+      {/* Sync arrows: laptop → cloud */}
+      <path d="M92 72 C98 65 108 63 112 64" stroke="#444" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M109 61 L112 64 L109 67" stroke="#444" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      {/* Sync arrows: cloud → phone */}
+      <path d="M186 68 C190 67 194 66 194 65" stroke="#444" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M191 62 L194 65 L191 68" stroke="#444" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      {/* iCloud label */}
+      <rect x="114" y="88" width="60" height="10" rx="5" fill="#1A1A1A" />
+      <rect x="118" y="91" width="52" height="3" rx="1.5" fill="#2A2A2A" />
     </svg>
   );
 }
@@ -174,8 +191,8 @@ export default function LandingPage() {
       illustration: <UnifiedIllustration />,
     },
     {
-      title: 'Your data stays on your device',
-      description: 'We never read, store, or sell your notes. Everything lives on your device, encrypted and private.',
+      title: 'You own your data',
+      description: 'We never read, store or sell your data. You decide if you want data to be local or synced.',
       illustration: <PrivacyIllustration />,
     },
     {
@@ -189,9 +206,9 @@ export default function LandingPage() {
       illustration: <OfflineIllustration />,
     },
     {
-      title: 'Clean and minimal interface',
-      description: 'A distraction-free editor that stays out of your way. No clutter, no bloat.',
-      illustration: <MinimalIllustration />,
+      title: 'Sync with Google Drive or iCloud',
+      description: 'Use your own Google Drive or iCloud to sync across devices. Your data moves through your cloud storage — never ours.',
+      illustration: <SyncIllustration />,
     },
     {
       title: 'Available on all your devices',
@@ -347,7 +364,7 @@ export default function LandingPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-[24px]">
           {[
-            { step: '01', title: 'Download the app', description: 'Available for macOS, Windows, iOS, and Android.' },
+            { step: '01', title: 'Download the app', description: 'Available for iOS, Android, Mac, and Web.' },
             { step: '02', title: 'Create your space', description: 'Set up your workspace in one tap. Everything stays local.' },
             { step: '03', title: 'Start building', description: 'Write, plan, and organize — your way, on your terms.' },
           ].map((item) => (
