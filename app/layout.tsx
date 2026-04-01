@@ -19,8 +19,11 @@ export const metadata: Metadata = {
   title: 'Ownspce',
   description: 'Your thoughts, tasks, and ideas — on your device. Private by design, not by promise.',
   icons: {
-    icon: '/icon.svg',
-    apple: '/icon.svg',
+    icon: [
+      { url: '/favicon.ico', sizes: '32x32' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/apple-touch-icon.png',
   },
 };
 
