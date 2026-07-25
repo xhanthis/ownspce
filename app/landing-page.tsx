@@ -1,20 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-
-function OwlLogo({ size = 48 }: { size?: number }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width={size} height={size}>
-      <rect width="512" height="512" rx="115" fill="#F2E5D4"/>
-      <path fill="#C4714E" d="M256,130 C242,126 214,114 192,102 C174,92 158,76 144,70 C132,75 114,96 100,120 C84,148 74,180 68,214 C62,250 62,288 68,322 C74,358 86,392 106,420 C126,448 154,470 186,484 C210,494 234,498 256,498 C278,498 302,494 326,484 C358,470 386,448 406,420 C426,392 438,358 444,322 C450,288 450,250 444,214 C438,180 428,148 412,120 C398,96 380,75 368,70 C354,76 338,92 320,102 C298,114 270,126 256,130Z"/>
-      <circle cx="180" cy="272" r="72" fill="#F2E5D4"/>
-      <circle cx="332" cy="272" r="72" fill="#F2E5D4"/>
-      <circle cx="190" cy="276" r="29" fill="#1A1010"/>
-      <circle cx="322" cy="276" r="29" fill="#1A1010"/>
-      <polygon points="246,348 266,348 256,368" fill="#F2E5D4"/>
-    </svg>
-  );
-}
+import Link from 'next/link';
+import OwlLogo from './owl-logo';
 
 function CheckIcon() {
   return (
@@ -421,9 +409,17 @@ export default function LandingPage() {
             <OwlLogo size={20} />
             <span className="font-sans text-[13px] text-t2">ownspce</span>
           </div>
-          <p className="font-sans text-[11px] text-t3 tracking-[0.5px]">
-            Private by design. Built with care.
-          </p>
+          <div className="flex items-center gap-[16px]">
+            <Link
+              href="/privacy-policy"
+              className="font-sans text-[11px] text-t3 tracking-[0.5px] hover:text-t2 transition-colors duration-150 ease-out"
+            >
+              Privacy Policy
+            </Link>
+            <p className="font-sans text-[11px] text-t3 tracking-[0.5px]">
+              Private by design. Built with care.
+            </p>
+          </div>
         </div>
       </footer>
     </div>
