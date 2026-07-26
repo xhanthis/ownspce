@@ -1,0 +1,195 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: Ownspce
+        - navigation [ref=e15]:
+          - link "Blocks" [ref=e16] [cursor=pointer]:
+            - /url: "#blocks"
+          - link "Privacy" [ref=e17] [cursor=pointer]:
+            - /url: "#sealed"
+          - link "Essay" [ref=e18] [cursor=pointer]:
+            - /url: "#essay"
+        - generic [ref=e19]:
+          - link "Sign in" [ref=e20] [cursor=pointer]:
+            - /url: https://app.ownspce.com
+          - link "Get early access" [ref=e21] [cursor=pointer]:
+            - /url: "#waitlist"
+    - generic [ref=e22]:
+      - generic [ref=e23]:
+        - generic [ref=e24]: Zero-knowledge cloud · your key never leaves your device
+        - heading "A page that becomes whatever you need." [level=1] [ref=e26]: A page that becomeswhatever you need.
+        - paragraph [ref=e27]: Ownspce pages start blank. Stack the blocks that fit the thought — a priority lane, an impact map, a board, a note — and rearrange them whenever the work changes.
+        - generic [ref=e28]:
+          - link "Get early access" [ref=e29] [cursor=pointer]:
+            - /url: "#waitlist"
+          - link "See the blocks" [ref=e30] [cursor=pointer]:
+            - /url: "#blocks"
+        - paragraph [ref=e31]: Free while in beta · no account required
+      - generic [ref=e33]:
+        - generic [ref=e34]: Launch plan — Ownspce
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - generic [ref=e41]: Your pages
+            - generic [ref=e42]: Launch plan
+            - generic [ref=e45]: Weekly notes
+            - generic [ref=e48]: Product ideas
+          - generic [ref=e51]:
+            - textbox "Page title" [ref=e52]:
+              - /placeholder: Untitled page
+              - text: Launch plan
+            - textbox "Page body" [ref=e53]:
+              - /placeholder: Start writing…
+              - text: Where each bet sits, what’s cleared for the runway, and the sprint board — all on one page.
+            - generic [ref=e54]:
+              - generic [ref=e55]:
+                - generic [ref=e57]: Priority Lane
+                - generic [ref=e58]: Now · Next · Holding
+                - generic [ref=e59]: Try it — everything here is live
+              - generic [ref=e60]:
+                - generic [ref=e61]:
+                  - generic [ref=e62]: On Now
+                  - generic [ref=e65]:
+                    - textbox "Task on now" [ref=e66]:
+                      - /placeholder: What’s on the runway?
+                      - text: Ship local-sync beta
+                    - button "Land ✓" [ref=e67] [cursor=pointer]
+                - generic [ref=e68]:
+                  - generic [ref=e69]: Cleared Next
+                  - generic [ref=e70]:
+                    - textbox "Next task 1" [ref=e71]:
+                      - /placeholder: Add a task
+                      - text: Onboarding empty states
+                    - button "Move to On Now" [ref=e72] [cursor=pointer]: ↑
+                  - generic [ref=e73]:
+                    - textbox "Next task 2" [ref=e74]:
+                      - /placeholder: Add a task
+                      - text: Record demo walkthrough
+                    - button "Move to On Now" [ref=e75] [cursor=pointer]: ↑
+                  - button "+ Add" [ref=e76] [cursor=pointer]
+                - generic [ref=e77]:
+                  - generic [ref=e78]: Holding
+                  - generic [ref=e79]:
+                    - textbox "Holding task 1" [ref=e80]:
+                      - /placeholder: Someday
+                      - text: Reply to waitlist
+                    - button "Move to Cleared Next" [ref=e81] [cursor=pointer]: ↑
+                  - generic [ref=e82]:
+                    - textbox "Holding task 2" [ref=e83]:
+                      - /placeholder: Someday
+                      - text: Weekly review
+                    - button "Move to Cleared Next" [ref=e84] [cursor=pointer]: ↑
+                  - button "+ Add" [ref=e85] [cursor=pointer]
+            - generic [ref=e86]:
+              - generic [ref=e87]: Impact Map
+              - generic [ref=e88]: Priority Lane
+              - generic [ref=e89]: Board
+              - generic [ref=e90]: Quick Note
+    - generic [ref=e93]:
+      - generic [ref=e94]:
+        - generic [ref=e95]: The blocks
+        - heading "Five ways to hold a thought." [level=2] [ref=e96]
+        - paragraph [ref=e97]: No templates to choose up front. Add a block when you need it, drop it when you don’t — notes, tasks and boards in one page instead of three apps.
+        - generic [ref=e98]:
+          - generic [ref=e99]:
+            - generic [ref=e100]: iPhone
+            - generic [ref=e101]: Capture, one column
+            - generic [ref=e102]: Beta
+          - generic [ref=e103]:
+            - generic [ref=e104]: Desktop & web
+            - generic [ref=e105]: Shape pages, keyboard-first
+            - generic [ref=e106]: Beta
+          - generic [ref=e107]:
+            - generic [ref=e108]: iPad & Android
+            - generic [ref=e109]: Same blocks, tuned for touch
+            - generic [ref=e110]: Soon
+      - generic [ref=e111]:
+        - generic [ref=e115]:
+          - heading "Priority Lane" [level=3] [ref=e116]
+          - paragraph [ref=e117]: One thing on the runway, a short queue behind it, the rest held.
+        - generic [ref=e121]:
+          - heading "Impact Map" [level=3] [ref=e122]
+          - paragraph [ref=e123]: Plot work by impact against time. Quick wins surface themselves.
+        - generic [ref=e127]:
+          - heading "Board" [level=3] [ref=e128]
+          - paragraph [ref=e129]: To do, doing, complete — for work that moves in stages.
+        - generic [ref=e133]:
+          - heading "Quick Note" [level=3] [ref=e134]
+          - paragraph [ref=e135]: A titled callout for a decision you don’t want to lose.
+        - generic [ref=e139]:
+          - heading "Text" [level=3] [ref=e140]
+          - paragraph [ref=e141]: Plain paragraphs. Where the thinking actually happens.
+    - generic [ref=e144]:
+      - generic [ref=e145]:
+        - generic [ref=e146]: Sealed by design
+        - heading "On every device. Readable on none of ours." [level=2] [ref=e147]
+        - paragraph [ref=e148]: Your pages sync everywhere, but they leave your device already locked. We keep the sealed copy. The key that opens it stays with you.
+        - list [ref=e149]:
+          - listitem [ref=e150]:
+            - generic [ref=e154]:
+              - text: The key stays with you
+              - generic [ref=e155]: — It is made on your device and never uploaded.
+          - listitem [ref=e156]:
+            - generic [ref=e160]:
+              - text: Nothing to hand over
+              - generic [ref=e161]: — What we store is unreadable — titles included.
+          - listitem [ref=e162]:
+            - generic [ref=e166]:
+              - text: Yours to take out
+              - generic [ref=e167]: — Export every page as plain Markdown, any time.
+        - link "Read how it works in full" [ref=e168] [cursor=pointer]:
+          - /url: /privacy-policy
+          - text: Read how it works in full
+          - generic [ref=e169]: →
+      - generic [ref=e170]:
+        - generic [ref=e171]: One page, one trip
+        - generic [ref=e172]:
+          - generic [ref=e173]:
+            - generic [ref=e174]: "1"
+            - generic [ref=e175]:
+              - generic [ref=e176]: Locked here
+              - paragraph [ref=e177]: Your device seals a page before it goes anywhere.
+          - generic [ref=e178]:
+            - generic [ref=e179]: "2"
+            - generic [ref=e180]:
+              - generic [ref=e181]: Passed along
+              - paragraph [ref=e182]: We move the sealed page between your devices.
+          - generic [ref=e183]:
+            - generic [ref=e184]: "3"
+            - generic [ref=e185]:
+              - generic [ref=e186]: Opened there
+              - paragraph [ref=e187]: Only your devices hold the key that opens it.
+        - paragraph [ref=e188]: Sign in with Google or Apple. That gets you your data — not the key to it.
+    - generic [ref=e190]:
+      - generic [ref=e191]: Personal · Essay
+      - heading "Why I’m building another notes app" [level=2] [ref=e192]
+      - generic [ref=e193]:
+        - generic [ref=e194]: R
+        - generic [ref=e195]:
+          - generic [ref=e196]: Rahul
+          - generic [ref=e197]: 6 min read
+      - generic [ref=e198]:
+        - paragraph [ref=e199]: I’ve used Notion since 2020. I’ve tried Obsidian, Logseq, Roam, Bear, Apple Notes, and at one point, a physical Moleskine. None of them felt right. Notion is powerful but cloud-locked — my product ideas sit on someone else’s AWS instances and I have no say in that.
+        - paragraph [ref=e200]: Obsidian is private and local, but the mobile app is an afterthought, and there’s no task management. You need plugins for everything.
+        - blockquote [ref=e201]:
+          - paragraph [ref=e202]: "The gap I kept hitting: a beautiful, mobile-first app where the data is mine, that also does tasks. That combination doesn’t exist."
+        - paragraph [ref=e203]: So I’m building it.
+    - generic [ref=e206]:
+      - heading "Make the space yours." [level=3] [ref=e207]
+      - paragraph [ref=e208]: Early access ships in waves — no passwords, no Ownspce account to create. Sign in with Google or Apple and go.
+      - generic [ref=e209]:
+        - textbox "Email address" [ref=e210]:
+          - /placeholder: you@example.com
+        - button "Get early access" [ref=e211] [cursor=pointer]
+      - paragraph [ref=e212]: 1,840 people waiting · invites go out weekly
+    - contentinfo [ref=e213]:
+      - generic [ref=e214]:
+        - generic [ref=e215]: Ownspce © 2026
+        - generic [ref=e225]:
+          - link "Privacy Policy" [ref=e226] [cursor=pointer]:
+            - /url: /privacy-policy
+          - link "Blocks" [ref=e227] [cursor=pointer]:
+            - /url: "#blocks"
+          - link "Early access" [ref=e228] [cursor=pointer]:
+            - /url: "#waitlist"
+  - alert [ref=e229]

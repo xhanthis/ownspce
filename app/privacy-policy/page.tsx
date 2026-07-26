@@ -16,12 +16,12 @@ function ShieldIcon() {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
         d="M12 3 L19 6 L19 12 C19 16.5 15.8 19.8 12 21 C8.2 19.8 5 16.5 5 12 L5 6 Z"
-        stroke="#22C55E"
+        stroke="#5d7452"
         strokeWidth="1.4"
         fill="none"
         strokeLinejoin="round"
       />
-      <path d="M9 12 L11 14 L15 9.5" stroke="#22C55E" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9 12 L11 14 L15 9.5" stroke="#5d7452" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -35,7 +35,7 @@ function ArrowIcon() {
 }
 
 function P({ children }: { children: React.ReactNode }) {
-  return <p className="font-sans text-[15px] leading-[1.85] text-[#C0C0C0]">{children}</p>;
+  return <p className="font-sans text-[15px] leading-[1.85] text-body">{children}</p>;
 }
 
 function Bullets({ items }: { items: React.ReactNode[] }) {
@@ -44,7 +44,7 @@ function Bullets({ items }: { items: React.ReactNode[] }) {
       {items.map((item, index) => (
         <li
           key={index}
-          className="font-sans text-[15px] leading-[1.75] text-[#C0C0C0] pl-[20px] relative before:content-[''] before:absolute before:left-[4px] before:top-[11px] before:w-[4px] before:h-[4px] before:rounded-full before:bg-border-mid"
+          className="font-sans text-[15px] leading-[1.75] text-body pl-[20px] relative before:content-[''] before:absolute before:left-[4px] before:top-[11px] before:w-[4px] before:h-[4px] before:rounded-full before:bg-border-mid"
         >
           {item}
         </li>

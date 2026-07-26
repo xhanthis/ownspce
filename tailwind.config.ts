@@ -1,28 +1,41 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
-  darkMode: 'class',
   content: [
     './app/**/*.{ts,tsx}',
   ],
   theme: {
     extend: {
       colors: {
-        bg: '#0A0A0A',
-        surface: '#141414',
-        elev: '#1E1E1E',
-        t1: '#F5F5F5',
-        t2: '#999999',
-        t3: '#666666',
-        border: '#2A2A2A',
-        'border-mid': '#3A3A3A',
-        success: '#22C55E',
-        danger: '#EF4444',
-        warning: '#EAB308',
+        bg: '#f4efe7',
+        surface: '#fbf8f2',
+        elev: '#efe8dc',
+        t1: '#2b2620',
+        t2: '#7a7062',
+        t3: '#a49a8a',
+        body: '#403930',
+        border: '#e2d8c6',
+        'border-mid': '#ded3c0',
+        accent: '#b0745a',
+        'accent-dark': '#8f5640',
+        ink: '#2b2620',
+        'ink-t1': '#f4efe7',
+        'ink-t2': '#c8bfae',
+        'ink-t3': '#b0a795',
+        'ink-line': 'rgba(244,239,231,0.16)',
+        'ink-fill': 'rgba(244,239,231,0.04)',
+        sage: '#8ba17e',
+        success: '#5d7452',
+        danger: '#c25a3f',
+        lane: '#b0745a',
+        impact: '#6f8bb0',
+        board: '#7f9673',
+        quicknote: '#a97fa0',
+        plain: '#9a8f7d',
       },
       fontFamily: {
-        serif: ['var(--font-instrument-serif)', 'Georgia', 'serif'],
-        sans: ['var(--font-dm-sans)', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-newsreader)', 'Georgia', 'serif'],
+        sans: ['var(--font-hanken-grotesk)', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         xs: '4px',
@@ -39,6 +52,20 @@ const config: Config = {
         xl: '24px',
         xxl: '32px',
         xxxl: '48px',
+      },
+      keyframes: {
+        pulseSoft: {
+          '0%, 100%': { opacity: '0.45' },
+          '50%': { opacity: '1' },
+        },
+        rise: {
+          from: { opacity: '0', transform: 'translateY(14px)' },
+          to: { opacity: '1', transform: 'none' },
+        },
+      },
+      animation: {
+        'pulse-soft': 'pulseSoft 2.6s ease-in-out infinite',
+        rise: 'rise 300ms ease both',
       },
     },
   },

@@ -4,421 +4,553 @@ import { useState } from 'react';
 import Link from 'next/link';
 import OwlLogo from './owl-logo';
 
-function CheckIcon() {
+type Lane = 'now' | 'next' | 'holding';
+
+const WAITLIST_COUNT = 1840;
+
+const BLOCKS = [
+  {
+    name: 'Priority Lane',
+    desc: 'One thing on the runway, a short queue behind it, the rest held.',
+    tile: 'bg-[rgba(176,116,90,0.14)]',
+    dot: 'bg-lane',
+  },
+  {
+    name: 'Impact Map',
+    desc: 'Plot work by impact against time. Quick wins surface themselves.',
+    tile: 'bg-[rgba(111,139,176,0.16)]',
+    dot: 'bg-impact',
+  },
+  {
+    name: 'Board',
+    desc: 'To do, doing, complete — for work that moves in stages.',
+    tile: 'bg-[rgba(139,161,126,0.18)]',
+    dot: 'bg-board',
+  },
+  {
+    name: 'Quick Note',
+    desc: 'A titled callout for a decision you don’t want to lose.',
+    tile: 'bg-[rgba(169,127,160,0.16)]',
+    dot: 'bg-quicknote',
+  },
+  {
+    name: 'Text',
+    desc: 'Plain paragraphs. Where the thinking actually happens.',
+    tile: 'bg-[rgba(154,143,125,0.16)]',
+    dot: 'bg-plain',
+  },
+];
+
+const SHOT_PAGES = [
+  { title: 'Launch plan', dot: 'bg-lane', active: true },
+  { title: 'Weekly notes', dot: 'bg-board', active: false },
+  { title: 'Product ideas', dot: 'bg-plain', active: false },
+];
+
+const SHOT_CHIPS = [
+  { label: 'Impact Map', className: 'text-impact bg-[rgba(111,139,176,0.16)]' },
+  { label: 'Priority Lane', className: 'text-lane bg-[rgba(176,116,90,0.14)]' },
+  { label: 'Board', className: 'text-board bg-[rgba(139,161,126,0.18)]' },
+  { label: 'Quick Note', className: 'text-quicknote bg-[rgba(169,127,160,0.16)]' },
+];
+
+const PLATFORMS = [
+  { name: 'iPhone', short: 'Capture, one column', status: 'Beta', live: true },
+  { name: 'Desktop & web', short: 'Shape pages, keyboard-first', status: 'Beta', live: true },
+  { name: 'iPad & Android', short: 'Same blocks, tuned for touch', status: 'Soon', live: false },
+];
+
+const SYNC_STEPS = [
+  { n: '1', title: 'Locked here', body: 'Your device seals a page before it goes anywhere.' },
+  { n: '2', title: 'Passed along', body: 'We move the sealed page between your devices.' },
+  { n: '3', title: 'Opened there', body: 'Only your devices hold the key that opens it.' },
+];
+
+const SEALED_PILLARS = [
+  { title: 'The key stays with you', body: 'It is made on your device and never uploaded.' },
+  { title: 'Nothing to hand over', body: 'What we store is unreadable — titles included.' },
+  { title: 'Yours to take out', body: 'Export every page as plain Markdown, any time.' },
+];
+
+const SIGN_IN_URL = 'https://app.ownspce.com';
+
+const CTA_BASE =
+  'inline-flex items-center justify-center font-semibold text-surface bg-accent hover:bg-accent-dark transition-colors duration-150 ease-out';
+
+function CheckMark() {
   return (
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-      <circle cx="8" cy="8" r="7" stroke="#444" strokeWidth="1.5" />
-      <path d="M5 8 L7 10.5 L11 5.5" stroke="#888" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+      <path d="M1 4l2.6 2.6L9 1.2" stroke="#e2d8c6" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
-function UnifiedIllustration() {
-  return (
-    <svg viewBox="0 0 280 160" fill="none" className="w-full h-40">
-      <rect x="20" y="20" width="100" height="70" rx="12" fill="#141414" stroke="#2A2A2A" strokeWidth="0.5" />
-      <rect x="32" y="34" width="50" height="4" rx="2" fill="#444" />
-      <rect x="32" y="44" width="70" height="3" rx="1.5" fill="#2A2A2A" />
-      <rect x="32" y="52" width="60" height="3" rx="1.5" fill="#2A2A2A" />
-      <rect x="32" y="60" width="65" height="3" rx="1.5" fill="#2A2A2A" />
-      <rect x="90" y="50" width="100" height="90" rx="12" fill="#141414" stroke="#2A2A2A" strokeWidth="0.5" />
-      <circle cx="106" cy="68" r="5" stroke="#888" strokeWidth="1" fill="none" />
-      <rect x="118" y="65" width="55" height="4" rx="2" fill="#444" />
-      <circle cx="106" cy="84" r="5" stroke="#22C55E" strokeWidth="1" fill="none" />
-      <path d="M103 84 L105 86.5 L109.5 81.5" stroke="#22C55E" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      <rect x="118" y="81" width="45" height="4" rx="2" fill="#444" />
-      <circle cx="106" cy="100" r="5" stroke="#888" strokeWidth="1" fill="none" />
-      <rect x="118" y="97" width="50" height="4" rx="2" fill="#444" />
-      <rect x="160" y="15" width="100" height="80" rx="12" fill="#141414" stroke="#2A2A2A" strokeWidth="0.5" />
-      <rect x="172" y="28" width="24" height="55" rx="4" fill="#1E1E1E" />
-      <rect x="177" y="34" width="14" height="8" rx="2" fill="#2A2A2A" />
-      <rect x="177" y="46" width="14" height="6" rx="2" fill="#2A2A2A" />
-      <rect x="202" y="28" width="24" height="55" rx="4" fill="#1E1E1E" />
-      <rect x="207" y="34" width="14" height="10" rx="2" fill="#2A2A2A" />
-      <rect x="232" y="28" width="24" height="55" rx="4" fill="#1E1E1E" />
-      <rect x="237" y="34" width="14" height="6" rx="2" fill="#2A2A2A" />
-    </svg>
-  );
-}
-
-function PrivacyIllustration() {
-  return (
-    <svg viewBox="0 0 280 160" fill="none" className="w-full h-40">
-      <path d="M140 25 L185 45 L185 90 C185 115 165 135 140 145 C115 135 95 115 95 90 L95 45 Z" fill="#141414" stroke="#2A2A2A" strokeWidth="0.5" />
-      <path d="M140 40 L175 55 L175 88 C175 108 159 124 140 132 C121 124 105 108 105 88 L105 55 Z" fill="#1E1E1E" />
-      <rect x="128" y="82" width="24" height="20" rx="4" fill="#F5F5F5" opacity="0.9" />
-      <path d="M133 82 L133 74 C133 70.13 136.13 67 140 67 C143.87 67 147 70.13 147 74 L147 82" stroke="#F5F5F5" strokeWidth="2.5" fill="none" strokeLinecap="round" opacity="0.9" />
-      <circle cx="140" cy="92" r="2.5" fill="#0A0A0A" />
-    </svg>
-  );
-}
-
-function OrganizationIllustration() {
-  return (
-    <svg viewBox="0 0 280 160" fill="none" className="w-full h-40">
-      <rect x="60" y="20" width="160" height="120" rx="12" fill="#141414" stroke="#2A2A2A" strokeWidth="0.5" />
-      <rect x="60" y="20" width="50" height="120" rx="12" fill="#1E1E1E" stroke="#2A2A2A" strokeWidth="0.5" />
-      <rect x="70" y="36" width="30" height="3" rx="1.5" fill="#444" />
-      <rect x="70" y="48" width="25" height="3" rx="1.5" fill="#2A2A2A" />
-      <rect x="70" y="56" width="28" height="3" rx="1.5" fill="#F5F5F5" opacity="0.4" />
-      <rect x="70" y="64" width="22" height="3" rx="1.5" fill="#2A2A2A" />
-      <rect x="70" y="76" width="30" height="3" rx="1.5" fill="#444" />
-      <rect x="70" y="88" width="20" height="3" rx="1.5" fill="#2A2A2A" />
-      <rect x="122" y="34" width="80" height="5" rx="2.5" fill="#444" />
-      <rect x="122" y="48" width="85" height="3" rx="1.5" fill="#2A2A2A" />
-      <rect x="122" y="56" width="75" height="3" rx="1.5" fill="#2A2A2A" />
-      <rect x="122" y="64" width="80" height="3" rx="1.5" fill="#2A2A2A" />
-      <rect x="122" y="86" width="30" height="14" rx="7" fill="#1E1E1E" />
-      <rect x="128" y="91" width="18" height="3" rx="1.5" fill="#888" />
-      <rect x="158" y="86" width="35" height="14" rx="7" fill="#1E1E1E" />
-      <rect x="164" y="91" width="22" height="3" rx="1.5" fill="#888" />
-    </svg>
-  );
-}
-
-function OfflineIllustration() {
-  return (
-    <svg viewBox="0 0 280 160" fill="none" className="w-full h-40">
-      <rect x="80" y="25" width="120" height="85" rx="12" fill="#141414" stroke="#2A2A2A" strokeWidth="0.5" />
-      <rect x="88" y="33" width="104" height="65" rx="4" fill="#1E1E1E" />
-      <rect x="96" y="42" width="40" height="4" rx="2" fill="#444" />
-      <rect x="96" y="52" width="88" height="3" rx="1.5" fill="#2A2A2A" />
-      <rect x="96" y="60" width="80" height="3" rx="1.5" fill="#2A2A2A" />
-      <rect x="96" y="68" width="75" height="3" rx="1.5" fill="#2A2A2A" />
-      <g transform="translate(140, 124)">
-        <path d="M-16-5 C-12-10 -4-13 0-13 C4-13 12-10 16-5" stroke="#444" strokeWidth="2" fill="none" strokeLinecap="round" />
-        <path d="M-10-1 C-7-4.5 -3-6 0-6 C3-6 7-4.5 10-1" stroke="#444" strokeWidth="2" fill="none" strokeLinecap="round" />
-        <circle cx="0" cy="4" r="2.5" fill="#444" />
-        <line x1="-18" y1="-14" x2="18" y2="8" stroke="#F5F5F5" strokeWidth="2" strokeLinecap="round" opacity="0.5" />
-      </g>
-      <g transform="translate(200, 55)">
-        <circle cx="0" cy="0" r="14" fill="#1E1E1E" stroke="#2A2A2A" strokeWidth="0.5" />
-        <path d="M-5 0 L-2 3.5 L5.5-4" stroke="#22C55E" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      </g>
-    </svg>
-  );
-}
-
-function SyncIllustration() {
-  return (
-    <svg viewBox="0 0 280 160" fill="none" className="w-full h-40">
-      {/* Laptop left */}
-      <rect x="18" y="45" width="72" height="50" rx="6" fill="#141414" stroke="#2A2A2A" strokeWidth="0.5" />
-      <rect x="24" y="51" width="60" height="38" rx="2" fill="#1E1E1E" />
-      <rect x="30" y="58" width="28" height="3" rx="1.5" fill="#444" />
-      <rect x="30" y="66" width="42" height="2" rx="1" fill="#2A2A2A" />
-      <rect x="30" y="72" width="36" height="2" rx="1" fill="#2A2A2A" />
-      <rect x="12" y="95" width="84" height="5" rx="2" fill="#1A1A1A" stroke="#2A2A2A" strokeWidth="0.5" />
-      {/* Phone right */}
-      <rect x="192" y="38" width="40" height="68" rx="8" fill="#141414" stroke="#2A2A2A" strokeWidth="0.5" />
-      <rect x="197" y="46" width="30" height="50" rx="2" fill="#1E1E1E" />
-      <rect x="202" y="53" width="18" height="3" rx="1.5" fill="#444" />
-      <rect x="202" y="61" width="20" height="2" rx="1" fill="#2A2A2A" />
-      <rect x="202" y="67" width="16" height="2" rx="1" fill="#2A2A2A" />
-      {/* Cloud center */}
-      <path d="M122 68 C122 60 129 54 137 54 C140 48 147 44 155 44 C167 44 176 53 176 65 C181 65 185 69 185 74 C185 79 181 83 176 83 L122 83 C117 83 113 79 113 74 C113 69 117 65 122 65 Z" fill="#1E1E1E" stroke="#2A2A2A" strokeWidth="0.5" />
-      {/* Drive-style icon inside cloud */}
-      <path d="M136 74 L144 60 L152 74 Z" fill="#444" />
-      <path d="M144 60 L152 74 L160 60 Z" fill="#333" />
-      <path d="M136 74 L152 74 L160 60 L152 74 Z" fill="#3A3A3A" />
-      {/* Sync arrows: laptop → cloud */}
-      <path d="M92 72 C98 65 108 63 112 64" stroke="#444" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M109 61 L112 64 L109 67" stroke="#444" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      {/* Sync arrows: cloud → phone */}
-      <path d="M186 68 C190 67 194 66 194 65" stroke="#444" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M191 62 L194 65 L191 68" stroke="#444" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      {/* iCloud label */}
-      <rect x="114" y="88" width="60" height="10" rx="5" fill="#1A1A1A" />
-      <rect x="118" y="91" width="52" height="3" rx="1.5" fill="#2A2A2A" />
-    </svg>
-  );
-}
-
-function CrossPlatformIllustration() {
-  return (
-    <svg viewBox="0 0 280 160" fill="none" className="w-full h-40">
-      <rect x="30" y="30" width="100" height="70" rx="8" fill="#141414" stroke="#2A2A2A" strokeWidth="0.5" />
-      <rect x="36" y="36" width="88" height="52" rx="2" fill="#1E1E1E" />
-      <rect x="65" y="100" width="30" height="4" rx="2" fill="#2A2A2A" />
-      <rect x="55" y="104" width="50" height="3" rx="1.5" fill="#1E1E1E" />
-      <rect x="44" y="44" width="35" height="3" rx="1.5" fill="#444" />
-      <rect x="44" y="52" width="72" height="2" rx="1" fill="#2A2A2A" />
-      <rect x="44" y="58" width="65" height="2" rx="1" fill="#2A2A2A" />
-      <rect x="145" y="25" width="55" height="80" rx="8" fill="#141414" stroke="#2A2A2A" strokeWidth="0.5" />
-      <rect x="150" y="32" width="45" height="62" rx="2" fill="#1E1E1E" />
-      <rect x="156" y="40" width="25" height="3" rx="1.5" fill="#444" />
-      <rect x="156" y="48" width="32" height="2" rx="1" fill="#2A2A2A" />
-      <rect x="215" y="35" width="38" height="70" rx="8" fill="#141414" stroke="#2A2A2A" strokeWidth="0.5" />
-      <rect x="220" y="42" width="28" height="50" rx="2" fill="#1E1E1E" />
-      <rect x="225" y="49" width="18" height="2.5" rx="1.25" fill="#444" />
-      <rect x="225" y="55" width="16" height="2" rx="1" fill="#2A2A2A" />
-      <g opacity="0.35">
-        <path d="M133 65 C138 55 143 55 148 65" stroke="#F5F5F5" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-        <path d="M145 63 L148 65 L145 67" stroke="#F5F5F5" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M203 65 C208 55 211 55 216 65" stroke="#F5F5F5" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-        <path d="M213 63 L216 65 L213 67" stroke="#F5F5F5" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      </g>
-    </svg>
-  );
-}
-
+/**
+ * Ownspce marketing landing page.
+ * Renders the hero with a live Priority Lane demo, the block catalogue,
+ * the zero-knowledge sync explainer, the founder essay and the waitlist form.
+ * Handles: empty runway, empty task titles, invalid waitlist email.
+ */
 export default function LandingPage() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [shotTitle, setShotTitle] = useState('Launch plan');
+  const [shotBody, setShotBody] = useState(
+    'Where each bet sits, what’s cleared for the runway, and the sprint board — all on one page.'
+  );
+  const [tasks, setTasks] = useState<Record<Lane, string[]>>({
+    now: ['Ship local-sync beta'],
+    next: ['Onboarding empty states', 'Record demo walkthrough'],
+    holding: ['Reply to waitlist', 'Weekly review'],
+  });
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (email.trim()) {
-      setSubmitted(true);
-      setEmail('');
-    }
+    if (!email.includes('@')) return;
+    setSubmitted(true);
   }
 
-  const features = [
-    {
-      title: 'Notes, tasks, boards — one place',
-      description: 'Stop switching between apps. Write notes, manage tasks, and organize boards in a single unified workspace.',
-      illustration: <UnifiedIllustration />,
-    },
-    {
-      title: 'You own your data',
-      description: 'We never read, store or sell your data. You decide if you want data to be local or synced.',
-      illustration: <PrivacyIllustration />,
-    },
-    {
-      title: 'Organize thoughts naturally',
-      description: 'Nested pages, tags, and smart linking let you structure ideas the way your mind works.',
-      illustration: <OrganizationIllustration />,
-    },
-    {
-      title: 'Works without internet',
-      description: 'Full offline support. On a plane, in a tunnel, at a cabin — your work goes where you go.',
-      illustration: <OfflineIllustration />,
-    },
-    {
-      title: 'Sync with Google Drive or iCloud',
-      description: 'Use your own Google Drive or iCloud to sync across devices. Your data moves through your cloud storage — never ours.',
-      illustration: <SyncIllustration />,
-    },
-    {
-      title: 'Available on all your devices',
-      description: 'Seamlessly move between desktop, tablet, and phone. Your workspace syncs locally.',
-      illustration: <CrossPlatformIllustration />,
-    },
-  ];
+  function editTask(lane: Lane, index: number, value: string) {
+    setTasks(prev => ({ ...prev, [lane]: prev[lane].map((task, i) => (i === index ? value : task)) }));
+  }
+
+  function addTask(lane: Lane) {
+    setTasks(prev => ({ ...prev, [lane]: [...prev[lane], ''] }));
+  }
+
+  function promoteTask(lane: 'next' | 'holding', index: number) {
+    setTasks(prev => {
+      const source = prev[lane].filter((_, i) => i !== index);
+      const moved = prev[lane][index];
+      if (lane === 'holding') return { ...prev, holding: source, next: [...prev.next, moved] };
+      return { now: [moved], next: source, holding: prev.now.length ? [...prev.holding, ...prev.now] : prev.holding };
+    });
+  }
+
+  function landTask() {
+    setTasks(prev => {
+      const landed = prev.now[0];
+      const [promoted, ...rest] = prev.next;
+      return {
+        now: promoted !== undefined ? [promoted] : [],
+        next: rest,
+        holding: landed ? [...prev.holding, landed] : prev.holding,
+      };
+    });
+  }
 
   return (
     <div className="min-h-screen bg-bg text-t1">
       {/* Navigation */}
-      <nav className="flex items-center justify-between px-[16px] md:px-[32px] py-[24px] max-w-[1080px] mx-auto">
-        <div className="flex items-center gap-[12px]">
-          <OwlLogo size={32} />
-          <span className="font-sans text-[15px] font-medium tracking-tight">ownspce</span>
+      <header className="sticky top-0 z-20 bg-bg/[0.86] backdrop-blur-[14px] border-b border-[rgba(60,45,30,0.07)]">
+        <div className="max-w-[1160px] mx-auto px-[20px] md:px-[40px] py-[14px] flex items-center gap-[14px]">
+          <div className="flex items-center gap-[10px]">
+            <OwlLogo size={28} />
+            <span className="font-serif text-[19px] font-medium tracking-[-0.01em]">Ownspce</span>
+          </div>
+          <nav className="ml-[26px] hidden md:flex gap-[22px]">
+            <a href="#blocks" className="text-[14px] font-medium text-t2 hover:text-t1 transition-colors duration-150">Blocks</a>
+            <a href="#sealed" className="text-[14px] font-medium text-t2 hover:text-t1 transition-colors duration-150">Privacy</a>
+            <a href="#essay" className="text-[14px] font-medium text-t2 hover:text-t1 transition-colors duration-150">Essay</a>
+          </nav>
+          <div className="ml-auto flex items-center gap-[12px]">
+            <a
+              href={SIGN_IN_URL}
+              className="hidden sm:block text-[14px] font-semibold text-t2 hover:text-t1 transition-colors duration-150"
+            >
+              Sign in
+            </a>
+            <a
+              href="#waitlist"
+              className={`${CTA_BASE} text-[13.5px] px-[15px] py-[9px] rounded-[9px] shadow-[0_2px_8px_rgba(176,116,90,0.26)]`}
+            >
+              Get early access
+            </a>
+          </div>
         </div>
-        <a
-          href="#waitlist"
-          className="font-sans text-[13px] font-medium px-[20px] py-[10px] rounded-[12px] border-[0.5px] border-border text-t2 hover:border-border-mid hover:text-t1 transition-all duration-150 ease-out"
-        >
-          Join Waitlist
-        </a>
-      </nav>
+      </header>
 
       {/* Hero */}
-      <section className="px-[16px] md:px-[32px] pt-[80px] pb-[48px] max-w-[720px] mx-auto text-center">
-        <div className="flex justify-center mb-[24px]">
-          <OwlLogo size={64} />
-        </div>
-        <h1 className="font-serif italic text-[44px] leading-[48px] tracking-[-1px] mb-[4px]">
-          Ownspce
-        </h1>
-        <p className="font-sans font-light text-[17px] text-t2 mb-[16px]">Own your space.</p>
-        <p className="font-sans text-[13px] text-t3 max-w-[290px] mx-auto mb-[32px] leading-[1.7]">
-          Your thoughts, tasks, and ideas — on your device.
-          Private by design, not by promise.
-        </p>
-
-        <div className="inline-flex items-center gap-[8px] px-[16px] py-[8px] rounded-full bg-elev text-t3 font-sans text-[11px] tracking-[0.5px] mb-[32px]">
-          <CheckIcon />
-          Designed for the way you think
-        </div>
-
-        {/* Waitlist form */}
-        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-[8px] max-w-[400px] mx-auto">
-          <input
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            placeholder="Enter your email"
-            required
-            className="flex-1 px-[16px] py-[14px] rounded-[12px] bg-elev border-none text-t1 placeholder-t3 font-sans text-[14px] focus:outline-none focus:ring-1 focus:ring-border-mid transition-all duration-150 ease-out"
-          />
-          <button
-            type="submit"
-            className="px-[20px] py-[15px] rounded-[12px] bg-t1 text-bg font-sans font-medium text-[15px] hover:opacity-80 transition-all duration-150 ease-out whitespace-nowrap"
-          >
-            Join Waitlist
-          </button>
-        </form>
-        {submitted && (
-          <p className="font-sans text-[13px] text-success mt-[12px]">You&apos;re on the list. We&apos;ll be in touch.</p>
-        )}
-        <p className="font-sans text-[12px] font-light text-t3 mt-[12px]">No credit card required.</p>
-      </section>
-
-      {/* Why another notes app — story section */}
-      <section className="px-[16px] md:px-[32px] py-[48px] max-w-[600px] mx-auto">
-        <div className="rounded-[12px] border-[0.5px] border-border bg-surface p-[24px] md:p-[32px]">
-          <p className="font-sans text-[11px] tracking-[0.5px] text-t3 uppercase mb-[12px]">
-            Personal &middot; Essay
-          </p>
-          <h2 className="font-serif text-[24px] leading-[30px] mb-[8px]">
-            Why I&apos;m building another notes app
-          </h2>
-          <p className="font-sans text-[15px] text-t3 mb-[16px]">
-            And why this one is different from Notion, Obsidian, and the rest.
-          </p>
-          <div className="flex items-center gap-[12px] mb-[24px] pb-[24px] border-b-[0.5px] border-border">
-            <div className="w-[32px] h-[32px] rounded-[8px] bg-elev border-[0.5px] border-border flex items-center justify-center font-serif italic text-[14px] text-t1">
-              R
-            </div>
-            <div>
-              <p className="font-sans text-[13px] font-medium text-t1">Rahul</p>
-              <p className="font-sans text-[11px] text-t3">6 min read</p>
-            </div>
+      <section className="relative overflow-hidden bg-[radial-gradient(110%_80%_at_50%_-10%,#efe8dc,#f4efe7_60%)]">
+        <div className="max-w-[1160px] mx-auto px-[20px] md:px-[40px] pt-[56px] md:pt-[76px] text-center">
+          <div className="inline-flex items-center gap-[8px] border border-border-mid bg-surface rounded-[22px] px-[13px] py-[6px] text-[12.5px] font-semibold text-t2">
+            <span className="w-[7px] h-[7px] rounded-full bg-sage animate-pulse-soft" />
+            Zero-knowledge cloud · your key never leaves your device
           </div>
-
-          <div className="space-y-[20px] font-sans text-[15px] leading-[1.85] text-[#C0C0C0]">
-            <p>
-              I&apos;ve used Notion since 2020. I&apos;ve tried Obsidian, Logseq, Roam, Bear, Apple Notes,
-              and at one point, a physical Moleskine. None of them felt right.
-            </p>
-            <p>
-              Notion is powerful but cloud-locked. My product ideas — things I&apos;d never want on
-              someone else&apos;s server — sit on Notion&apos;s AWS instances. I have no say in that.
-            </p>
-            <p>
-              Obsidian is private and local, but the mobile app is an afterthought, and there&apos;s
-              no task management. You need plugins for everything.
-            </p>
-            <p>
-              The gap I kept hitting:{' '}
-              <em className="font-serif italic text-t1">
-                a beautiful, mobile-first app where the data is mine, that also does tasks.
-              </em>{' '}
-              That combination doesn&apos;t exist.
-            </p>
-            <p>
-              So I&apos;m building it.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="px-[16px] md:px-[32px] py-[48px] max-w-[1080px] mx-auto">
-        <div className="text-center mb-[32px]">
-          <h2 className="font-serif text-[36px] leading-[42px] tracking-tight mb-[4px]">
-            Everything you need, nothing you don&apos;t
-          </h2>
-          <p className="font-sans text-[13px] text-t2 max-w-[400px] mx-auto">
-            A single app that replaces your notes, task manager, and project boards.
+          <h1 className="font-serif text-[44px] md:text-[74px] font-medium tracking-[-0.025em] leading-[1.03] mt-[22px] text-balance">
+            A page that becomes
+            <br />
+            whatever you need.
+          </h1>
+          <p className="text-[17px] md:text-[19px] leading-[1.6] text-t2 max-w-[600px] mx-auto mt-[20px] text-pretty">
+            Ownspce pages start blank. Stack the blocks that fit the thought — a priority lane, an impact map, a board,
+            a note — and rearrange them whenever the work changes.
           </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[16px]">
-          {features.map((feature) => (
-            <div
-              key={feature.title}
-              className="rounded-[12px] border-[0.5px] border-border bg-surface p-[16px] hover:border-border-mid transition-all duration-150 ease-out"
+          <div className="flex flex-col sm:flex-row justify-center gap-[10px] mt-[30px]">
+            <a href="#waitlist" className={`${CTA_BASE} text-[15.5px] px-[24px] py-[14px] rounded-m shadow-[0_3px_14px_rgba(176,116,90,0.3)]`}>
+              Get early access
+            </a>
+            <a
+              href="#blocks"
+              className="inline-flex items-center justify-center text-[15.5px] font-semibold px-[24px] py-[14px] rounded-m border border-border-mid bg-surface text-[#5f574c] hover:border-accent transition-colors duration-150 ease-out"
             >
-              <div className="mb-[16px] rounded-[8px] overflow-hidden bg-bg">
-                {feature.illustration}
+              See the blocks
+            </a>
+          </div>
+          <p className="text-[12.5px] text-t3 mt-[14px]">Free while in beta · no account required</p>
+        </div>
+
+        {/* Live product demo */}
+        <div className="max-w-[1160px] mx-auto px-[20px] md:px-[40px] pt-[44px]">
+          <div className="rounded-t-[20px] border border-b-0 border-border-mid bg-elev shadow-[0_-1px_60px_rgba(60,45,30,0.1)] overflow-hidden">
+            <div className="flex items-center gap-[7px] px-[14px] py-[11px] border-b border-border-mid">
+              <span className="w-[10px] h-[10px] rounded-full bg-[#d3c7b2]" />
+              <span className="w-[10px] h-[10px] rounded-full bg-[#d3c7b2]" />
+              <span className="w-[10px] h-[10px] rounded-full bg-[#d3c7b2]" />
+              <span className="ml-[12px] text-[11.5px] text-t3">Launch plan — Ownspce</span>
+            </div>
+            <div className="flex min-h-[470px]">
+              <div className="w-[210px] flex-none border-r border-border-mid px-[12px] py-[16px] hidden lg:flex flex-col gap-[4px]">
+                <div className="text-[10px] tracking-[0.14em] uppercase text-t2 font-bold px-[8px] pb-[8px]">Your pages</div>
+                {SHOT_PAGES.map(page => (
+                  <div
+                    key={page.title}
+                    className={`flex items-center gap-[9px] px-[10px] py-[8px] rounded-[9px] border ${
+                      page.active ? 'bg-bg border-border-mid' : 'bg-transparent border-transparent'
+                    }`}
+                  >
+                    <span className={`w-[7px] h-[7px] rounded-full flex-none ${page.dot}`} />
+                    <span className="text-[13px] font-semibold text-[#3d362d]">{page.title}</span>
+                  </div>
+                ))}
               </div>
-              <h3 className="font-sans text-[15px] font-medium mb-[4px]">{feature.title}</h3>
-              <p className="font-sans text-[13px] text-t2 leading-relaxed">{feature.description}</p>
+              <div className="flex-1 min-w-0 bg-bg px-[16px] md:px-[30px] py-[26px] overflow-hidden">
+                <input
+                  value={shotTitle}
+                  onChange={e => setShotTitle(e.target.value)}
+                  placeholder="Untitled page"
+                  aria-label="Page title"
+                  className="w-full bg-transparent border-none outline-none font-serif text-[26px] md:text-[30px] font-medium tracking-[-0.015em] text-t1 p-0 placeholder:text-t3"
+                />
+                <textarea
+                  value={shotBody}
+                  onChange={e => setShotBody(e.target.value)}
+                  placeholder="Start writing…"
+                  aria-label="Page body"
+                  className="w-full max-w-[520px] h-[46px] bg-transparent border-none outline-none resize-none overflow-hidden text-[14px] leading-[1.6] text-[#6b6358] mt-[7px] p-0 placeholder:text-t3"
+                />
+
+                <div className="mt-[14px] rounded-l bg-surface border border-[#e7ddcd] overflow-hidden">
+                  <div className="flex items-center flex-wrap gap-[9px] px-[14px] py-[10px] border-b border-[#efe6d6]">
+                    <span className="w-[8px] h-[8px] rounded-full bg-lane" />
+                    <span className="text-[10.5px] tracking-[0.13em] uppercase font-bold text-[#6b6358]">Priority Lane</span>
+                    <span className="text-[11.5px] text-t3">Now · Next · Holding</span>
+                    <span className="ml-auto text-[11px] text-t3">Try it — everything here is live</span>
+                  </div>
+                  <div className="p-[14px] grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-m items-start">
+                    <div className="rounded-[13px] bg-white border border-[#f0e6d5] p-[13px]">
+                      <div className="flex items-center gap-[7px] mb-[6px]">
+                        <span className="w-[7px] h-[7px] rounded-full bg-danger shadow-[0_0_0_3.5px_rgba(194,90,63,0.16)] animate-pulse-soft" />
+                        <span className="text-[9.5px] tracking-[0.14em] uppercase font-bold text-accent">On Now</span>
+                      </div>
+                      {tasks.now.length > 0 ? (
+                        <div>
+                          <input
+                            value={tasks.now[0]}
+                            onChange={e => editTask('now', 0, e.target.value)}
+                            placeholder="What’s on the runway?"
+                            aria-label="Task on now"
+                            className="w-full min-w-0 bg-transparent border-none outline-none font-serif text-[18px] leading-[1.2] text-t1 py-[2px] placeholder:text-t3"
+                          />
+                          <button
+                            type="button"
+                            onClick={landTask}
+                            className={`${CTA_BASE} mt-[10px] w-full text-[12.5px] font-semibold p-[8px] rounded-[10px]`}
+                          >
+                            Land ✓
+                          </button>
+                        </div>
+                      ) : (
+                        <p className="text-[13px] text-t3 pt-m pb-[6px]">Runway clear. Bring one up →</p>
+                      )}
+                    </div>
+
+                    <div className="flex flex-col gap-s">
+                      <div className="text-[9.5px] tracking-[0.14em] uppercase font-bold text-[#6b6358]">Cleared Next</div>
+                      {tasks.next.map((task, i) => (
+                        <div key={i} className="rounded-[11px] bg-white border border-[#f0e6d5] px-[10px] py-[9px] flex items-center gap-[7px]">
+                          <input
+                            value={task}
+                            onChange={e => editTask('next', i, e.target.value)}
+                            placeholder="Add a task"
+                            aria-label={`Next task ${i + 1}`}
+                            className="flex-1 w-full min-w-0 bg-transparent border-none outline-none text-[12.5px] font-medium leading-[1.3] text-t1 p-0 placeholder:text-t3"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => promoteTask('next', i)}
+                            aria-label="Move to On Now"
+                            className="w-[22px] h-[22px] flex-none rounded-[7px] border border-[#e4dbcc] bg-white text-t2 text-[11px] font-bold leading-none p-0 hover:text-accent hover:border-accent transition-colors duration-150"
+                          >
+                            ↑
+                          </button>
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => addTask('next')}
+                        className="border border-dashed border-border-mid text-t3 text-[11.5px] font-semibold p-[6px] rounded-[9px] hover:text-accent hover:border-accent transition-colors duration-150"
+                      >
+                        + Add
+                      </button>
+                    </div>
+
+                    <div className="flex flex-col gap-s">
+                      <div className="text-[9.5px] tracking-[0.14em] uppercase font-bold text-t2">Holding</div>
+                      {tasks.holding.map((task, i) => (
+                        <div key={i} className="rounded-[10px] bg-[#f3ecdf] border border-[#e9dfce] px-[10px] py-[8px] flex items-center gap-[7px]">
+                          <input
+                            value={task}
+                            onChange={e => editTask('holding', i, e.target.value)}
+                            placeholder="Someday"
+                            aria-label={`Holding task ${i + 1}`}
+                            className="flex-1 w-full min-w-0 bg-transparent border-none outline-none text-[12.5px] leading-[1.3] text-[#4b433a] p-0 placeholder:text-t3"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => promoteTask('holding', i)}
+                            aria-label="Move to Cleared Next"
+                            className="w-[22px] h-[22px] flex-none rounded-[7px] border border-[#e4dbcc] bg-white text-t2 text-[11px] font-bold leading-none p-0 hover:text-accent hover:border-accent transition-colors duration-150"
+                          >
+                            ↑
+                          </button>
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => addTask('holding')}
+                        className="border border-dashed border-border-mid text-t3 text-[11.5px] font-semibold p-[6px] rounded-[9px] hover:text-accent hover:border-accent transition-colors duration-150"
+                      >
+                        + Add
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-m flex flex-wrap gap-s">
+                  {SHOT_CHIPS.map(chip => (
+                    <span key={chip.label} className={`text-[10.5px] font-semibold rounded-[6px] px-s py-[3px] ${chip.className}`}>
+                      {chip.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* How it works */}
-      <section className="px-[16px] md:px-[32px] py-[48px] max-w-[720px] mx-auto">
-        <div className="text-center mb-[32px]">
-          <h2 className="font-serif text-[36px] leading-[42px] tracking-tight mb-[4px]">
-            Get started in seconds
-          </h2>
-          <p className="font-sans text-[13px] text-t2">
-            No sign-up walls. No cloud accounts. Just open and go.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[24px]">
-          {[
-            { step: '01', title: 'Download the app', description: 'Available for iOS, Android, Mac, and Web.' },
-            { step: '02', title: 'Create your space', description: 'Set up your workspace in one tap. Everything stays local.' },
-            { step: '03', title: 'Start building', description: 'Write, plan, and organize — your way, on your terms.' },
-          ].map((item) => (
-            <div key={item.step} className="text-center md:text-left">
-              <span className="font-sans text-[11px] tracking-[0.5px] text-t3 mb-[12px] block">{item.step}</span>
-              <h3 className="font-sans text-[18px] font-medium mb-[8px]">{item.title}</h3>
-              <p className="font-sans text-[13px] text-t2 leading-relaxed">{item.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Bottom CTA */}
-      <section id="waitlist" className="px-[16px] md:px-[32px] py-[48px] max-w-[720px] mx-auto text-center">
-        <div className="rounded-[24px] border-[0.5px] border-border bg-surface p-[32px] md:p-[48px]">
-          <div className="flex justify-center">
-            <OwlLogo size={48} />
           </div>
-          <h2 className="font-serif italic text-[36px] leading-[42px] tracking-tight mt-[24px] mb-[4px]">
-            Ready to own your space?
+        </div>
+      </section>
+
+      {/* Blocks */}
+      <section id="blocks" className="bg-elev border-t border-border scroll-mt-[72px]">
+        <div className="max-w-[1160px] mx-auto px-[20px] md:px-[40px] py-[64px] md:py-[84px]">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-[40px] lg:gap-[56px] items-start">
+            <div className="lg:sticky lg:top-[96px]">
+              <div className="text-[11px] tracking-[0.16em] uppercase text-t2 font-bold">The blocks</div>
+              <h2 className="font-serif text-[34px] md:text-[42px] font-medium tracking-[-0.02em] leading-[1.1] mt-m">
+                Five ways to hold a thought.
+              </h2>
+              <p className="text-[16.5px] leading-[1.65] text-t2 mt-[14px]">
+                No templates to choose up front. Add a block when you need it, drop it when you don’t — notes, tasks and
+                boards in one page instead of three apps.
+              </p>
+              <div className="flex flex-col gap-[9px] mt-[26px] pt-[22px] border-t border-border">
+                {PLATFORMS.map(platform => (
+                  <div key={platform.name} className="flex items-center gap-[10px]">
+                    <span className="text-[14.5px] font-semibold text-[#3d362d]">{platform.name}</span>
+                    <span className="text-[13px] text-t3 flex-1 min-w-0">{platform.short}</span>
+                    <span
+                      className={`text-[10.5px] font-bold tracking-[0.08em] uppercase rounded-[20px] px-s py-[3px] ${
+                        platform.live ? 'text-success bg-[rgba(139,161,126,0.2)]' : 'text-t2 bg-[rgba(154,143,125,0.16)]'
+                      }`}
+                    >
+                      {platform.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-[10px]">
+              {BLOCKS.map(block => (
+                <div
+                  key={block.name}
+                  className="border border-border bg-surface rounded-l px-[20px] py-[18px] flex items-start gap-[15px] hover:border-border-mid transition-colors duration-150 ease-out"
+                >
+                  <span className={`w-[38px] h-[38px] flex-none rounded-[11px] flex items-center justify-center ${block.tile}`}>
+                    <span className={`w-m h-m rounded-full ${block.dot}`} />
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-[16.5px] font-semibold">{block.name}</h3>
+                    <p className="text-[13.5px] leading-[1.55] text-t2 mt-[3px]">{block.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Zero-knowledge sync */}
+      <section id="sealed" className="bg-ink text-ink-t1 scroll-mt-[72px]">
+        <div className="max-w-[1160px] mx-auto px-[20px] md:px-[40px] py-[64px] md:py-[88px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[40px] lg:gap-[56px] items-start">
+            <div>
+              <div className="text-[11px] tracking-[0.16em] uppercase text-ink-t3 font-bold">Sealed by design</div>
+              <h2 className="font-serif text-[34px] md:text-[44px] font-medium tracking-[-0.02em] leading-[1.08] mt-m">
+                On every device. Readable on none of ours.
+              </h2>
+              <p className="text-[16.5px] leading-[1.7] text-ink-t2 mt-l max-w-[520px]">
+                Your pages sync everywhere, but they leave your device already locked. We keep the sealed copy. The key
+                that opens it stays with you.
+              </p>
+              <ul className="flex flex-col gap-[13px] mt-[26px]">
+                {SEALED_PILLARS.map(pillar => (
+                  <li key={pillar.title} className="flex items-start gap-[11px]">
+                    <span className="w-[20px] h-[20px] flex-none mt-[3px] rounded-full bg-[rgba(244,239,231,0.1)] border border-[rgba(244,239,231,0.24)] flex items-center justify-center">
+                      <CheckMark />
+                    </span>
+                    <span className="text-[15.5px] leading-[1.5]">
+                      <span className="font-semibold text-ink-t1">{pillar.title}</span>
+                      <span className="text-ink-t3"> — {pillar.body}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/privacy-policy"
+                className="inline-flex items-center gap-[7px] mt-[26px] text-[14px] font-semibold text-ink-t1 border-b border-ink-line pb-[3px] hover:border-ink-t1 transition-colors duration-150"
+              >
+                Read how it works in full
+                <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+
+            <div className="border border-ink-line rounded-xl p-xl bg-ink-fill">
+              <div className="text-[10.5px] tracking-[0.14em] uppercase text-ink-t3 font-bold mb-[18px]">
+                One page, one trip
+              </div>
+              <div className="flex flex-col gap-[18px]">
+                {SYNC_STEPS.map(step => (
+                  <div key={step.n} className="flex items-start gap-[14px]">
+                    <span className="w-[30px] h-[30px] flex-none rounded-full flex items-center justify-center text-[13px] font-bold text-ink bg-border">
+                      {step.n}
+                    </span>
+                    <div className="flex-1">
+                      <div className="text-[15px] font-semibold text-ink-t1">{step.title}</div>
+                      <p className="text-[13.5px] leading-[1.55] text-ink-t3 mt-[2px]">{step.body}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-[22px] pt-l border-t border-[rgba(244,239,231,0.14)] font-serif italic text-[14px] leading-[1.6] text-[#9c9382]">
+                Sign in with Google or Apple. That gets you your data — not the key to it.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Essay */}
+      <section id="essay" className="bg-bg scroll-mt-[72px]">
+        <div className="max-w-[680px] mx-auto px-[20px] md:px-[40px] py-[64px] md:py-[84px]">
+          <div className="text-[11px] tracking-[0.16em] uppercase text-t2 font-bold">Personal · Essay</div>
+          <h2 className="font-serif text-[32px] md:text-[42px] font-medium tracking-[-0.02em] leading-[1.1] mt-m text-balance">
+            Why I’m building another notes app
           </h2>
-          <p className="font-sans text-[13px] text-t2 max-w-[360px] mx-auto mb-[24px]">
-            Join the waitlist and be the first to experience a workspace that truly belongs to you.
-          </p>
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-[8px] max-w-[400px] mx-auto">
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-              className="flex-1 px-[16px] py-[14px] rounded-[12px] bg-elev border-none text-t1 placeholder-t3 font-sans text-[14px] focus:outline-none focus:ring-1 focus:ring-border-mid transition-all duration-150 ease-out"
-            />
-            <button
-              type="submit"
-              className="px-[20px] py-[15px] rounded-[12px] bg-t1 text-bg font-sans font-medium text-[15px] hover:opacity-80 transition-all duration-150 ease-out whitespace-nowrap"
-            >
-              Join Waitlist
-            </button>
-          </form>
-          {submitted && (
-            <p className="font-sans text-[13px] text-success mt-[12px]">You&apos;re on the list. We&apos;ll be in touch.</p>
-          )}
-          <p className="font-sans text-[12px] font-light text-t3 mt-[12px]">No credit card required.</p>
+          <div className="flex items-center gap-[11px] mt-l pb-[26px] mb-[26px] border-b border-border">
+            <span className="w-[34px] h-[34px] rounded-full bg-border flex items-center justify-center font-serif text-[15px] text-[#5f574c]">
+              R
+            </span>
+            <div>
+              <div className="text-[13.5px] font-semibold">Rahul</div>
+              <div className="text-[12.5px] text-t3">6 min read</div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-l">
+            <p className="text-[17px] md:text-[18px] leading-[1.75] text-body text-pretty">
+              I’ve used Notion since 2020. I’ve tried Obsidian, Logseq, Roam, Bear, Apple Notes, and at one point, a
+              physical Moleskine. None of them felt right. Notion is powerful but cloud-locked — my product ideas sit on
+              someone else’s AWS instances and I have no say in that.
+            </p>
+            <p className="text-[17px] md:text-[18px] leading-[1.75] text-body text-pretty">
+              Obsidian is private and local, but the mobile app is an afterthought, and there’s no task management. You
+              need plugins for everything.
+            </p>
+            <blockquote className="my-[2px] px-[22px] py-[18px] border-l-2 border-accent bg-surface rounded-r-[14px]">
+              <p className="font-serif italic text-[20px] md:text-[22px] leading-[1.5] text-t1">
+                The gap I kept hitting: a beautiful, mobile-first app where the data is mine, that also does tasks. That
+                combination doesn’t exist.
+              </p>
+            </blockquote>
+            <p className="text-[17px] md:text-[18px] leading-[1.75] text-body">So I’m building it.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Early access */}
+      <section id="waitlist" className="bg-bg scroll-mt-[72px]">
+        <div className="max-w-[680px] mx-auto px-[20px] md:px-[40px] pb-[64px] md:pb-[84px]">
+          <div className="border border-border bg-elev rounded-xl px-[24px] py-[32px] md:px-[40px] md:py-[40px] text-center">
+            <h3 className="font-serif text-[30px] md:text-[36px] font-medium tracking-[-0.02em] leading-[1.1]">
+              Make the space yours.
+            </h3>
+            <p className="text-[15.5px] leading-[1.6] text-t2 mt-m mb-[22px] max-w-[420px] mx-auto">
+              Early access ships in waves — no passwords, no Ownspce account to create. Sign in with Google or Apple and
+              go.
+            </p>
+            {submitted ? (
+              <p className="border border-[#cdd8c4] bg-[#f1f5ec] rounded-[14px] p-l text-[15px] text-success animate-rise max-w-[420px] mx-auto">
+                You’re on the list. Watch for an invite from Ownspce.
+              </p>
+            ) : (
+              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-[9px] max-w-[420px] mx-auto">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  aria-label="Email address"
+                  required
+                  className="flex-1 w-full min-w-0 border border-border-mid bg-surface rounded-m px-[15px] py-[13px] text-[15px] text-t1 outline-none placeholder:text-t3 focus:border-accent transition-colors duration-150 ease-out"
+                />
+                <button
+                  type="submit"
+                  className={`${CTA_BASE} text-[15px] px-[20px] py-[13px] rounded-m whitespace-nowrap shadow-[0_3px_14px_rgba(176,116,90,0.28)]`}
+                >
+                  Get early access
+                </button>
+              </form>
+            )}
+            <p className="text-[12.5px] text-t3 mt-m">
+              {WAITLIST_COUNT.toLocaleString()} people waiting · invites go out weekly
+            </p>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="px-[16px] md:px-[32px] py-[24px] max-w-[1080px] mx-auto border-t-[0.5px] border-border">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-[12px]">
-          <div className="flex items-center gap-[8px]">
-            <OwlLogo size={20} />
-            <span className="font-sans text-[13px] text-t2">ownspce</span>
+      <footer className="bg-bg border-t border-border">
+        <div className="max-w-[1160px] mx-auto px-[20px] md:px-[40px] py-[26px] flex items-center gap-l flex-wrap">
+          <div className="flex items-center gap-[9px]">
+            <OwlLogo size={22} />
+            <span className="text-[13.5px] text-t2">Ownspce © 2026</span>
           </div>
-          <div className="flex items-center gap-[16px]">
-            <Link
-              href="/privacy-policy"
-              className="font-sans text-[11px] text-t3 tracking-[0.5px] hover:text-t2 transition-colors duration-150 ease-out"
-            >
+          <div className="ml-auto flex gap-[20px]">
+            <Link href="/privacy-policy" className="text-[13.5px] text-t2 hover:text-t1 transition-colors duration-150">
               Privacy Policy
             </Link>
-            <p className="font-sans text-[11px] text-t3 tracking-[0.5px]">
-              Private by design. Built with care.
-            </p>
+            <a href="#blocks" className="text-[13.5px] text-t2 hover:text-t1 transition-colors duration-150">Blocks</a>
+            <a href="#waitlist" className="text-[13.5px] text-t2 hover:text-t1 transition-colors duration-150">Early access</a>
           </div>
         </div>
       </footer>

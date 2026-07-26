@@ -1,0 +1,204 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: Ownspce
+        - navigation [ref=e15]:
+          - link "Blocks" [ref=e16] [cursor=pointer]:
+            - /url: "#blocks"
+          - link "Privacy" [ref=e17] [cursor=pointer]:
+            - /url: "#sealed"
+          - link "Essay" [ref=e18] [cursor=pointer]:
+            - /url: "#essay"
+        - generic [ref=e19]:
+          - link "Sign in" [ref=e20] [cursor=pointer]:
+            - /url: "#waitlist"
+          - link "Get early access" [ref=e21] [cursor=pointer]:
+            - /url: "#waitlist"
+    - generic [ref=e22]:
+      - generic [ref=e23]:
+        - generic [ref=e24]: Zero-knowledge cloud · your key never leaves your device
+        - heading "A page that becomes whatever you need." [level=1] [ref=e26]: A page that becomeswhatever you need.
+        - paragraph [ref=e27]: Ownspce pages start blank. Stack the blocks that fit the thought — a priority lane, an impact map, a board, a note — and rearrange them whenever the work changes.
+        - generic [ref=e28]:
+          - link "Get early access" [ref=e29] [cursor=pointer]:
+            - /url: "#waitlist"
+          - link "See the blocks" [ref=e30] [cursor=pointer]:
+            - /url: "#blocks"
+        - paragraph [ref=e31]: Free while in beta · no account required
+      - generic [ref=e33]:
+        - generic [ref=e34]: Launch plan — Ownspce
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - generic [ref=e41]: Your pages
+            - generic [ref=e42]: Launch plan
+            - generic [ref=e45]: Weekly notes
+            - generic [ref=e48]: Product ideas
+          - generic [ref=e51]:
+            - textbox "Page title" [ref=e52]:
+              - /placeholder: Untitled page
+              - text: Launch plan
+            - textbox "Page body" [ref=e53]:
+              - /placeholder: Start writing…
+              - text: Where each bet sits, what’s cleared for the runway, and the sprint board — all on one page.
+            - generic [ref=e54]:
+              - generic [ref=e55]:
+                - generic [ref=e57]: Priority Lane
+                - generic [ref=e58]: Now · Next · Holding
+                - generic [ref=e59]: Try it — everything here is live
+              - generic [ref=e60]:
+                - generic [ref=e61]:
+                  - generic [ref=e62]: On Now
+                  - generic [ref=e65]:
+                    - textbox "Task on now" [ref=e66]:
+                      - /placeholder: What’s on the runway?
+                      - text: Ship local-sync beta
+                    - button "Land ✓" [ref=e67] [cursor=pointer]
+                - generic [ref=e68]:
+                  - generic [ref=e69]: Cleared Next
+                  - generic [ref=e70]:
+                    - textbox "Next task 1" [ref=e71]:
+                      - /placeholder: Add a task
+                      - text: Onboarding empty states
+                    - button "Move to On Now" [ref=e72] [cursor=pointer]: ↑
+                  - generic [ref=e73]:
+                    - textbox "Next task 2" [ref=e74]:
+                      - /placeholder: Add a task
+                      - text: Record demo walkthrough
+                    - button "Move to On Now" [ref=e75] [cursor=pointer]: ↑
+                  - button "+ Add" [ref=e76] [cursor=pointer]
+                - generic [ref=e77]:
+                  - generic [ref=e78]: Holding
+                  - generic [ref=e79]:
+                    - textbox "Holding task 1" [ref=e80]:
+                      - /placeholder: Someday
+                      - text: Reply to waitlist
+                    - button "Move to Cleared Next" [ref=e81] [cursor=pointer]: ↑
+                  - generic [ref=e82]:
+                    - textbox "Holding task 2" [ref=e83]:
+                      - /placeholder: Someday
+                      - text: Weekly review
+                    - button "Move to Cleared Next" [ref=e84] [cursor=pointer]: ↑
+                  - button "+ Add" [ref=e85] [cursor=pointer]
+            - generic [ref=e86]:
+              - generic [ref=e87]: Impact Map
+              - generic [ref=e88]: Priority Lane
+              - generic [ref=e89]: Board
+              - generic [ref=e90]: Quick Note
+    - generic [ref=e93]:
+      - generic [ref=e94]:
+        - generic [ref=e95]: The blocks
+        - heading "Five ways to hold a thought." [level=2] [ref=e96]
+        - paragraph [ref=e97]: No templates to choose up front. Add a block when you need it, drop it when you don’t — notes, tasks and boards in one page instead of three apps.
+        - generic [ref=e98]:
+          - generic [ref=e99]:
+            - generic [ref=e100]: iPhone
+            - generic [ref=e101]: Capture, one column
+            - generic [ref=e102]: Beta
+          - generic [ref=e103]:
+            - generic [ref=e104]: Desktop & web
+            - generic [ref=e105]: Shape pages, keyboard-first
+            - generic [ref=e106]: Beta
+          - generic [ref=e107]:
+            - generic [ref=e108]: iPad & Android
+            - generic [ref=e109]: Same blocks, tuned for touch
+            - generic [ref=e110]: Soon
+      - generic [ref=e111]:
+        - generic [ref=e115]:
+          - heading "Priority Lane" [level=3] [ref=e116]
+          - paragraph [ref=e117]: One thing on the runway, a short queue behind it, the rest held.
+        - generic [ref=e121]:
+          - heading "Impact Map" [level=3] [ref=e122]
+          - paragraph [ref=e123]: Plot work by impact against time. Quick wins surface themselves.
+        - generic [ref=e127]:
+          - heading "Board" [level=3] [ref=e128]
+          - paragraph [ref=e129]: To do, doing, complete — for work that moves in stages.
+        - generic [ref=e133]:
+          - heading "Quick Note" [level=3] [ref=e134]
+          - paragraph [ref=e135]: A titled callout for a decision you don’t want to lose.
+        - generic [ref=e139]:
+          - heading "Text" [level=3] [ref=e140]
+          - paragraph [ref=e141]: Plain paragraphs. Where the thinking actually happens.
+    - generic [ref=e144]:
+      - generic [ref=e145]:
+        - generic [ref=e146]: Sealed by design
+        - heading "Stored in the cloud. Sealed before it leaves your device." [level=2] [ref=e147]
+        - paragraph [ref=e148]: Your pages are on every device instantly — but they arrive already encrypted. Our servers store and relay opaque blobs. There is no key on our side, so there is nothing to read, leak, or hand over.
+        - generic [ref=e149]:
+          - generic [ref=e150]:
+            - generic [ref=e151]: Sign-in identity
+            - paragraph [ref=e152]: Google or Apple. Decides which sealed data you may fetch. Recoverable.
+          - generic [ref=e153]:
+            - generic [ref=e154]: Encryption identity
+            - paragraph [ref=e155]: A key generated on your device. Decides what can be decrypted. Never uploaded.
+        - list [ref=e156]:
+          - listitem [ref=e157]:
+            - generic [ref=e161]: Titles, tags and page names are encrypted too — not just note bodies.
+          - listitem [ref=e162]:
+            - generic [ref=e166]: A stolen Google or Apple account yields a session and nothing readable.
+          - listitem [ref=e167]:
+            - generic [ref=e171]: Works offline; queued changes sync sealed when you reconnect.
+          - listitem [ref=e172]:
+            - generic [ref=e176]: Export every page as plain Markdown, any time.
+      - generic [ref=e177]:
+        - generic [ref=e178]:
+          - generic [ref=e179]: How sync works
+          - generic [ref=e180]:
+            - generic [ref=e181]:
+              - generic [ref=e182]: "1"
+              - generic [ref=e183]:
+                - generic [ref=e184]: Seal on device
+                - paragraph [ref=e185]: Every change is encrypted locally, then uploaded as an opaque blob.
+            - generic [ref=e186]:
+              - generic [ref=e187]: "2"
+              - generic [ref=e188]:
+                - generic [ref=e189]: Relay, don’t read
+                - paragraph [ref=e190]: The server appends sealed change-sets in order and hands them to your other devices.
+            - generic [ref=e191]:
+              - generic [ref=e192]: "3"
+              - generic [ref=e193]:
+                - generic [ref=e194]: Unlock with your key
+                - paragraph [ref=e195]: A recovery phrase — or an already signed-in device — brings a new device in.
+          - paragraph [ref=e196]: Lose every device and your recovery phrase, and the data is unrecoverable — by design.
+        - generic [ref=e197]:
+          - generic [ref=e198]:
+            - heading "Shared spaces" [level=3] [ref=e199]
+            - paragraph [ref=e200]: Invite someone and your device wraps the space key for their public key. Remove them and it rotates. The server holds the wrapped keys and can open none of them.
+          - generic [ref=e201]:
+            - heading "Publish one page" [level=3] [ref=e202]
+            - paragraph [ref=e203]: Your device decrypts a single page and posts it publicly — the one deliberate exception. Unpublish and it’s gone.
+            - generic [ref=e204]: ownspce.com/@rahul/launch-plan
+    - generic [ref=e206]:
+      - generic [ref=e207]:
+        - generic [ref=e208]: Personal · Essay
+        - heading "Why I’m building another notes app" [level=2] [ref=e209]
+        - generic [ref=e210]:
+          - generic [ref=e211]: R
+          - generic [ref=e212]:
+            - generic [ref=e213]: Rahul
+            - generic [ref=e214]: 6 min read
+        - generic [ref=e215]:
+          - paragraph [ref=e216]: I’ve used Notion since 2020. I’ve tried Obsidian, Logseq, Roam, Bear, Apple Notes, and at one point, a physical Moleskine. None of them felt right. Notion is powerful but cloud-locked — my product ideas sit on someone else’s AWS instances and I have no say in that.
+          - paragraph [ref=e217]: Obsidian is private and local, but the mobile app is an afterthought, and there’s no task management. You need plugins for everything.
+          - blockquote [ref=e218]:
+            - paragraph [ref=e219]: "The gap I kept hitting: a beautiful, mobile-first app where the data is mine, that also does tasks. That combination doesn’t exist."
+          - paragraph [ref=e220]: So I’m building it.
+      - generic [ref=e221]:
+        - heading "Make the space yours." [level=3] [ref=e222]
+        - paragraph [ref=e223]: Early access ships in waves — no passwords, no Ownspce account to create. Sign in with Google or Apple and go.
+        - generic [ref=e224]:
+          - textbox "Email address" [ref=e225]:
+            - /placeholder: you@example.com
+          - button "Get early access" [ref=e226] [cursor=pointer]
+        - paragraph [ref=e227]: 1,840 people waiting · invites go out weekly
+    - contentinfo [ref=e228]:
+      - generic [ref=e229]:
+        - generic [ref=e230]: Ownspce © 2026
+        - generic [ref=e240]:
+          - link "Privacy Policy" [ref=e241] [cursor=pointer]:
+            - /url: /privacy-policy
+          - link "Blocks" [ref=e242] [cursor=pointer]:
+            - /url: "#blocks"
+          - link "Early access" [ref=e243] [cursor=pointer]:
+            - /url: "#waitlist"
+  - alert [ref=e244]

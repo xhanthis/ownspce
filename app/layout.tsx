@@ -1,23 +1,27 @@
 import type { Metadata } from 'next';
-import { DM_Sans, Instrument_Serif } from 'next/font/google';
+import { Hanken_Grotesk, Newsreader } from 'next/font/google';
 import './globals.css';
 
-const dmSans = DM_Sans({
+const hankenGrotesk = Hanken_Grotesk({
   subsets: ['latin'],
-  variable: '--font-dm-sans',
-  weight: ['300', '400', '500'],
+  variable: '--font-hanken-grotesk',
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
 });
 
-const instrumentSerif = Instrument_Serif({
+const newsreader = Newsreader({
   subsets: ['latin'],
-  variable: '--font-instrument-serif',
-  weight: '400',
+  variable: '--font-newsreader',
+  weight: ['400', '500'],
   style: ['normal', 'italic'],
+  display: 'swap',
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
-  title: 'Ownspce',
-  description: 'Your thoughts, tasks, and ideas — on your device. Private by design, not by promise.',
+  title: 'Ownspce — a page that becomes whatever you need',
+  description:
+    'Ownspce pages start blank. Stack the blocks that fit the thought — a priority lane, an impact map, a board, a note. Zero-knowledge cloud: your key never leaves your device.',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: '32x32' },
@@ -33,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${instrumentSerif.variable} dark`}>
+    <html lang="en" className={`${hankenGrotesk.variable} ${newsreader.variable}`}>
       <body>{children}</body>
     </html>
   );

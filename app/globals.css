@@ -9,10 +9,15 @@
 
   html {
     -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
   }
 
   body {
     @apply bg-bg text-t1 font-sans;
+  }
+
+  ::selection {
+    background: rgba(176, 116, 90, 0.22);
   }
 }
 
