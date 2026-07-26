@@ -543,7 +543,7 @@ export default function LandingPage() {
         <div className="max-w-[1160px] mx-auto px-[20px] md:px-[40px] py-[26px] flex items-center gap-l flex-wrap">
           <div className="flex items-center gap-[9px]">
             <OwlLogo size={22} />
-            <span className="text-[13.5px] text-t2">Ownspce © 2026</span>
+            <span className="text-[13.5px] text-t2">Navineo © 2026</span>
           </div>
           <div className="ml-auto flex gap-[20px]">
             <Link href="/privacy-policy" className="text-[13.5px] text-t2 hover:text-t1 transition-colors duration-150">
