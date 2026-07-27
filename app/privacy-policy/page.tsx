@@ -16,12 +16,12 @@ function ShieldIcon() {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
         d="M12 3 L19 6 L19 12 C19 16.5 15.8 19.8 12 21 C8.2 19.8 5 16.5 5 12 L5 6 Z"
-        stroke="#5d7452"
+        stroke="#CC785C"
         strokeWidth="1.4"
         fill="none"
         strokeLinejoin="round"
       />
-      <path d="M9 12 L11 14 L15 9.5" stroke="#5d7452" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9 12 L11 14 L15 9.5" stroke="#CC785C" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -35,7 +35,7 @@ function ArrowIcon() {
 }
 
 function P({ children }: { children: React.ReactNode }) {
-  return <p className="font-sans text-[15px] leading-[1.85] text-body">{children}</p>;
+  return <p className="font-sans text-[15px] leading-[1.85] text-muted">{children}</p>;
 }
 
 function Bullets({ items }: { items: React.ReactNode[] }) {
@@ -44,7 +44,7 @@ function Bullets({ items }: { items: React.ReactNode[] }) {
       {items.map((item, index) => (
         <li
           key={index}
-          className="font-sans text-[15px] leading-[1.75] text-body pl-[20px] relative before:content-[''] before:absolute before:left-[4px] before:top-[11px] before:w-[4px] before:h-[4px] before:rounded-full before:bg-border-mid"
+          className="font-sans text-[15px] leading-[1.75] text-muted pl-[20px] relative before:content-[''] before:absolute before:left-[4px] before:top-[11px] before:w-[4px] before:h-[4px] before:rounded-full before:bg-border"
         >
           {item}
         </li>
@@ -59,7 +59,7 @@ function ExternalLink({ href, children }: { href: string; children: React.ReactN
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-[4px] text-t1 underline underline-offset-[3px] decoration-border-mid hover:decoration-t2 transition-colors duration-150 ease-out"
+      className="inline-flex items-center gap-[4px] text-ink underline underline-offset-[3px] decoration-border hover:decoration-muted transition-colors duration-150 ease-out"
     >
       {children}
       <ArrowIcon />
@@ -71,7 +71,7 @@ function MailLink({ children }: { children?: React.ReactNode }) {
   return (
     <a
       href="mailto:privacy@ownspce.com"
-      className="text-t1 underline underline-offset-[3px] decoration-border-mid hover:decoration-t2 transition-colors duration-150 ease-out"
+      className="text-ink underline underline-offset-[3px] decoration-border hover:decoration-muted transition-colors duration-150 ease-out"
     >
       {children ?? 'privacy@ownspce.com'}
     </a>
@@ -161,10 +161,10 @@ const sections: { id: string; title: string; body: React.ReactNode }[] = [
           <table className="w-full border-collapse">
             <thead>
               <tr className="border-b-[0.5px] border-border">
-                <th className="text-left font-sans text-[11px] tracking-[0.5px] uppercase text-t3 font-medium px-[16px] py-[12px]">
+                <th className="text-left font-sans text-[11px] tracking-[0.5px] uppercase text-faint font-medium px-[16px] py-[12px]">
                   Data
                 </th>
-                <th className="text-left font-sans text-[11px] tracking-[0.5px] uppercase text-t3 font-medium px-[16px] py-[12px]">
+                <th className="text-left font-sans text-[11px] tracking-[0.5px] uppercase text-faint font-medium px-[16px] py-[12px]">
                   Why
                 </th>
               </tr>
@@ -172,10 +172,10 @@ const sections: { id: string; title: string; body: React.ReactNode }[] = [
             <tbody>
               {ACCOUNT_DATA.map((row) => (
                 <tr key={row.field} className="border-b-[0.5px] border-border last:border-b-0">
-                  <td className="font-sans text-[14px] text-t1 px-[16px] py-[12px] align-top whitespace-nowrap">
+                  <td className="font-sans text-[14px] text-ink px-[16px] py-[12px] align-top whitespace-nowrap">
                     {row.field}
                   </td>
-                  <td className="font-sans text-[14px] text-t2 px-[16px] py-[12px] align-top">{row.reason}</td>
+                  <td className="font-sans text-[14px] text-muted px-[16px] py-[12px] align-top">{row.reason}</td>
                 </tr>
               ))}
             </tbody>
@@ -194,11 +194,11 @@ const sections: { id: string; title: string; body: React.ReactNode }[] = [
         <Bullets
           items={[
             <>
-              <span className="text-t1">Microphone</span> — used only when you start a voice note. Audio is
+              <span className="text-ink">Microphone</span> — used only when you start a voice note. Audio is
               transcribed on your device. Nothing is sent anywhere.
             </>,
             <>
-              <span className="text-t1">Camera / Photos</span> — used only when you capture or pick an image for
+              <span className="text-ink">Camera / Photos</span> — used only when you capture or pick an image for
               text extraction. The text is read on your device. Nothing is sent anywhere.
             </>,
           ]}
@@ -307,7 +307,7 @@ const sections: { id: string; title: string; body: React.ReactNode }[] = [
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="min-h-screen bg-bg text-t1">
+    <div className="min-h-screen bg-bg text-ink">
       {/* Navigation */}
       <nav className="flex items-center justify-between px-[16px] md:px-[32px] py-[24px] max-w-[1080px] mx-auto">
         <Link href="/" className="flex items-center gap-[12px] group">
@@ -316,7 +316,7 @@ export default function PrivacyPolicyPage() {
         </Link>
         <Link
           href="/#waitlist"
-          className="font-sans text-[13px] font-medium px-[20px] py-[10px] rounded-[12px] border-[0.5px] border-border text-t2 hover:border-border-mid hover:text-t1 transition-all duration-150 ease-out"
+          className="font-sans text-[13px] font-medium px-[20px] py-[10px] rounded-[12px] border-[0.5px] border-border text-muted hover:border-border hover:text-ink transition-all duration-150 ease-out"
         >
           Join Waitlist
         </Link>
@@ -324,20 +324,20 @@ export default function PrivacyPolicyPage() {
 
       {/* Header */}
       <header className="px-[16px] md:px-[32px] pt-[48px] pb-[32px] max-w-[720px] mx-auto">
-        <p className="font-sans text-[11px] tracking-[0.5px] text-t3 uppercase mb-[12px]">
+        <p className="font-sans text-[11px] tracking-[0.5px] text-faint uppercase mb-[12px]">
           Legal &middot; Privacy
         </p>
-        <h1 className="font-serif text-[44px] leading-[48px] tracking-[-1px] mb-[12px]">
+        <h1 className="font-sans text-[44px] leading-[48px] tracking-[-1px] mb-[12px]">
           Privacy Policy
         </h1>
-        <p className="font-sans text-[13px] text-t3">Last updated {LAST_UPDATED}</p>
+        <p className="font-sans text-[13px] text-faint">Last updated {LAST_UPDATED}</p>
 
         <div className="mt-[32px] rounded-[12px] border-[0.5px] border-border bg-surface p-[24px] md:p-[32px]">
           <div className="flex items-center gap-[8px] mb-[16px]">
             <ShieldIcon />
-            <span className="font-sans text-[11px] tracking-[0.5px] uppercase text-t3">The short version</span>
+            <span className="font-sans text-[11px] tracking-[0.5px] uppercase text-faint">The short version</span>
           </div>
-          <p className="font-serif text-[22px] leading-[32px] text-t1">
+          <p className="font-sans text-[22px] leading-[32px] text-ink">
             Ownspce stores your notes, tasks and boards on your own device. We don&apos;t have a copy. If you turn on
             sync, your data goes to your Google Drive or iCloud — not to our servers. We can&apos;t read it.
           </p>
@@ -348,16 +348,16 @@ export default function PrivacyPolicyPage() {
       <div className="px-[16px] md:px-[32px] pb-[48px] max-w-[1080px] mx-auto lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-[48px] lg:justify-center">
         <aside className="hidden lg:block">
           <nav aria-label="Table of contents" className="sticky top-[32px] pt-[16px]">
-            <p className="font-sans text-[11px] tracking-[0.5px] uppercase text-t3 mb-[16px]">Contents</p>
+            <p className="font-sans text-[11px] tracking-[0.5px] uppercase text-faint mb-[16px]">Contents</p>
             <ol className="space-y-[8px]">
               {sections.map((section, index) => (
                 <li key={section.id} className="flex gap-[8px]">
-                  <span className="font-sans text-[11px] text-t3 pt-[3px] tabular-nums">
+                  <span className="font-sans text-[11px] text-faint pt-[3px] tabular-nums">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <a
                     href={`#${section.id}`}
-                    className="font-sans text-[13px] leading-[1.5] text-t2 hover:text-t1 transition-colors duration-150 ease-out"
+                    className="font-sans text-[13px] leading-[1.5] text-muted hover:text-ink transition-colors duration-150 ease-out"
                   >
                     {section.title}
                   </a>
@@ -371,10 +371,10 @@ export default function PrivacyPolicyPage() {
           {sections.map((section, index) => (
             <section key={section.id} id={section.id} className="scroll-mt-[32px]">
               <div className="flex items-baseline gap-[12px] mb-[16px]">
-                <span className="font-sans text-[11px] text-t3 tabular-nums tracking-[0.5px]">
+                <span className="font-sans text-[11px] text-faint tabular-nums tracking-[0.5px]">
                   {String(index + 1).padStart(2, '0')}
                 </span>
-                <h2 className="font-serif text-[24px] leading-[30px] text-t1">{section.title}</h2>
+                <h2 className="font-sans text-[24px] leading-[30px] text-ink">{section.title}</h2>
               </div>
               <div className="space-y-[16px] pl-0 md:pl-[35px]">{section.body}</div>
             </section>
@@ -386,13 +386,13 @@ export default function PrivacyPolicyPage() {
               <div className="flex justify-center mb-[16px]">
                 <OwlLogo size={40} />
               </div>
-              <h2 className="font-serif text-[24px] leading-[30px] mb-[8px]">Questions about your privacy?</h2>
-              <p className="font-sans text-[13px] text-t2 max-w-[360px] mx-auto mb-[24px]">
+              <h2 className="font-sans text-[24px] leading-[30px] mb-[8px]">Questions about your privacy?</h2>
+              <p className="font-sans text-[13px] text-muted max-w-[360px] mx-auto mb-[24px]">
                 Write to us and we&apos;ll respond within 30 days.
               </p>
               <a
                 href="mailto:privacy@ownspce.com"
-                className="inline-block px-[20px] py-[13px] rounded-[12px] bg-t1 text-bg font-sans font-medium text-[15px] hover:opacity-80 transition-all duration-150 ease-out"
+                className="inline-block px-[20px] py-[13px] rounded-[12px] bg-ink text-bg font-sans font-medium text-[15px] hover:opacity-80 transition-all duration-150 ease-out"
               >
                 privacy@ownspce.com
               </a>
@@ -406,16 +406,16 @@ export default function PrivacyPolicyPage() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-[12px]">
           <Link href="/" className="flex items-center gap-[8px]">
             <OwlLogo size={20} />
-            <span className="font-sans text-[13px] text-t2">ownspce</span>
+            <span className="font-sans text-[13px] text-muted">ownspce</span>
           </Link>
           <div className="flex items-center gap-[16px]">
             <Link
               href="/"
-              className="font-sans text-[11px] text-t3 tracking-[0.5px] hover:text-t2 transition-colors duration-150 ease-out"
+              className="font-sans text-[11px] text-faint tracking-[0.5px] hover:text-muted transition-colors duration-150 ease-out"
             >
               Home
             </Link>
-            <span className="font-sans text-[11px] text-t2 tracking-[0.5px]">Privacy Policy</span>
+            <span className="font-sans text-[11px] text-muted tracking-[0.5px]">Privacy Policy</span>
           </div>
         </div>
       </footer>

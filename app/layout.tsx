@@ -1,27 +1,18 @@
 import type { Metadata } from 'next';
-import { Hanken_Grotesk, Newsreader } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
 
-const hankenGrotesk = Hanken_Grotesk({
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-hanken-grotesk',
-  weight: ['400', '500', '600', '700'],
+  variable: '--font-inter',
+  weight: ['400', '500', '600'],
   display: 'swap',
-});
-
-const newsreader = Newsreader({
-  subsets: ['latin'],
-  variable: '--font-newsreader',
-  weight: ['400', '500'],
-  style: ['normal', 'italic'],
-  display: 'swap',
-  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
-  title: 'Ownspce — a page that becomes whatever you need',
+  title: 'ownspce — Notes, tasks, and plans in one space only you can open',
   description:
-    'Ownspce pages start blank. Stack the blocks that fit the thought — a priority lane, an impact map, a board, a note. Zero-knowledge cloud: your key never leaves your device.',
+    'A calm, fast, private workspace for notes, tasks, and sprint planning. End-to-end encrypted, works offline, and syncs across iPhone, iPad, Android, Mac, and web. Join the waitlist.',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: '32x32' },
@@ -37,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${hankenGrotesk.variable} ${newsreader.variable}`}>
+    <html lang="en" className={inter.variable}>
       <body>{children}</body>
     </html>
   );
