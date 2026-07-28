@@ -121,7 +121,7 @@ const PILLARS = [
   {
     title: 'Truly private',
     body:
-      'End-to-end encrypted, sealed with a key only your device holds. We store your data — we can never read it. Safe for .env files and legal docs.',
+      'End-to-end encrypted with a key only your device holds. We store your data but can never read it. Safe for .env files and legal docs.',
   },
   {
     title: 'Fast, and everywhere',
@@ -307,12 +307,11 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 items-center gap-[44px] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-[56px]">
             <div className="reveal">
               <h1 className="text-[40px] font-semibold leading-[1.05] tracking-[-0.03em] text-ink md:text-[64px]">
-                One private space for everything.
+                Notes, tasks, and plans — private.
               </h1>
-              <p className="mt-[20px] max-w-[520px] text-[17px] leading-[1.6] text-muted md:text-[18px]">
-                A calm, fast workspace for your notes, tasks, and plans. End-to-end
-                encrypted, works offline, and syncs across every device — solo, or with
-                your team.
+              <p className="mt-[20px] max-w-[500px] text-[17px] leading-[1.6] text-muted md:text-[18px]">
+                A calm, fast workspace for everything you think and build. Encrypted,
+                offline-ready, and synced across every device.
               </p>
               <div className="mt-[28px]">
                 <WaitlistForm microcopy="No credit card. Your space stays yours." />
@@ -365,9 +364,9 @@ export default function LandingPage() {
               Stop juggling tools. Stop handing over your thinking.
             </h2>
             <p className="mx-auto mt-[20px] max-w-[640px] text-[17px] leading-[1.7] text-muted md:text-[18px]">
-              Your ideas, tasks, and docs live in three different apps — all on servers someone
-              else can read. Ownspce puts them in one place, where a doc and its tasks are the
-              same thing, and seals it so it&rsquo;s yours alone.
+              Your ideas, tasks, and docs live in three apps — all on servers someone else can
+              read. Ownspce puts them in one place, where a doc and its tasks are the same thing,
+              and seals it so it&rsquo;s yours alone.
             </p>
           </div>
         </section>
@@ -434,8 +433,8 @@ export default function LandingPage() {
                 </h2>
                 <p className="mt-[20px] max-w-[520px] text-[16.5px] leading-[1.7] text-muted">
                   Invite your team into a shared, encrypted space. Plan sprints, keep a knowledge
-                  base that doesn&rsquo;t rot, and give clients guest access you revoke in one
-                  click. Your roadmap stays sealed — even from us.
+                  base that doesn&rsquo;t rot, and give clients guest access you revoke in one click.
+                  Your roadmap stays sealed — even from us.
                 </p>
               </div>
               <ul className="grid grid-cols-1 gap-[12px] self-center sm:grid-cols-2">
@@ -464,8 +463,7 @@ export default function LandingPage() {
                 <p className="mt-[20px] max-w-[520px] text-[16.5px] leading-[1.7] text-[#c9c9c2]">
                   Most apps &ldquo;encrypt your data&rdquo; but hold the keys — so they can read it,
                   and so can anyone who breaches them. Ownspce is zero-knowledge: sealed on your
-                  device with a key we never see. We store and sync it, but can never open it. A
-                  promise the architecture keeps, not the marketing.
+                  device with a key we never see. We store and sync it, but can never open it.
                 </p>
               </div>
               <ul className="flex flex-col gap-[14px] self-center">
