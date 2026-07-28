@@ -280,9 +280,9 @@ export default function LandingPage() {
       {/* 1. Nav ------------------------------------------------------------ */}
       <header className="sticky top-0 z-30 border-b border-border bg-bg/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-shell items-center gap-[16px] px-[20px] py-[13px] md:px-[40px]">
-          <a href="#hero" className="flex items-center gap-[9px]" aria-label="ownspce home">
+          <a href="#hero" className="flex items-center gap-[9px]" aria-label="Ownspce home">
             <OwlLogo size={28} />
-            <span className="text-[18px] font-semibold tracking-[-0.01em] text-ink">ownspce</span>
+            <span className="text-[18px] font-semibold tracking-[-0.01em] text-ink">Ownspce</span>
           </a>
           <nav className="ml-[24px] hidden items-center gap-[24px] md:flex" aria-label="Primary">
             <a href="#features" className={NAV_LINK}>
@@ -602,7 +602,7 @@ export default function LandingPage() {
           <div className="flex flex-col items-start justify-between gap-[24px] md:flex-row md:items-center">
             <div className="flex items-center gap-[9px]">
               <OwlLogo size={24} />
-              <span className="text-[16px] font-semibold tracking-[-0.01em] text-ink">ownspce</span>
+              <span className="text-[16px] font-semibold tracking-[-0.01em] text-ink">Ownspce</span>
             </div>
             <nav className="flex flex-wrap gap-x-[24px] gap-y-[10px]" aria-label="Footer">
               <a href="#features" className={NAV_LINK}>

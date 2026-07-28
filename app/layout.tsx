@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'ownspce — Notes, tasks, and plans in one space only you can open',
+  title: 'Ownspce — Notes, tasks, and plans in one space only you can open',
   description:
     'A calm, fast, private workspace for notes, tasks, and sprint planning. End-to-end encrypted, works offline, and syncs across iPhone, iPad, Android, Mac, and web. Join the waitlist.',
   icons: {

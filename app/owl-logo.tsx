@@ -12,7 +12,7 @@ export default function OwlLogo({ size = 48 }: { size?: number }) {
       height={size}
       viewBox="0 0 512 512"
       role="img"
-      aria-label="ownspce owl logo"
+      aria-label="Ownspce owl logo"
     >
       <rect width="512" height="512" rx="115" fill="#F2E5D4" />
       <path

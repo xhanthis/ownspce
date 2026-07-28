@@ -44,7 +44,7 @@ function Dot({ color }: { color: string }) {
  */
 export function HeroMockup() {
   return (
-    <AppWindow title="Q3 Launch — ownspce">
+    <AppWindow title="Q3 Launch — Ownspce">
       <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr]">
         {/* Sidebar */}
         <div className="hidden flex-col gap-[3px] border-r border-border bg-bg/40 p-[14px] sm:flex">

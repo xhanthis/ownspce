@@ -312,7 +312,7 @@ export default function PrivacyPolicyPage() {
       <nav className="flex items-center justify-between px-[16px] md:px-[32px] py-[24px] max-w-[1080px] mx-auto">
         <Link href="/" className="flex items-center gap-[12px] group">
           <OwlLogo size={32} />
-          <span className="font-sans text-[15px] font-medium tracking-tight">ownspce</span>
+          <span className="font-sans text-[15px] font-medium tracking-tight">Ownspce</span>
         </Link>
         <Link
           href="/#waitlist"
@@ -406,7 +406,7 @@ export default function PrivacyPolicyPage() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-[12px]">
           <Link href="/" className="flex items-center gap-[8px]">
             <OwlLogo size={20} />
-            <span className="font-sans text-[13px] text-muted">ownspce</span>
+            <span className="font-sans text-[13px] text-muted">Ownspce</span>
           </Link>
           <div className="flex items-center gap-[16px]">
             <Link

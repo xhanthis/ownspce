@@ -102,7 +102,7 @@ export default function TermsPage() {
       <nav className="mx-auto flex max-w-[1080px] items-center justify-between px-[16px] py-[24px] md:px-[32px]">
         <Link href="/" className="flex items-center gap-[10px]">
           <OwlLogo size={28} />
-          <span className="text-[16px] font-semibold tracking-[-0.01em]">ownspce</span>
+          <span className="text-[16px] font-semibold tracking-[-0.01em]">Ownspce</span>
         </Link>
         <Link
           href="/#waitlist"
@@ -133,7 +133,7 @@ export default function TermsPage() {
         <div className="flex flex-col items-center justify-between gap-[12px] md:flex-row">
           <Link href="/" className="flex items-center gap-[8px]">
             <OwlLogo size={20} />
-            <span className="text-[13px] text-muted">ownspce</span>
+            <span className="text-[13px] text-muted">Ownspce</span>
           </Link>
           <div className="flex items-center gap-[16px] text-[12px] text-faint">
             <Link href="/privacy-policy" className="transition-colors hover:text-muted">
