@@ -15,6 +15,9 @@ import {
 /*  Shared bits                                                               */
 /* -------------------------------------------------------------------------- */
 
+/** The Ownspce web app — the "Log in" action redirects here. */
+const SIGN_IN_URL = 'https://app.ownspce.com';
+
 const PRIMARY_BTN =
   'inline-flex items-center justify-center whitespace-nowrap rounded-m bg-accent px-[20px] py-[12px] text-[15px] font-medium text-surface transition-colors duration-150 hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg';
 
@@ -292,12 +295,20 @@ export default function LandingPage() {
               Pricing
             </a>
           </nav>
-          <a
-            href="#waitlist"
-            className="ml-auto inline-flex items-center justify-center rounded-m bg-accent px-[16px] py-[9px] text-[13.5px] font-medium text-surface transition-colors duration-150 hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
-          >
-            Join the waitlist
-          </a>
+          <div className="ml-auto flex items-center gap-[8px] sm:gap-[14px]">
+            <a
+              href={SIGN_IN_URL}
+              className="text-[13.5px] font-medium text-muted transition-colors duration-150 hover:text-ink focus-visible:outline-none focus-visible:text-ink"
+            >
+              Log in
+            </a>
+            <a
+              href="#waitlist"
+              className="inline-flex items-center justify-center rounded-m bg-accent px-[16px] py-[9px] text-[13.5px] font-medium text-surface transition-colors duration-150 hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            >
+              Join the waitlist
+            </a>
+          </div>
         </div>
       </header>
 

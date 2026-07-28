@@ -1,6 +1,7 @@
 /**
- * ownspce brand mark — geometric owl, transparent (no plate or shadow).
- * Locked artwork from the design system.
+ * ownspce brand mark — matches the site favicon (public/icon.svg): the owl on a
+ * rounded cream plate. Used everywhere the logo appears (nav, footer, legal
+ * pages) so the mark stays identical to the browser-tab icon.
  * @param size - Rendered width and height in pixels (default 48)
  */
 export default function OwlLogo({ size = 48 }: { size?: number }) {
@@ -9,18 +10,20 @@ export default function OwlLogo({ size = 48 }: { size?: number }) {
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
-      viewBox="0 0 140 140"
+      viewBox="0 0 512 512"
       role="img"
       aria-label="ownspce owl logo"
     >
-      <path d="M42 44 L36 27 L53 40 Z" fill="#1A1A1A" />
-      <path d="M98 44 L104 27 L87 40 Z" fill="#1A1A1A" />
-      <ellipse cx="70" cy="83" rx="46" ry="50" fill="#1A1A1A" />
-      <circle cx="55" cy="74" r="15" fill="#FFFFFF" />
-      <circle cx="85" cy="74" r="15" fill="#FFFFFF" />
-      <circle cx="55" cy="74" r="7.5" fill="#1A1A1A" />
-      <circle cx="85" cy="74" r="7.5" fill="#1A1A1A" />
-      <path d="M70 84 L63.5 94 L76.5 94 Z" fill="#CC785C" />
+      <rect width="512" height="512" rx="115" fill="#F2E5D4" />
+      <path
+        fill="#C4714E"
+        d="M256,130 C242,126 214,114 192,102 C174,92 158,76 144,70 C132,75 114,96 100,120 C84,148 74,180 68,214 C62,250 62,288 68,322 C74,358 86,392 106,420 C126,448 154,470 186,484 C210,494 234,498 256,498 C278,498 302,494 326,484 C358,470 386,448 406,420 C426,392 438,358 444,322 C450,288 450,250 444,214 C438,180 428,148 412,120 C398,96 380,75 368,70 C354,76 338,92 320,102 C298,114 270,126 256,130Z"
+      />
+      <circle cx="180" cy="272" r="72" fill="#F2E5D4" />
+      <circle cx="332" cy="272" r="72" fill="#F2E5D4" />
+      <circle cx="190" cy="276" r="29" fill="#1A1010" />
+      <circle cx="322" cy="276" r="29" fill="#1A1010" />
+      <polygon points="246,348 266,348 256,368" fill="#F2E5D4" />
     </svg>
   );
 }
