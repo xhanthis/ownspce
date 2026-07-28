@@ -116,17 +116,17 @@ const PILLARS = [
   {
     title: 'Everything in one place',
     body:
-      'Notes, nested pages, tasks, boards, and sprint planning, unified. A spec and its tasks are the same item, so nothing drifts out of sync.',
+      'Notes, tasks, boards, and sprint planning, unified. A spec and its tasks are one item — nothing drifts out of sync.',
   },
   {
     title: 'Truly private',
     body:
-      'End-to-end encrypted by default, sealed with a key only your device holds. We store your data — we can never read it. Safe enough for your .env files and your legal documents.',
+      'End-to-end encrypted, sealed with a key only your device holds. We store your data — we can never read it. Safe for .env files and legal docs.',
   },
   {
     title: 'Fast, and everywhere',
     body:
-      'Local-first, so it’s instant and works fully offline. Syncs across every device the moment you’re online.',
+      'Local-first, so it’s instant and works offline. Syncs across every device the moment you’re online.',
   },
 ];
 
@@ -134,7 +134,7 @@ const FEATURES = [
   {
     title: 'Capture anything, instantly',
     line:
-      'Voice notes, photo-to-text, a web clipper, a share sheet, home-screen widgets, and Siri. Every thought lands in one Inbox to sort later.',
+      'Voice notes, photo-to-text, web clipper, share sheet, widgets, and Siri. Every thought lands in one Inbox to sort later.',
     Mockup: CaptureMockup,
   },
   {
@@ -152,7 +152,7 @@ const FEATURES = [
   {
     title: 'Private AI (coming)',
     line:
-      'Ask your own notes, clean up messy text, turn a table into a chart — with only the content you ask about ever leaving, for that one request.',
+      'Ask your notes, clean up text, turn a table into a chart — with only what you ask about ever leaving, just for that request.',
     Mockup: AiMockup,
   },
   {
@@ -306,13 +306,13 @@ export default function LandingPage() {
         <section className="mx-auto max-w-shell px-[20px] pb-[24px] pt-[52px] md:px-[40px] md:pt-[72px]">
           <div className="grid grid-cols-1 items-center gap-[44px] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-[56px]">
             <div className="reveal">
-              <h1 className="text-[36px] font-semibold leading-[1.08] tracking-[-0.025em] text-ink md:text-[54px]">
-                Notes, tasks, and plans — in one space only you can open.
+              <h1 className="text-[40px] font-semibold leading-[1.05] tracking-[-0.03em] text-ink md:text-[64px]">
+                One private space for everything.
               </h1>
-              <p className="mt-[20px] max-w-[540px] text-[17px] leading-[1.6] text-muted md:text-[18px]">
-                A calm, fast workspace for everything you think and build. End-to-end
-                encrypted, works offline, and syncs across all your devices. Use it solo as
-                your second brain, or with your team to plan and remember together.
+              <p className="mt-[20px] max-w-[520px] text-[17px] leading-[1.6] text-muted md:text-[18px]">
+                A calm, fast workspace for your notes, tasks, and plans. End-to-end
+                encrypted, works offline, and syncs across every device — solo, or with
+                your team.
               </p>
               <div className="mt-[28px]">
                 <WaitlistForm microcopy="No credit card. Your space stays yours." />
@@ -334,8 +334,8 @@ export default function LandingPage() {
                   />
                   <path d="M6 8l1.5 1.5L10.5 6.5" stroke="#CC785C" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                Private by design, not by promise — your notes are sealed on your device,
-                unreadable even to us.
+                Private by design, not by promise — sealed on your device, unreadable
+                even to us.
               </p>
             </div>
 
@@ -365,10 +365,9 @@ export default function LandingPage() {
               Stop juggling tools. Stop handing over your thinking.
             </h2>
             <p className="mx-auto mt-[20px] max-w-[640px] text-[17px] leading-[1.7] text-muted md:text-[18px]">
-              Your ideas live in one app, your tasks in another, your docs in a wiki that&rsquo;s
-              already out of date — and all of it sits on servers someone else can read. Ownspce
-              puts notes, tasks, and planning in one place, where a doc and its tasks are the same
-              thing, and seals it so it&rsquo;s yours alone.
+              Your ideas, tasks, and docs live in three different apps — all on servers someone
+              else can read. Ownspce puts them in one place, where a doc and its tasks are the
+              same thing, and seals it so it&rsquo;s yours alone.
             </p>
           </div>
         </section>
@@ -434,10 +433,9 @@ export default function LandingPage() {
                   Built for teams that guard their thinking
                 </h2>
                 <p className="mt-[20px] max-w-[520px] text-[16.5px] leading-[1.7] text-muted">
-                  Invite your team into a shared, encrypted space. Plan sprints, keep a company
-                  knowledge base that doesn&rsquo;t rot, log decisions, and give clients guest
-                  access you can revoke in one click. Your roadmap and unreleased plans stay
-                  sealed — even from us.
+                  Invite your team into a shared, encrypted space. Plan sprints, keep a knowledge
+                  base that doesn&rsquo;t rot, and give clients guest access you revoke in one
+                  click. Your roadmap stays sealed — even from us.
                 </p>
               </div>
               <ul className="grid grid-cols-1 gap-[12px] self-center sm:grid-cols-2">
@@ -465,9 +463,9 @@ export default function LandingPage() {
                 </h2>
                 <p className="mt-[20px] max-w-[520px] text-[16.5px] leading-[1.7] text-[#c9c9c2]">
                   Most apps &ldquo;encrypt your data&rdquo; but hold the keys — so they can read it,
-                  and so can anyone who breaches them. Ownspce is zero-knowledge: your content is
-                  sealed on your device with a key we never see. We can store it and sync it, but we
-                  can never open it. It&rsquo;s a promise the architecture keeps, not the marketing.
+                  and so can anyone who breaches them. Ownspce is zero-knowledge: sealed on your
+                  device with a key we never see. We store and sync it, but can never open it. A
+                  promise the architecture keeps, not the marketing.
                 </p>
               </div>
               <ul className="flex flex-col gap-[14px] self-center">
