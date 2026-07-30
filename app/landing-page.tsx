@@ -12,39 +12,36 @@ const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.ownspce.app'
 const APP_URL = 'https://app.ownspce.com';
 const JOIN_NOTE = 'Free on Android and the web · no account needed';
 
-/** The Google Play triangle glyph. */
-function PlayGlyph({ size = 15 }: { size?: number }) {
-  return (
-    <span
-      aria-hidden="true"
-      className="flex-none bg-surface"
-      style={{ width: size, height: size * 1.13, clipPath: 'polygon(0 0, 100% 50%, 0 100%)' }}
-    />
-  );
+/**
+ * Resolves where "Get started" sends the visitor:
+ * - Android → Google Play
+ * - iOS and desktop/web → the web app (iOS will point at the App Store later)
+ * Defaults to the web app so the link is correct during SSR and without JS.
+ */
+function useGetStartedHref() {
+  const [href, setHref] = useState(APP_URL);
+  useEffect(() => {
+    if (typeof navigator !== 'undefined' && /Android/i.test(navigator.userAgent)) {
+      setHref(PLAY_URL);
+    }
+  }, []);
+  return href;
 }
 
-/** Primary + secondary download actions, repeated in the hero and final CTA. */
-function DownloadCTAs({ className = '' }: { className?: string }) {
+/** The single primary call to action, repeated in the nav, hero and final CTA. */
+function GetStarted({ variant = 'primary', className = '' }: { variant?: 'primary' | 'nav'; className?: string }) {
+  const href = useGetStartedHref();
+  const sizing =
+    variant === 'nav'
+      ? 'rounded-[9px] px-[15px] py-[9px] text-[13.5px] shadow-[0_2px_8px_rgba(176,116,90,0.26)]'
+      : 'rounded-[12px] px-[30px] py-[14px] text-[15.5px] shadow-[0_3px_16px_rgba(176,116,90,0.3)]';
   return (
-    <div className={`flex flex-wrap items-center justify-center gap-[10px] ${className}`}>
-      <a
-        href={PLAY_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center justify-center gap-[10px] rounded-[12px] bg-accent px-[24px] py-[14px] text-[15.5px] font-semibold text-surface shadow-[0_3px_16px_rgba(176,116,90,0.3)] transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
-      >
-        <PlayGlyph />
-        Get it on Google Play
-      </a>
-      <a
-        href={APP_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center justify-center rounded-[12px] border border-border bg-surface px-[24px] py-[14px] text-[15.5px] font-semibold text-body transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
-      >
-        Open in browser
-      </a>
-    </div>
+    <a
+      href={href}
+      className={`inline-flex items-center justify-center gap-[8px] bg-accent font-semibold text-surface transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${sizing} ${className}`}
+    >
+      Get started
+    </a>
   );
 }
 
@@ -771,12 +768,7 @@ export default function LandingPage() {
             <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="hidden text-[14px] font-semibold text-muted hover:text-ink sm:block">
               Sign in
             </a>
-            <a
-              href="#get"
-              className="inline-flex items-center justify-center rounded-[9px] bg-accent px-[15px] py-[9px] text-[13.5px] font-semibold text-surface shadow-[0_2px_8px_rgba(176,116,90,0.26)] transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
-            >
-              Download
-            </a>
+            <GetStarted variant="nav" />
           </div>
         </div>
       </header>
@@ -801,7 +793,7 @@ export default function LandingPage() {
               Today&rsquo;s tasks, half-formed ideas and the note you&rsquo;ll need next Tuesday — all in one place that
               stays yours.
             </p>
-            <DownloadCTAs className="reveal" />
+            <GetStarted className="reveal" />
             <div className="reveal text-[12.5px] text-faint">{JOIN_NOTE}</div>
 
             <div className="reveal mt-[12px] w-full">
@@ -918,7 +910,7 @@ export default function LandingPage() {
             <h2 className="m-0 text-balance font-serif text-[44px] font-medium leading-[1.02] tracking-[-0.024em] md:text-[56px]">
               Make the space yours.
             </h2>
-            <DownloadCTAs />
+            <GetStarted />
             <div className="text-[12.5px] text-faint">{JOIN_NOTE}</div>
           </div>
         </section>
@@ -937,7 +929,7 @@ export default function LandingPage() {
             <a href="#usecases" className="text-[13px] text-muted hover:text-ink">Use cases</a>
             <a href="#pricing" className="text-[13px] text-muted hover:text-ink">Pricing</a>
             <a href="#faq" className="text-[13px] text-muted hover:text-ink">FAQ</a>
-            <a href="#get" className="text-[13px] text-muted hover:text-ink">Download</a>
+            <a href="#get" className="text-[13px] text-muted hover:text-ink">Get started</a>
           </nav>
         </div>
       </footer>
