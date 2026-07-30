@@ -107,42 +107,42 @@ type Task = { title: string; tag?: string; tagColor?: string; done?: boolean };
 
 const TABS = [
   { id: 'lane', label: 'Planning the week', caption: 'Groceries, errands and work in one list you can reshuffle.', color: CAT.accent },
-  { id: 'board', label: 'Running a project', caption: 'A house move or a launch — see every stage at a glance.', color: CAT.sage },
-  { id: 'note', label: 'Idea on the treadmill', caption: "Two taps, it's saved. Sort it out later.", color: CAT.plum },
-  { id: 'text', label: 'Notes after a meeting', caption: 'A blank page that keeps up. Type / for a table.', color: CAT.stone },
-  { id: 'impact', label: "Deciding what's first", caption: 'Five things due — see which one is actually worth it.', color: CAT.blue },
+  { id: 'board', label: 'Planning a party', caption: 'A birthday or a big trip — see every stage at a glance.', color: CAT.sage },
+  { id: 'note', label: 'Idea on the go', caption: "Two taps, it's saved. Sort it out later.", color: CAT.plum },
+  { id: 'text', label: 'Notes after a class', caption: 'A blank page that keeps up. Type / for a table.', color: CAT.stone },
+  { id: 'impact', label: "Deciding what's first", caption: 'Five things to do — see which one is actually worth it.', color: CAT.blue },
 ] as const;
 
 const DEMO_LANES: { name: string; color: string; tasks: Task[]; bar?: boolean }[] = [
-  { name: 'Right now', color: CAT.accent, tasks: [{ title: 'Slack alerts hook', tag: 'Product', tagColor: CAT.accent }, { title: 'Handover copy' }] },
-  { name: 'Next up', color: CAT.gold, bar: true, tasks: [{ title: 'CM1 accuracy pass', tag: 'Product', tagColor: CAT.gold }, { title: 'Credits system', tag: 'Personal', tagColor: CAT.sage }, { title: 'Host checklist' }] },
-  { name: 'Backlog', color: CAT.stone, tasks: [{ title: 'Wishlist migration' }, { title: 'Web clipper', tag: 'Someday', tagColor: CAT.blue }, { title: 'Tasting notes', done: true }] },
+  { name: 'Right now', color: CAT.accent, tasks: [{ title: 'Buy milk & eggs', tag: 'Groceries', tagColor: CAT.sage }, { title: 'Call the plumber' }] },
+  { name: 'Next up', color: CAT.gold, bar: true, tasks: [{ title: 'Reply to emails', tag: 'Work', tagColor: CAT.blue }, { title: 'Pay the rent', tag: 'Home', tagColor: CAT.plum }, { title: 'Book the dentist' }] },
+  { name: 'Backlog', color: CAT.stone, tasks: [{ title: 'Plan the weekend trip' }, { title: 'Sort old photos', tag: 'Someday', tagColor: CAT.blue }, { title: 'Read a book', done: true }] },
 ];
 
 const DEMO_BOARD: { name: string; color: string; cards: string[] }[] = [
-  { name: 'To do', color: CAT.stone, cards: ['Photograph plating', 'Print inserts', 'Source linens'] },
-  { name: 'Doing', color: CAT.gold, cards: ['Rewrite dessert copy', 'Cost the tasting menu'] },
-  { name: 'Complete', color: CAT.sage, cards: ['Supplier quotes', 'Tasting notes', 'Staff rota'] },
+  { name: 'To do', color: CAT.stone, cards: ['Send invites', 'Order the cake', 'Buy balloons'] },
+  { name: 'Doing', color: CAT.gold, cards: ['Make a playlist', 'Plan the food'] },
+  { name: 'Done', color: CAT.sage, cards: ['Book the venue', 'Pick a date', 'Invite the family'] },
 ];
 
 const IMPACT_DOTS: [string, number, number, string][] = [
-  ['Sealed sync', 18, 20, CAT.accent],
-  ['Slash menu', 34, 44, CAT.gold],
-  ['Shared spaces', 58, 26, CAT.sage],
-  ['Web clipper', 66, 70, CAT.blue],
-  ['Themes', 82, 82, CAT.stone],
+  ['Book dentist', 18, 20, CAT.accent],
+  ['Reply to landlord', 34, 44, CAT.gold],
+  ['Plan holiday', 58, 26, CAT.sage],
+  ['Learn guitar', 66, 70, CAT.blue],
+  ['Sort old photos', 82, 82, CAT.stone],
 ];
 
 const DEMO_NOTES: [string, string, number][] = [
-  ['Call the supplier back', 'Just now', -2.2],
-  ['Idea: weekday extend-stay', '2h ago', 1.4],
-  ['Book flu shot', 'Yesterday', -0.8],
+  ['Call Mom back', 'Just now', -2.2],
+  ['Idea: surprise party for Sam', '2h ago', 1.4],
+  ['Book a flu shot', 'Yesterday', -0.8],
 ];
 
 const SLASH_ITEMS: [string, string, boolean][] = [
-  ['H1', 'Heading 1', false],
+  ['H1', 'Heading', false],
   ['¶', 'Paragraph', false],
-  ['{ }', 'Code', false],
+  ['☑', 'Checklist', false],
   ['▦', 'Table', true],
   ['◒', 'Priority Lane', false],
 ];
@@ -203,8 +203,8 @@ function LanePane() {
       >
         <span className="h-[19px] w-[19px] flex-none rounded-full border-[1.5px] border-[#d8ccb8]" />
         <div className="flex min-w-0 flex-col gap-[5px]">
-          <div className="font-serif text-[15.5px]">Shift handover screen</div>
-          <Tag label="Deep work" color={CAT.blue} />
+          <div className="font-serif text-[15.5px]">Pick up dry cleaning</div>
+          <Tag label="Errand" color={CAT.sage} />
         </div>
         <span className="ml-auto text-[12px] tracking-[1px] text-[#cfc3ae]">⠿</span>
       </div>
@@ -236,7 +236,7 @@ function BoardPane() {
 function TextPane() {
   return (
     <div className="mx-auto flex w-full max-w-[600px] flex-col gap-[10px] px-[20px] md:px-[30px]">
-      <div className="font-serif text-[32px] tracking-[-0.016em]">Weekly review</div>
+      <div className="font-serif text-[32px] tracking-[-0.016em]">Weekend plans</div>
       <div className="flex flex-col gap-[7px]">
         {['96%', '88%', '62%'].map((w) => (
           <div key={w} className="h-[7px] rounded-[4px] bg-[#e9dfcd]" style={{ width: w }} />
@@ -359,11 +359,11 @@ function UseCasesDemo() {
 /* -------------------------------------------------------------------------- */
 
 const TAG_LIST: [string, string][] = [
-  ['Deep work', CAT.blue],
+  ['Work', CAT.blue],
   ['Errand', CAT.gold],
   ['Personal', CAT.sage],
-  ['Waiting on', CAT.plum],
-  ['Product', CAT.accent],
+  ['Home', CAT.plum],
+  ['Health', CAT.accent],
 ];
 
 function SlashFeature() {
@@ -457,7 +457,7 @@ function ShareMini() {
         ))}
       </div>
       <div className="flex flex-col gap-[7px] rounded-[14px] border border-[#eae0ce] bg-card p-[12px]">
-        <div className="text-[12.5px] font-semibold text-[#4b433a]">Kitchen ops</div>
+        <div className="text-[12.5px] font-semibold text-[#4b433a]">Weekend trip</div>
         <div className="h-[6px] w-[86%] rounded-[4px] bg-[#efe6d6]" />
         <div className="h-[6px] w-[58%] rounded-[4px] bg-[#efe6d6]" />
       </div>
@@ -471,11 +471,11 @@ function PublishMini() {
       <div className="flex items-center gap-[7px] border-b border-[#f3ebdc] px-[11px] py-[9px]">
         <span className="h-[7px] w-[7px] rounded-full bg-[#e0cfc0]" />
         <span className="flex h-[16px] flex-1 items-center rounded-full bg-sand px-[9px] text-[9.5px] font-semibold text-faint">
-          ownspce.app/menu-v3
+          ownspce.app/recipes
         </span>
       </div>
       <div className="flex flex-col gap-[7px] p-[12px]">
-        <div className="font-serif text-[15px]">Menu v3</div>
+        <div className="font-serif text-[15px]">Mum&rsquo;s recipes</div>
         {['92%', '74%', '82%'].map((w) => (
           <div key={w} className="h-[6px] rounded-[4px] bg-[#efe6d6]" style={{ width: w }} />
         ))}
