@@ -57,7 +57,19 @@ const SERIF_H2 =
  * lives on its own line to keep the layout from shifting as lengths change, and
  * cycling pauses (holding the first word) when the visitor prefers reduced motion.
  */
-const HEAD_WORDS = ['head', 'meetings', 'grocery list', 'brain', 'lecture'];
+const HEAD_WORDS = [
+  'head',
+  'meetings',
+  'grocery list',
+  'brain',
+  'lecture',
+  'inbox',
+  'standup',
+  'reading list',
+  'whiteboard',
+  'notebook',
+  'to-do list',
+];
 
 function RotatingHeadline() {
   const [idx, setIdx] = useState(0);
