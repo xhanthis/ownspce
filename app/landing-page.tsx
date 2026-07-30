@@ -59,16 +59,41 @@ const SERIF_H2 =
  * cycling pauses (holding the first entry) when the visitor prefers reduced motion.
  */
 const HEAD_WORDS: { emoji: string; word: string; color: string }[] = [
-  { emoji: '💭', word: 'head', color: CAT.accent },
-  { emoji: '🗓️', word: 'meetings', color: CAT.blue },
-  { emoji: '🛒', word: 'grocery list', color: CAT.sage },
+
   { emoji: '🧠', word: 'brain', color: CAT.plum },
+
+  { emoji: '🗓️', word: 'meetings', color: CAT.blue },
+
+  { emoji: '🛒', word: 'grocery list', color: CAT.sage },
+
   { emoji: '🎓', word: 'lecture', color: CAT.gold },
+
   { emoji: '📥', word: 'inbox', color: CAT.accent },
+
   { emoji: '🗣️', word: 'standup', color: CAT.stone },
+
   { emoji: '📚', word: 'reading list', color: CAT.blue },
+
   { emoji: '🖊️', word: 'whiteboard', color: CAT.plum },
-  { emoji: '✅', word: 'to-do list', color: CAT.sage },
+
+  { emoji: '🗒️', word: 'sticky notes', color: CAT.accent },
+
+  { emoji: '🗂️', word: '40 open tabs', color: CAT.stone },
+
+  { emoji: '🌙', word: '2am thoughts', color: CAT.plum },
+
+  { emoji: '🎧', word: 'podcast notes', color: CAT.sage },
+
+  { emoji: '✈️', word: 'trip plan', color: CAT.blue },
+
+  { emoji: '🎁', word: 'gift ideas', color: CAT.accent },
+
+  { emoji: '🍳', word: 'cooking tv show', color: CAT.sage },
+
+  { emoji: '🏋️', word: 'gym plan', color: CAT.stone },
+
+  { emoji: '🚿', word: 'shower ideas', color: CAT.plum },
+
 ];
 
 function RotatingHeadline() {
