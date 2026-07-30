@@ -118,25 +118,25 @@ function Dot({ color, size = 7 }: { color: string; size?: number }) {
 
 const NAV_ROWS: [string, string, boolean][] = [
   ['Today', CAT.accent, true],
-  ['Tuesday', CAT.gold, false],
-  ['Kitchen ops', CAT.sage, false],
-  ['Reading', CAT.blue, false],
-  ['Menu v3', CAT.plum, false],
-  ['Archive', CAT.stone, false],
+  ['This week', CAT.gold, false],
+  ['Groceries', CAT.sage, false],
+  ['Trip to Goa', CAT.blue, false],
+  ['Home', CAT.plum, false],
+  ['Reading list', CAT.stone, false],
 ];
 
 const HERO_LANES: { name: string; color: string; tasks: Task[] }[] = [
-  { name: 'Right now', color: CAT.accent, tasks: [{ title: 'Handover', tag: 'Deep work', tagColor: CAT.blue }, { title: 'Slack hook' }] },
-  { name: 'Next up', color: CAT.gold, tasks: [{ title: 'CM1 pass', tag: 'Product', tagColor: CAT.gold }, { title: 'Credits' }] },
-  { name: 'Backlog', color: CAT.stone, tasks: [{ title: 'Wishlists' }, { title: 'Checklist', done: true }] },
+  { name: 'Right now', color: CAT.accent, tasks: [{ title: 'Buy groceries', tag: 'Errand', tagColor: CAT.sage }, { title: 'Call plumber' }] },
+  { name: 'Next up', color: CAT.gold, tasks: [{ title: 'Reply to emails', tag: 'Work', tagColor: CAT.blue }, { title: 'Pay rent' }] },
+  { name: 'Backlog', color: CAT.stone, tasks: [{ title: 'Plan the trip' }, { title: 'Water plants', done: true }] },
 ];
 
 const PHONE_CHIPS: [string, boolean][] = [['All', true], ['Now', false], ['Next', false]];
 const PHONE_TASKS: Task[] = [
-  { title: 'Shift handover', tag: 'Deep work', tagColor: CAT.blue },
-  { title: 'Slack alerts hook' },
-  { title: 'CM1 accuracy pass', tag: 'Product', tagColor: CAT.gold },
-  { title: 'Host checklist', done: true },
+  { title: 'Buy milk & eggs', tag: 'Errand', tagColor: CAT.sage },
+  { title: 'Call the plumber' },
+  { title: 'Reply to emails', tag: 'Work', tagColor: CAT.blue },
+  { title: 'Water the plants', done: true },
 ];
 
 /** The floating Android phone — the actual product surface. */
@@ -144,7 +144,7 @@ export function PhoneMockup({ className = '' }: { className?: string }) {
   return (
     <div
       aria-hidden="true"
-      className={`w-[218px] rounded-[34px] border border-border bg-surface p-[8px] shadow-[0_34px_70px_-34px_rgba(60,44,28,0.5)] ${className}`}
+      className={`rounded-[34px] border border-border bg-surface p-[8px] shadow-[0_34px_70px_-34px_rgba(60,44,28,0.5)] ${className}`}
     >
       <div className="flex h-full flex-col overflow-hidden rounded-[27px] bg-[#f7f3ea]">
         <div className="flex justify-between px-[15px] pt-[13px] text-[10px] font-semibold text-soft">
@@ -181,11 +181,17 @@ export function PhoneMockup({ className = '' }: { className?: string }) {
   );
 }
 
-/** Hero desktop window: sidebar + Tuesday page with a Priority Lane, board and note. */
+/** Hero visual: a single clean phone on mobile; the full app window on larger screens. */
 export function DesktopMockup() {
   return (
     <div className="relative mx-auto w-full max-w-[1060px]" aria-hidden="true">
-      <div className="overflow-hidden rounded-t-[22px] border border-b-0 border-border bg-surface shadow-[0_-20px_70px_-40px_rgba(60,44,28,0.5)]">
+      {/* Mobile — one simple phone screen so the product reads at a glance. */}
+      <div className="flex justify-center pb-[8px] md:hidden">
+        <PhoneMockup className="w-[268px] max-w-full" />
+      </div>
+
+      {/* Tablet & desktop — the full app window. */}
+      <div className="hidden overflow-hidden rounded-t-[22px] border border-b-0 border-border bg-surface shadow-[0_-20px_70px_-40px_rgba(60,44,28,0.5)] md:block">
         {/* chrome */}
         <div className="flex items-center gap-[7px] border-b border-line px-[15px] py-[11px]">
           <span className="h-[9px] w-[9px] rounded-full bg-[#e0cfc0]" />
@@ -276,7 +282,7 @@ export function DesktopMockup() {
       </div>
 
       {/* floating phone */}
-      <PhoneMockup className="absolute -bottom-[26px] right-[26px] hidden h-[432px] animate-float border-[#ded3c0] lg:block" />
+      <PhoneMockup className="absolute -bottom-[26px] right-[26px] hidden h-[432px] w-[218px] animate-float border-[#ded3c0] lg:block" />
     </div>
   );
 }
