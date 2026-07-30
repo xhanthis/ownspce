@@ -1,322 +1,334 @@
 /**
- * Brand-style "app window" mockups.
+ * Brand-style "app window" mockups for the Ownspce v2 landing page.
  *
- * The Ownspce app isn't built yet, so every product visual on the page is a
- * clean CSS/SVG mockup drawn in the locked design system — soft surfaces,
- * 1px borders, generous whitespace, terracotta accent used sparingly. These
- * are decorative, so they're hidden from assistive tech (aria-hidden) and the
- * surrounding copy carries the meaning.
+ * The product visuals are clean CSS mockups drawn in the design system — warm
+ * surfaces, 1px borders, Newsreader titles, terracotta accent used sparingly.
+ * They're decorative, so they're hidden from assistive tech (aria-hidden) and
+ * the surrounding copy carries the meaning.
  */
 
-/** A framed window with the three-dot chrome bar and a title. */
-function AppWindow({
-  title,
-  children,
-  className = '',
+const ACCENT = '#b0745a';
+
+/** Category accent colours used across the product mockups. */
+export const CAT = {
+  accent: '#b0745a',
+  gold: '#c39a4e',
+  sage: '#8ba17e',
+  blue: '#6f8bb0',
+  plum: '#a97fa0',
+  stone: '#8a8070',
+} as const;
+
+function rgba(hex: string, a: number) {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${a})`;
+}
+
+/** Small category tag pill. */
+export function Tag({ label, color, size = 10.5 }: { label: string; color: string; size?: number }) {
+  return (
+    <span
+      className="inline-flex self-start whitespace-nowrap rounded-full font-semibold"
+      style={{
+        border: `1px solid ${rgba(color, 0.45)}`,
+        background: rgba(color, 0.12),
+        color,
+        fontSize: size,
+        padding: '1.5px 7px',
+      }}
+    >
+      {label}
+    </span>
+  );
+}
+
+/** Round checkbox — filled + ticked when done. */
+export function Check({ color, done, size = 15 }: { color: string; done?: boolean; size?: number }) {
+  return (
+    <span
+      className="flex flex-none items-center justify-center rounded-full font-bold text-white"
+      style={{
+        width: size,
+        height: size,
+        border: `1.5px solid ${done ? color : '#d8ccb8'}`,
+        background: done ? color : 'transparent',
+        fontSize: size * 0.5,
+      }}
+    >
+      {done ? '✓' : ''}
+    </span>
+  );
+}
+
+type Task = { title: string; tag?: string; tagColor?: string; done?: boolean };
+
+function TaskRow({
+  task,
+  color,
+  pad,
+  radius,
+  titleSize,
+  checkSize,
 }: {
-  title: string;
-  children: React.ReactNode;
-  className?: string;
+  task: Task;
+  color: string;
+  pad: string;
+  radius: number;
+  titleSize: number;
+  checkSize: number;
 }) {
+  const done = !!task.done;
   return (
     <div
-      aria-hidden="true"
-      className={`overflow-hidden rounded-l border border-border bg-surface shadow-[0_1px_2px_rgba(26,26,26,0.03)] ${className}`}
+      className="flex items-start gap-[9px]"
+      style={{
+        borderRadius: radius,
+        border: `1px solid ${done ? 'transparent' : '#f0e7d7'}`,
+        background: done ? '#f4efe4' : '#fdfaf3',
+        padding: pad,
+        opacity: done ? 0.6 : 1,
+      }}
     >
-      <div className="flex items-center gap-[7px] border-b border-border px-[14px] py-[11px]">
-        <span className="h-[9px] w-[9px] rounded-full bg-[#E0E0DA]" />
-        <span className="h-[9px] w-[9px] rounded-full bg-[#E0E0DA]" />
-        <span className="h-[9px] w-[9px] rounded-full bg-[#E0E0DA]" />
-        <span className="ml-[10px] text-[11.5px] font-medium text-faint">{title}</span>
+      <Check color={color} done={done} size={checkSize} />
+      <div className="flex min-w-0 flex-col gap-[4px]">
+        <div
+          className="overflow-hidden text-ellipsis whitespace-nowrap font-serif font-medium"
+          style={{
+            fontSize: titleSize,
+            letterSpacing: '-0.005em',
+            color: done ? '#8b8173' : '#2b2620',
+            textDecoration: done ? 'line-through' : 'none',
+          }}
+        >
+          {task.title}
+        </div>
+        {task.tag && <Tag label={task.tag} color={task.tagColor || color} size={titleSize * 0.7} />}
       </div>
-      {children}
     </div>
   );
 }
 
-function Dot({ color }: { color: string }) {
-  return <span className="h-[7px] w-[7px] flex-none rounded-full" style={{ background: color }} />;
+function Dot({ color, size = 7 }: { color: string; size?: number }) {
+  return <span className="flex-none rounded-full" style={{ width: size, height: size, background: color }} />;
 }
 
-/**
- * Hero visual — a full page with nested items on the left and a Priority Lane
- * on the right. Shows the wedge: a doc and its tasks living on one page.
- */
-export function HeroMockup() {
+/* -------------------------------------------------------------------------- */
+/*  Hero — desktop window + floating phone                                    */
+/* -------------------------------------------------------------------------- */
+
+const NAV_ROWS: [string, string, boolean][] = [
+  ['Today', CAT.accent, true],
+  ['Tuesday', CAT.gold, false],
+  ['Kitchen ops', CAT.sage, false],
+  ['Reading', CAT.blue, false],
+  ['Menu v3', CAT.plum, false],
+  ['Archive', CAT.stone, false],
+];
+
+const HERO_LANES: { name: string; color: string; tasks: Task[] }[] = [
+  { name: 'Right now', color: CAT.accent, tasks: [{ title: 'Handover', tag: 'Deep work', tagColor: CAT.blue }, { title: 'Slack hook' }] },
+  { name: 'Next up', color: CAT.gold, tasks: [{ title: 'CM1 pass', tag: 'Product', tagColor: CAT.gold }, { title: 'Credits' }] },
+  { name: 'Backlog', color: CAT.stone, tasks: [{ title: 'Wishlists' }, { title: 'Checklist', done: true }] },
+];
+
+const PHONE_CHIPS: [string, boolean][] = [['All', true], ['Now', false], ['Next', false]];
+const PHONE_TASKS: Task[] = [
+  { title: 'Shift handover', tag: 'Deep work', tagColor: CAT.blue },
+  { title: 'Slack alerts hook' },
+  { title: 'CM1 accuracy pass', tag: 'Product', tagColor: CAT.gold },
+  { title: 'Host checklist', done: true },
+];
+
+/** The floating Android phone — the actual product surface. */
+export function PhoneMockup({ className = '' }: { className?: string }) {
   return (
-    <AppWindow title="Q3 Launch — Ownspce">
-      <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr]">
-        {/* Sidebar */}
-        <div className="hidden flex-col gap-[3px] border-r border-border bg-bg/40 p-[14px] sm:flex">
-          <div className="px-[8px] pb-[8px] text-[10px] font-semibold uppercase tracking-[0.12em] text-faint">
-            Spaces
-          </div>
-          {[
-            { label: 'Q3 Launch', active: true },
-            { label: 'Weekly notes', active: false },
-            { label: 'Research', active: false },
-            { label: 'Personal', active: false },
-          ].map((p) => (
-            <div
-              key={p.label}
-              className={`flex items-center gap-[8px] rounded-s px-[9px] py-[7px] text-[12.5px] ${
-                p.active ? 'bg-accent-light font-medium text-ink' : 'text-muted'
-              }`}
-            >
-              <Dot color={p.active ? '#CC785C' : '#C9C9C2'} />
-              {p.label}
-            </div>
-          ))}
+    <div
+      aria-hidden="true"
+      className={`w-[218px] rounded-[34px] border border-border bg-surface p-[8px] shadow-[0_34px_70px_-34px_rgba(60,44,28,0.5)] ${className}`}
+    >
+      <div className="flex h-full flex-col overflow-hidden rounded-[27px] bg-[#f7f3ea]">
+        <div className="flex justify-between px-[15px] pt-[13px] text-[10px] font-semibold text-soft">
+          <span>9:41</span>
+          <span>▮▮▮</span>
         </div>
-
-        {/* Page body */}
-        <div className="p-[18px] sm:p-[22px]">
-          <div className="text-[19px] font-semibold tracking-[-0.01em] text-ink">Q3 Launch plan</div>
-          <p className="mt-[6px] text-[12.5px] leading-[1.6] text-muted">
-            Everything for the release — the brief, the open questions, and the work — on one page.
-          </p>
-
-          {/* Nested items */}
-          <div className="mt-[16px] flex flex-col gap-[7px]">
-            {[
-              { text: 'Positioning brief', depth: 0, done: true },
-              { text: 'Pricing page copy', depth: 1, done: true },
-              { text: 'Onboarding empty states', depth: 1, done: false },
-              { text: 'Beta invite waves', depth: 0, done: false },
-            ].map((row, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-[9px] text-[13px]"
-                style={{ paddingLeft: row.depth * 18 }}
+        <div className="flex flex-col gap-[8px] border-b border-line px-[15px] pb-[10px] pt-[9px]">
+          <div className="font-serif text-[19px]">Right Now</div>
+          <div className="flex gap-[5px]">
+            {PHONE_CHIPS.map(([label, active]) => (
+              <span
+                key={label}
+                className="rounded-full font-semibold"
+                style={{
+                  border: `1px solid ${active ? '#d3c4ae' : '#e7ddcd'}`,
+                  background: active ? '#f2ebdd' : '#fffdf8',
+                  color: active ? '#4b433a' : '#8b8173',
+                  fontSize: 10.5,
+                  padding: '4px 10px',
+                }}
               >
-                <span
-                  className={`flex h-[15px] w-[15px] flex-none items-center justify-center rounded-[5px] border ${
-                    row.done ? 'border-accent bg-accent' : 'border-[#D4D4CD] bg-surface'
-                  }`}
-                >
-                  {row.done && (
-                    <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
-                      <path d="M1 3.6 3.3 6 8 1" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  )}
-                </span>
-                <span className={row.done ? 'text-faint line-through' : 'text-ink'}>{row.text}</span>
-              </div>
+                {label}
+              </span>
             ))}
           </div>
+        </div>
+        <div className="flex flex-col gap-[7px] px-[12px] py-[10px]">
+          {PHONE_TASKS.map((t, i) => (
+            <TaskRow key={i} task={t} color={CAT.accent} pad="10px 11px" radius={13} titleSize={14.5} checkSize={19} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
-          {/* Priority Lane */}
-          <div className="mt-[18px] rounded-m border border-border bg-bg/50 p-[13px]">
-            <div className="mb-[11px] flex items-center gap-[8px]">
-              <Dot color="#CC785C" />
-              <span className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-muted">
-                Priority Lane
+/** Hero desktop window: sidebar + Tuesday page with a Priority Lane, board and note. */
+export function DesktopMockup() {
+  return (
+    <div className="relative mx-auto w-full max-w-[1060px]" aria-hidden="true">
+      <div className="overflow-hidden rounded-t-[22px] border border-b-0 border-border bg-surface shadow-[0_-20px_70px_-40px_rgba(60,44,28,0.5)]">
+        {/* chrome */}
+        <div className="flex items-center gap-[7px] border-b border-line px-[15px] py-[11px]">
+          <span className="h-[9px] w-[9px] rounded-full bg-[#e0cfc0]" />
+          <span className="h-[9px] w-[9px] rounded-full bg-[#e6ddc9]" />
+          <span className="h-[9px] w-[9px] rounded-full bg-[#e6ddc9]" />
+        </div>
+
+        <div className="flex min-h-[440px] md:h-[552px]">
+          {/* sidebar */}
+          <div className="hidden w-[206px] flex-none flex-col gap-[16px] border-r border-line bg-sand p-[16px_14px] md:flex">
+            <div className="flex items-center gap-[8px]">
+              <span className="flex h-[20px] w-[20px] items-center justify-center rounded-[7px] bg-ink">
+                <span className="h-[7px] w-[7px] rounded-full border-[1.5px] border-bg" />
               </span>
-              <span className="text-[11px] text-faint">Now · Next · Later</span>
+              <span className="font-serif text-[14.5px]">Ownspce</span>
             </div>
-            <div className="grid grid-cols-3 gap-[8px]">
-              {[
-                { head: 'Now', items: ['Ship beta'], accent: true },
-                { head: 'Next', items: ['Docs pass', 'Demo video'], accent: false },
-                { head: 'Later', items: ['Android build'], accent: false },
-              ].map((col) => (
-                <div key={col.head} className="flex flex-col gap-[6px]">
-                  <div className="text-[9.5px] font-semibold uppercase tracking-[0.1em] text-faint">
-                    {col.head}
-                  </div>
-                  {col.items.map((it) => (
-                    <div
-                      key={it}
-                      className={`rounded-s px-[9px] py-[7px] text-[11.5px] leading-tight ${
-                        col.accent
-                          ? 'border border-accent/30 bg-accent-light font-medium text-ink'
-                          : 'border border-border bg-surface text-muted'
-                      }`}
-                    >
-                      {it}
-                    </div>
-                  ))}
+            <div className="flex flex-col gap-[3px]">
+              {NAV_ROWS.map(([label, color, active]) => (
+                <div
+                  key={label}
+                  className="flex items-center gap-[9px] rounded-[9px] px-[9px] py-[7px]"
+                  style={{
+                    background: active ? '#fffdf8' : 'transparent',
+                    color: active ? '#2b2620' : '#6b6255',
+                    border: `1px solid ${active ? '#eae0ce' : 'transparent'}`,
+                  }}
+                >
+                  <Dot color={color} />
+                  <span className="text-[12.5px] font-medium">{label}</span>
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </div>
-    </AppWindow>
-  );
-}
-
-/** Capture — an Inbox with mixed capture sources landing in one place. */
-export function CaptureMockup() {
-  const rows = [
-    { icon: '🎙', label: 'Voice note — “idea for onboarding”' },
-    { icon: '📷', label: 'Photo → text — whiteboard sketch' },
-    { icon: '🔗', label: 'Web clip — pricing benchmarks' },
-    { icon: '↗', label: 'Share sheet — link from Safari' },
-  ];
-  return (
-    <AppWindow title="Inbox" className="h-full">
-      <div className="flex flex-col gap-[8px] p-[16px]">
-        <div className="mb-[2px] text-[10.5px] font-semibold uppercase tracking-[0.12em] text-faint">
-          To sort — 4 new
-        </div>
-        {rows.map((r) => (
-          <div
-            key={r.label}
-            className="flex items-center gap-[10px] rounded-s border border-border bg-bg/40 px-[11px] py-[9px]"
-          >
-            <span className="flex h-[24px] w-[24px] flex-none items-center justify-center rounded-[7px] bg-accent-light text-[12px]">
-              {r.icon}
-            </span>
-            <span className="truncate text-[12.5px] text-ink">{r.label}</span>
-          </div>
-        ))}
-      </div>
-    </AppWindow>
-  );
-}
-
-/** Second brain — a nested page tree with tags. */
-export function SecondBrainMockup() {
-  const tree = [
-    { text: 'Product', depth: 0 },
-    { text: 'Roadmap', depth: 1 },
-    { text: 'Q3 launch', depth: 2 },
-    { text: 'Interviews', depth: 1 },
-    { text: 'Personal', depth: 0 },
-  ];
-  return (
-    <AppWindow title="All pages" className="h-full">
-      <div className="p-[16px]">
-        <div className="flex flex-col gap-[6px]">
-          {tree.map((r, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-[8px] text-[12.5px] text-ink"
-              style={{ paddingLeft: r.depth * 16 }}
-            >
-              <Dot color={r.depth === 0 ? '#CC785C' : '#C9C9C2'} />
-              {r.text}
+            <div className="mt-auto flex items-center gap-[7px] text-[11px] font-semibold text-faint">
+              <Dot color={CAT.sage} size={6} />
+              Synced · sealed
             </div>
-          ))}
-        </div>
-        <div className="mt-[14px] flex flex-wrap gap-[6px] border-t border-border pt-[12px]">
-          {['#launch', '#pricing', '#idea', '#legal'].map((t) => (
-            <span
-              key={t}
-              className="rounded-[6px] bg-bg px-[8px] py-[3px] text-[11px] font-medium text-muted"
-            >
-              {t}
-            </span>
-          ))}
+          </div>
+
+          {/* page body */}
+          <div className="flex min-w-0 flex-1 flex-col gap-[14px] p-[22px] md:p-[26px_30px] lg:pr-[268px]">
+            <div className="font-serif text-[30px] tracking-[-0.015em]">Tuesday</div>
+            <div className="flex flex-col gap-[7px]">
+              {['92%', '78%', '54%'].map((w) => (
+                <div key={w} className="h-[7px] rounded-[4px] bg-[#e9dfcd]" style={{ width: w }} />
+              ))}
+            </div>
+
+            {/* Priority Lane */}
+            <div className="overflow-hidden rounded-[15px] border border-[#eae0ce] bg-card">
+              <div className="flex items-center gap-[9px] border-b border-[#f3ebdc] px-[14px] py-[11px]">
+                <Dot color={ACCENT} size={9} />
+                <span className="text-[11px] font-bold uppercase tracking-[0.13em] text-[#4b433a]">Priority Lane</span>
+                <span className="text-[11.5px] text-faint">6 open</span>
+              </div>
+              <div className="grid grid-cols-3 gap-[10px] px-[14px] pb-[16px] pt-[12px]">
+                {HERO_LANES.map((lane) => (
+                  <div key={lane.name} className="flex flex-col gap-[6px]">
+                    <div className="flex items-center gap-[6px]">
+                      <Dot color={lane.color} />
+                      <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-muted">{lane.name}</span>
+                    </div>
+                    {lane.tasks.map((t, i) => (
+                      <TaskRow key={i} task={t} color={lane.color} pad="8px 9px" radius={10} titleSize={13} checkSize={15} />
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Board + Quick note */}
+            <div className="flex gap-[10px]">
+              <div className="flex flex-1 flex-col gap-[8px] rounded-[14px] border border-[#eae0ce] bg-card p-[12px_14px]">
+                <div className="text-[10.5px] font-bold uppercase tracking-[0.12em] text-sage">Board</div>
+                <div className="flex gap-[6px]">
+                  {['34%', '30%', '36%'].map((w) => (
+                    <div key={w} className="h-[44px] rounded-[10px] border border-[#efe6d6] bg-[#f7f3ea]" style={{ width: w }} />
+                  ))}
+                </div>
+              </div>
+              <div className="flex w-[168px] flex-none flex-col gap-[7px] rounded-[14px] border border-[#eae0ce] bg-card p-[12px_14px]">
+                <div className="text-[10.5px] font-bold uppercase tracking-[0.12em] text-plum">Quick note</div>
+                <div className="h-[6px] w-[90%] rounded-[4px] bg-[#efe6d6]" />
+                <div className="h-[6px] w-[64%] rounded-[4px] bg-[#efe6d6]" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </AppWindow>
+
+      {/* floating phone */}
+      <PhoneMockup className="absolute -bottom-[26px] right-[26px] hidden h-[432px] animate-float border-[#ded3c0] lg:block" />
+    </div>
   );
 }
 
-/** Plan — Priority Lane, an Impact × Effort map, and a board tab strip. */
-export function PlanMockup() {
-  return (
-    <AppWindow title="Planning" className="h-full">
-      <div className="p-[16px]">
-        <div className="mb-[10px] flex gap-[6px]">
-          {['Lane', 'Impact × Effort', 'Board'].map((t, i) => (
-            <span
-              key={t}
-              className={`rounded-[7px] px-[10px] py-[5px] text-[11px] font-medium ${
-                i === 1 ? 'bg-accent text-surface' : 'bg-bg text-muted'
-              }`}
-            >
-              {t}
-            </span>
-          ))}
-        </div>
-        {/* Impact × Effort quadrant */}
-        <div className="relative aspect-[4/3] w-full rounded-m border border-border bg-bg/40">
-          <span className="absolute left-[8px] top-[6px] text-[9px] font-semibold uppercase tracking-[0.1em] text-faint">
-            Impact
-          </span>
-          <span className="absolute bottom-[6px] right-[8px] text-[9px] font-semibold uppercase tracking-[0.1em] text-faint">
-            Effort
-          </span>
-          <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-border" />
-          <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-border" />
-          {[
-            { x: '22%', y: '26%', accent: true },
-            { x: '30%', y: '40%', accent: false },
-            { x: '68%', y: '32%', accent: false },
-            { x: '58%', y: '70%', accent: false },
-            { x: '78%', y: '74%', accent: false },
-          ].map((p, i) => (
-            <span
-              key={i}
-              className={`absolute h-[12px] w-[12px] -translate-x-1/2 -translate-y-1/2 rounded-full ${
-                p.accent ? 'bg-accent ring-4 ring-accent-light' : 'bg-[#C4C4BC]'
-              }`}
-              style={{ left: p.x, top: p.y }}
-            />
-          ))}
-        </div>
-        <p className="mt-[10px] text-[11px] leading-[1.5] text-faint">
-          Quick wins — high impact, low effort — surface top-left.
-        </p>
-      </div>
-    </AppWindow>
-  );
-}
+/* -------------------------------------------------------------------------- */
+/*  Privacy visual — device → sealed packets → cloud                          */
+/* -------------------------------------------------------------------------- */
 
-/** Private AI — a prompt over your own notes with a scoped-request note. */
-export function AiMockup() {
+export function PrivacyVisual() {
+  const packets = ['a9f2·c410', '7de1·b83a', 'f0c6·29ab'];
   return (
-    <AppWindow title="Ask your notes" className="h-full">
-      <div className="flex flex-col gap-[10px] p-[16px]">
-        <div className="self-end rounded-m rounded-br-[4px] bg-accent px-[12px] py-[8px] text-[12px] text-surface">
-          Summarise my launch decisions
-        </div>
-        <div className="self-start rounded-m rounded-bl-[4px] border border-border bg-bg/50 px-[12px] py-[9px] text-[12px] leading-[1.55] text-ink">
-          Three calls stand: ship beta in waves, price at $4.99, hold Android
-          for v2. Pulled from <span className="font-medium text-accent">3 pages</span>.
-        </div>
-        <div className="mt-[2px] flex items-center gap-[7px] rounded-s border border-dashed border-border px-[10px] py-[7px] text-[10.5px] text-faint">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <rect x="2.5" y="5.5" width="7" height="5" rx="1" stroke="#999999" strokeWidth="1" />
-            <path d="M4 5.5V4a2 2 0 0 1 4 0v1.5" stroke="#999999" strokeWidth="1" />
-          </svg>
-          Only the content you ask about leaves — for that one request.
+    <div
+      aria-hidden="true"
+      className="relative h-[360px] overflow-hidden rounded-[22px] border border-white/15 bg-[linear-gradient(160deg,rgba(244,239,231,0.05),rgba(244,239,231,0.01))] md:h-[400px]"
+    >
+      {/* device */}
+      <div className="absolute left-[8%] top-1/2 flex h-[216px] w-[132px] -translate-y-1/2 flex-col gap-[8px] rounded-[22px] border border-white/25 bg-[#2c2721] p-[12px]">
+        <div className="text-[9.5px] font-bold uppercase tracking-[0.14em] text-[#9c9382]">Your device</div>
+        <div className="h-[7px] w-[88%] rounded-[4px] bg-white/20" />
+        <div className="h-[7px] w-[66%] rounded-[4px] bg-white/15" />
+        <div className="h-[7px] w-[78%] rounded-[4px] bg-white/15" />
+        <div
+          className="mt-auto flex items-center gap-[7px] rounded-[10px] px-[9px] py-[7px]"
+          style={{ border: `1px solid ${rgba(ACCENT, 0.5)}` }}
+        >
+          <span className="relative flex h-[18px] w-[18px] flex-none items-center justify-center">
+            <span className="h-[11px] w-[11px] rounded-full border-[2.5px]" style={{ borderColor: ACCENT }} />
+            <span className="absolute left-[8px] top-[13px] h-[6px] w-[2.5px] rounded-[2px]" style={{ background: ACCENT }} />
+            <span className="absolute left-[11px] top-[15px] h-[2.5px] w-[4px] rounded-[2px]" style={{ background: ACCENT }} />
+          </span>
+          <span className="text-[10.5px] font-semibold text-[#e0d8c8]">Key stays</span>
         </div>
       </div>
-    </AppWindow>
-  );
-}
 
-/** Publish — a public link bar with the ownspce.com/@you/page format. */
-export function PublishMockup() {
-  return (
-    <AppWindow title="Share" className="h-full">
-      <div className="p-[16px]">
-        <div className="flex items-center gap-[9px] rounded-m border border-border bg-bg/50 px-[12px] py-[10px]">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="flex-none">
-            <circle cx="7" cy="7" r="6" stroke="#CC785C" strokeWidth="1.2" />
-            <path d="M1 7h12M7 1c1.8 1.6 2.8 3.8 2.8 6S8.8 12.4 7 14M7 1C5.2 2.6 4.2 4.8 4.2 7S5.2 12.4 7 13" stroke="#CC785C" strokeWidth="1.1" />
-          </svg>
-          <span className="truncate text-[12.5px] text-ink">
-            ownspce.com/<span className="font-medium text-accent">@you</span>/q3-launch
-          </span>
+      {/* dashed wire */}
+      <div className="absolute left-[26%] right-[22%] top-1/2 h-px bg-[repeating-linear-gradient(90deg,rgba(244,239,231,0.3)_0_6px,transparent_6px_13px)]" />
+      {packets.map((text, i) => (
+        <div
+          key={text}
+          className="absolute left-[38%] top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[7px] border border-white/15 bg-dark px-[8px] py-[4px] font-mono text-[10.5px] tracking-[0.06em] text-[#b8af9e] max-md:hidden"
+          style={{ animation: `ospacket 6s linear infinite`, animationDelay: `${i * 2}s`, opacity: 0 }}
+        >
+          {text}
         </div>
-        <div className="mt-[10px] flex items-center justify-between rounded-s border border-border px-[12px] py-[9px]">
-          <span className="text-[12px] text-muted">Public page</span>
-          <span className="relative h-[18px] w-[32px] rounded-full bg-accent">
-            <span className="absolute right-[2px] top-[2px] h-[14px] w-[14px] rounded-full bg-surface" />
-          </span>
-        </div>
-        <div className="mt-[8px] flex items-center justify-between rounded-s border border-border px-[12px] py-[9px]">
-          <span className="text-[12px] text-muted">Encrypted secret link</span>
-          <span className="relative h-[18px] w-[32px] rounded-full bg-[#DCDCD5]">
-            <span className="absolute left-[2px] top-[2px] h-[14px] w-[14px] rounded-full bg-surface" />
-          </span>
-        </div>
+      ))}
+
+      {/* cloud */}
+      <div className="absolute right-[7%] top-1/2 flex h-[112px] w-[150px] -translate-y-1/2 flex-col items-center justify-center gap-[8px] rounded-[20px] border border-white/20 bg-white/5">
+        <span className="absolute -inset-[14px] animate-pulse rounded-[26px] border border-white/10" />
+        <span className="text-[22px] text-[#c8bfae]">☁</span>
+        <span className="text-[11px] font-bold uppercase tracking-[0.1em] text-[#9c9382]">Opaque bytes</span>
       </div>
-    </AppWindow>
+    </div>
   );
 }
