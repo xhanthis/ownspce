@@ -52,23 +52,23 @@ const SERIF_H2 =
   'font-serif font-medium tracking-[-0.022em] leading-[1.05] text-[34px] md:text-[46px]';
 
 /**
- * Notion-style rotating headline. The prefix stays put while the final word
- * cycles through use cases, so a visitor grasps the product in a beat. The word
- * lives on its own line to keep the layout from shifting as lengths change, and
- * cycling pauses (holding the first word) when the visitor prefers reduced motion.
+ * Notion-style rotating headline. The prefix stays put while the final word —
+ * shown in a tinted pill with a leading emoji, like Notion's "● Jam" chip —
+ * cycles through use cases, so a visitor grasps the product in a beat. The pill
+ * sits on its own centred line so the layout never shifts as widths change, and
+ * cycling pauses (holding the first entry) when the visitor prefers reduced motion.
  */
-const HEAD_WORDS = [
-  'head',
-  'meetings',
-  'grocery list',
-  'brain',
-  'lecture',
-  'inbox',
-  'standup',
-  'reading list',
-  'whiteboard',
-  'notebook',
-  'to-do list',
+const HEAD_WORDS: { emoji: string; word: string; color: string }[] = [
+  { emoji: '💭', word: 'head', color: CAT.accent },
+  { emoji: '🗓️', word: 'meetings', color: CAT.blue },
+  { emoji: '🛒', word: 'grocery list', color: CAT.sage },
+  { emoji: '🧠', word: 'brain', color: CAT.plum },
+  { emoji: '🎓', word: 'lecture', color: CAT.gold },
+  { emoji: '📥', word: 'inbox', color: CAT.accent },
+  { emoji: '🗣️', word: 'standup', color: CAT.stone },
+  { emoji: '📚', word: 'reading list', color: CAT.blue },
+  { emoji: '🖊️', word: 'whiteboard', color: CAT.plum },
+  { emoji: '✅', word: 'to-do list', color: CAT.sage },
 ];
 
 function RotatingHeadline() {
@@ -80,11 +80,20 @@ function RotatingHeadline() {
     return () => clearInterval(id);
   }, []);
 
+  const cur = HEAD_WORDS[idx];
+
   return (
-    <span className="block text-accent">
-      {/* keyed so each word re-mounts and replays the enter animation */}
-      <span key={idx} className="inline-block animate-rise">
-        {HEAD_WORDS[idx]}
+    <span className="mt-[0.12em] flex justify-center">
+      {/* keyed so each entry re-mounts and replays the enter animation */}
+      <span
+        key={idx}
+        className="inline-flex animate-rise items-center gap-[0.28em] rounded-full px-[0.52em] py-[0.1em]"
+        style={{ background: rgba(cur.color, 0.14) }}
+      >
+        <span className="text-[0.82em] leading-none" aria-hidden="true">
+          {cur.emoji}
+        </span>
+        <span>{cur.word}</span>
       </span>
     </span>
   );
