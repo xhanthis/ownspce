@@ -612,6 +612,7 @@ function Pricing() {
       <div className="grid w-full max-w-[980px] grid-cols-1 gap-[18px] md:grid-cols-3">
         {PLANS.map((p, i) => {
           const popular = i === 1;
+          const offer = i === 1; // Pro carries the exclusive launch offer.
           return (
             <div
               key={p.tier}
@@ -621,6 +622,15 @@ function Pricing() {
                 background: popular ? '#fdfbf6' : '#f4efe7',
               }}
             >
+              {offer && (
+                <div
+                  className="mb-[2px] flex items-center gap-[7px] rounded-[10px] px-[10px] py-[7px]"
+                  style={{ background: rgba(CAT.accent, 0.12), color: CAT.accent }}
+                >
+                  <span aria-hidden="true">✦</span>
+                  <span className="text-[11px] font-bold uppercase tracking-[0.08em]">Exclusive · 6 months free</span>
+                </div>
+              )}
               <div className="flex items-center gap-[9px]">
                 <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-faint">{p.tier}</span>
                 {p.tag && (
@@ -632,10 +642,22 @@ function Pricing() {
                   </span>
                 )}
               </div>
-              <div className="flex items-baseline gap-[7px]">
-                <span className="font-serif text-[38px] font-medium tracking-[-0.02em]">{inr ? p.inr : p.usd}</span>
-                <span className="text-[13px] font-semibold text-faint">{p.per}</span>
-              </div>
+              {offer ? (
+                <>
+                  <div className="flex items-baseline gap-[7px]">
+                    <span className="font-serif text-[38px] font-medium tracking-[-0.02em]">Free</span>
+                    <span className="text-[13px] font-semibold text-faint">for 6 months</span>
+                  </div>
+                  <p className="text-[13px] font-medium text-muted">
+                    then {inr ? p.inr : p.usd}{p.per} · cancel anytime
+                  </p>
+                </>
+              ) : (
+                <div className="flex items-baseline gap-[7px]">
+                  <span className="font-serif text-[38px] font-medium tracking-[-0.02em]">{inr ? p.inr : p.usd}</span>
+                  <span className="text-[13px] font-semibold text-faint">{p.per}</span>
+                </div>
+              )}
               <p className="text-[14.5px] leading-[1.5] text-[#8b8173]">{p.note}</p>
             </div>
           );
@@ -764,9 +786,12 @@ export default function LandingPage() {
         <section className="relative overflow-hidden bg-[linear-gradient(180deg,#faf6ed_0%,#f4efe7_100%)]">
           <div className="pointer-events-none absolute -top-[170px] left-1/2 h-[520px] w-[920px] -translate-x-1/2 rounded-full bg-[rgba(176,116,90,0.13)] blur-[90px]" />
           <div className="relative mx-auto flex max-w-shell flex-col items-center gap-[24px] px-[20px] pt-[64px] md:px-[40px] md:pt-[74px]">
-            <div className="reveal inline-flex items-center gap-[8px] rounded-full border border-border bg-surface px-[14px] py-[6px] text-[12.5px] font-semibold text-muted">
-              <span className="h-[6px] w-[6px] rounded-full bg-accent" />
-              Android and web · free to start
+            <div
+              className="reveal inline-flex items-center gap-[8px] rounded-full px-[14px] py-[6px] text-[12.5px] font-semibold"
+              style={{ border: `1px solid ${rgba(CAT.accent, 0.4)}`, background: rgba(CAT.accent, 0.1), color: CAT.accent }}
+            >
+              <span aria-hidden="true">✦</span>
+              Exclusive offer · Pro free for 6 months
             </div>
             <h1 className="reveal m-0 max-w-[940px] text-center font-serif text-[46px] font-medium leading-[1.02] tracking-[-0.028em] md:text-[80px]">
               <span className="block">Get everything out of your</span>
