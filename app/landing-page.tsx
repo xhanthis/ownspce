@@ -51,6 +51,33 @@ function DownloadCTAs({ className = '' }: { className?: string }) {
 const SERIF_H2 =
   'font-serif font-medium tracking-[-0.022em] leading-[1.05] text-[34px] md:text-[46px]';
 
+/**
+ * Notion-style rotating headline. The prefix stays put while the final word
+ * cycles through use cases, so a visitor grasps the product in a beat. The word
+ * lives on its own line to keep the layout from shifting as lengths change, and
+ * cycling pauses (holding the first word) when the visitor prefers reduced motion.
+ */
+const HEAD_WORDS = ['head', 'meetings', 'grocery list', 'brain', 'lecture'];
+
+function RotatingHeadline() {
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    const id = setInterval(() => setIdx((i) => (i + 1) % HEAD_WORDS.length), 2200);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <span className="block text-accent">
+      {/* keyed so each word re-mounts and replays the enter animation */}
+      <span key={idx} className="inline-block animate-rise">
+        {HEAD_WORDS[idx]}
+      </span>
+    </span>
+  );
+}
+
 /* -------------------------------------------------------------------------- */
 /*  Use-cases interactive demo                                                */
 /* -------------------------------------------------------------------------- */
@@ -695,8 +722,9 @@ export default function LandingPage() {
               <span className="h-[6px] w-[6px] rounded-full bg-accent" />
               Android and web · free to start
             </div>
-            <h1 className="reveal m-0 max-w-[940px] text-balance text-center font-serif text-[46px] font-medium leading-[1.0] tracking-[-0.028em] md:text-[80px]">
-              Get everything out of your head.
+            <h1 className="reveal m-0 max-w-[940px] text-center font-serif text-[46px] font-medium leading-[1.02] tracking-[-0.028em] md:text-[80px]">
+              <span className="block">Get everything out of your</span>
+              <RotatingHeadline />
             </h1>
             <p className="reveal max-w-[520px] text-center text-[18px] leading-[1.5] text-soft text-pretty md:text-[19px]">
               Today&rsquo;s tasks, half-formed ideas and the note you&rsquo;ll need next Tuesday — all in one place that
