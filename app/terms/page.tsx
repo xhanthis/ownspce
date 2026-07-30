@@ -105,10 +105,10 @@ export default function TermsPage() {
           <span className="text-[16px] font-semibold tracking-[-0.01em]">Ownspce</span>
         </Link>
         <Link
-          href="/#waitlist"
-          className="rounded-m border border-border px-[16px] py-[9px] text-[13px] font-medium text-muted transition-colors hover:border-accent hover:text-accent"
+          href="/#get"
+          className="rounded-[14px] border border-border px-[16px] py-[9px] text-[13px] font-medium text-muted transition-colors hover:border-accent hover:text-accent"
         >
-          Join the waitlist
+          Download
         </Link>
       </nav>
 

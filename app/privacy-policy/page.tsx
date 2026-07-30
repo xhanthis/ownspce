@@ -315,10 +315,10 @@ export default function PrivacyPolicyPage() {
           <span className="font-sans text-[15px] font-medium tracking-tight">Ownspce</span>
         </Link>
         <Link
-          href="/#waitlist"
+          href="/#get"
           className="font-sans text-[13px] font-medium px-[20px] py-[10px] rounded-[12px] border-[0.5px] border-border text-muted hover:border-border hover:text-ink transition-all duration-150 ease-out"
         >
-          Join Waitlist
+          Download
         </Link>
       </nav>
 

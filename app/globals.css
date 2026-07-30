@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Decorative mockup animations referenced via inline `animation` (not Tailwind). */
+@keyframes ospacket {
+  0% { left: 34%; opacity: 0; }
+  20% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { left: 58%; opacity: 0; }
+}
+@keyframes osdrag {
+  0% { transform: translate(0, 0) rotate(-1.6deg); }
+  45%, 55% { transform: translate(180px, -60px) rotate(2deg); }
+  100% { transform: translate(0, 0) rotate(-1.6deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [style*="ospacket"], [style*="osdrag"] { animation: none !important; }
+}
+
 @layer base {
   * {
     box-sizing: border-box;
@@ -19,7 +35,7 @@
   }
 
   ::selection {
-    background: rgba(204, 120, 92, 0.22);
+    background: rgba(176, 116, 90, 0.22);
   }
 }
 
@@ -49,6 +65,14 @@
       opacity: 1;
       transform: none;
       transition: none;
+    }
+
+    /* Neutralise the decorative product-mockup animations. */
+    .animate-float,
+    .animate-bar,
+    .animate-caret,
+    .animate-pulse {
+      animation: none !important;
     }
   }
 }
