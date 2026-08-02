@@ -544,8 +544,22 @@ const FACTS: [string, string][] = [
 /* -------------------------------------------------------------------------- */
 
 const PLANS = [
-  { tier: 'Personal', usd: 'Free', inr: 'Free', per: 'forever', note: 'Everything private and local, across 2 devices.' },
-  { tier: 'Team', usd: '$4.99', inr: '₹399', per: '/user/mo', note: 'Shared spaces, sprint planning and a company knowledge base. 2-seat minimum.' },
+  {
+    tier: 'Personal',
+    usd: 'Free',
+    inr: 'Free',
+    per: 'forever',
+    note: 'Everything private and local, across 2 devices.',
+    features: ['Unlimited pages', 'Private and local'],
+  },
+  {
+    tier: 'Pro',
+    usd: '$3.99',
+    inr: '₹299',
+    per: '/mo',
+    note: 'Every device in step, and pages you can open up to other people.',
+    features: ['Unlimited pages', 'Sync across devices', 'Collaborate on pages'],
+  },
 ];
 
 function UsFlag() {
@@ -617,6 +631,14 @@ function Pricing() {
               <span className="text-[13px] font-semibold text-faint">{p.per}</span>
             </div>
             <p className="text-[14.5px] leading-[1.5] text-[#8b8173]">{p.note}</p>
+            <ul className="mt-[6px] flex flex-col gap-[9px]">
+              {p.features.map((feature) => (
+                <li key={feature} className="flex items-center gap-[10px] text-[14px] text-ink">
+                  <Check color={CAT.accent} done size={16} />
+                  {feature}
+                </li>
+              ))}
+            </ul>
           </div>
         ))}
       </div>
@@ -637,7 +659,7 @@ const FAQS: [string, string, string][] = [
   ['offline', 'Does it work offline?', "Fully. Your pages live on your device first and sync the moment you're back online."],
   ['lost', 'What if I lose my phone?', "A recovery phrase — or any other device you're signed in on — brings everything back. Only you hold it, so keep it somewhere safe."],
   ['team', 'Can my team use it?', 'Yes. Shared encrypted spaces with real-time editing, roles and a company knowledge base.'],
-  ['cost', 'What does it cost?', 'Free to start. Pro and Team are $4.99 a month (₹299), and annual billing saves about 25%.'],
+  ['cost', 'What does it cost?', 'Free forever for unlimited pages on 2 devices. Pro is $3.99 a month (₹299) for sync and collaboration, and annual billing saves about 25%.'],
   ['devices', 'Which devices?', 'Android and the web today. iPhone, iPad and Mac are next.'],
 ];
 
@@ -743,8 +765,7 @@ export default function LandingPage() {
               <RotatingHeadline />
             </h1>
             <p className="reveal max-w-[520px] text-center text-[18px] leading-[1.5] text-soft text-pretty md:text-[19px]">
-              Today&rsquo;s tasks, half-formed ideas and the note you&rsquo;ll need next Tuesday — all in one place that
-              stays yours.
+              Notes, tasks and half-thoughts — encrypted, only yours.
             </p>
             <GetStarted className="reveal" />
             <div className="reveal text-[12.5px] text-faint">{JOIN_NOTE}</div>
